@@ -33,10 +33,4 @@ collections:
       - { name: body, label: "Body", widget: markdown, hint: "Just write — no need to paste HTML. Use the fields below for video and photo galleries." }
       - { name: youtube, label: "YouTube video (optional)", widget: string, required: false, hint: "Paste a YouTube link or ID. Shows as a player below the text." }
       - { name: video, label: "Video file (optional)", widget: file, required: false, choose_url: true, hint: "Upload or link a video clip (e.g. .mp4/.mov)." }
-      - name: gallery
-        label: "Photo gallery (optional)"
-        widget: list
-        required: false
-        summary: "{{fields.image}}"
-        field: { name: image, label: "Photo", widget: image, choose_url: true }
-        hint: "Add multiple photos — shown as a grid below the post."
+      - { name: gallery, label: "Photo gallery (optional)", widget: image, required: false, multiple: true, choose_url: true, hint: "Drop or select multiple photos at once — they appear as a grid below the post." }
