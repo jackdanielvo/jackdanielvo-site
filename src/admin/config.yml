@@ -1,0 +1,34 @@
+# Sveltia CMS configuration — "From the Booth" blog.
+# Login uses GitHub (via Netlify's OAuth provider). Publishing commits to the
+# repo's main branch, which triggers a Netlify build & deploy automatically.
+
+backend:
+  name: github
+  repo: jackdanielvo/jackdanielvo-site
+  branch: main
+
+# Where images uploaded through the editor are stored / referenced.
+media_folder: "src/assets/uploads"
+public_folder: "/assets/uploads"
+
+
+collections:
+  - name: posts
+    label: "From the Booth — Blog"
+    label_singular: "Post"
+    description: "Write, edit, and publish blog posts. Newest appear on the homepage automatically."
+    folder: "src/posts"
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: yaml-frontmatter
+    preview_path: "blog/{{slug}}/"
+    sortable_fields: [date, title]
+    fields:
+      - { name: title, label: "Title", widget: string }
+      - { name: date, label: "Date", widget: datetime, date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }
+      - { name: categories, label: "Categories", widget: select, multiple: true, options: ["Work Life", "Teaching", "Interview"], default: ["Work Life"] }
+      - { name: featured, label: "Featured image (post hero + archive card)", widget: image, required: false, choose_url: true, hint: "The large image at the top of the post and on the blog grid." }
+      - { name: cover, label: "Homepage card image (optional)", widget: image, required: false, choose_url: true, hint: "Image used for the 'From the Booth' cards on the homepage. Often a YouTube thumbnail." }
+      - { name: excerpt, label: "Excerpt", widget: text, required: false, hint: "1–2 sentence summary shown on cards." }
+      - { name: body, label: "Body", widget: markdown }
