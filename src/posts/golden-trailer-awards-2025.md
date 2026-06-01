@@ -2,7 +2,8 @@
 title: "Golden Trailer Awards 2025"
 date: 2025-05-31
 categories: ["Teaching"]
-cover: "https://jackdanielvo.com/wp-content/uploads/2025/10/502675381_9867121530041255_6469921521567218305_n-768x576-1.jpg"
+cover: "https://jackdanielvo.com/wp-content/uploads/2020/03/gta-2025-cover-photo.jpeg"
+featured: "https://jackdanielvo.com/wp-content/uploads/2020/03/gta-2025-cover-photo.jpeg"
 excerpt: "My agency, Atlas Talent, sponsored the Golden Trailer Awards last night at the Orpheum Theater and yes we had fun…"
 ---
 My agency, [Atlas Talent](https://www.atlastalent.com/), sponsored the Golden Trailer Awards last night at the Orpheum Theater and yes we had fun. I got to announce the Action movies category and many Atlas voices were heard throughout the evening. A real who's-who of trailer production!

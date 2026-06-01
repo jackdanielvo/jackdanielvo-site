@@ -18,11 +18,7 @@ permalink: /blog/
     <div class="blog-grid">
       {% for post in collections.posts %}
       <a class="post" href="{{ post.url }}">
-        {% if post.data.cover %}
-        <div class="post-img"><div style="background-image:url({{ post.data.cover }})"></div></div>
-        {% else %}
-        <div class="post-img post-img-placeholder" data-color="{{ ['cream','blue','green','purple'][loop.index0 % 4] }}"><span>{{ (post.data.categories[0] or 'JD') | truncate(2, true, '') | upper }}</span></div>
-        {% endif %}
+        <div class="post-img"><div style="background-image:url({{ post.data.featured or post.data.cover }})"></div></div>
         <div class="post-meta"><span>{{ post.date | monthDay }}</span><span>·</span><span>{{ post.data.categories[0] }}</span></div>
         <h3>{{ post.data.title }}</h3>
         <p>{{ post.data.excerpt }}</p>

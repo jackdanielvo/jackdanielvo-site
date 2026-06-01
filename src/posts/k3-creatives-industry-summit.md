@@ -3,11 +3,12 @@ title: "K3 Creatives industry summit"
 date: 2026-05-01
 categories: ["Work Life"]
 cover: "https://jackdanielvo.com/wp-content/uploads/2026/05/2026-05-01_06-17-43-1024x685.jpg"
-excerpt: "\"The Creatives: Industry Talent Mixer\" hosted by The Imaging House took place this year on April 25—a day before my birthday…"
+featured: "https://jackdanielvo.com/wp-content/uploads/2026/05/2026-05-01_06-17-43-1024x685.jpg"
+excerpt: "\"The Creatives: Industry Talent Mixer\" hosted by The Imaging House took place this year on April 25–a day before my birthday. I mention this…"
 ---
-"The Creatives: Industry Talent Mixer" hosted by **The Imaging House** took place this year on April 25—a day before my birthday. I mention this because I received a rousing rendition of the Happy Birthday song when most of the attendees were pretty well "tuned."
+"The Creatives: Industry Talent Mixer" hosted by **The Imaging House** took place this year on April 25–a day before my birthday. I mention this because I received a rousing rendition of the Happy Birthday song when most of the attendees were pretty well "tuned."
 
-Here are a few pictures (courtesy WendyPix.com) of the event, which included not just Kelly Dougherty herself, but such good friends and industry giants as Joe Cipriano, Debi Derryberry, Steve Stone, Ron Shapiro, Sylvia Villagrans, Andia Winslow, and… well, much of the cream of the VO world. Quite a few folks flew in for the event, which has been going on for years.
+Here are a few pictures (courtesy WendyPix.com) of the event, which included not just Kelly Dougherty herself, but such good friends and industry giants such as Joe Cipriano, Debi Derryberry, Steve Stone, Ron Shaprio, Sylvia Villagrans, Andia Winslow, and… well, much of the cream of the VO world. Quite a few folks flew in for the event, which has been going on for years.
 
 <div class="post-gallery">
 <img loading="lazy" src="https://jackdanielvo.com/wp-content/uploads/2026/05/2026-05-01_06-17-43-1024x685.jpg" alt="The Creatives mixer">
