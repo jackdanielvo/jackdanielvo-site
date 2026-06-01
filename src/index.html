@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The design is light-only. Opt out of browser auto-dark / forced-dark
+     so the page renders identically for visitors whose browser or OS is
+     set to dark mode. -->
+<meta name="color-scheme" content="light">
+<title>Jack Daniel · Voiceover</title>
+
+<!-- ——— SEO / social meta ———
+     Standalone static site — no WordPress, no SEO plugin. Edit these by hand. -->
+<meta name="description" content="Jack Daniel — voiceover artist bringing classic pipes to modern reads. Promo, trailer, commercial, and narration. Represented by Atlas Talent (NYC/LA) and Helzner Management.">
+<meta name="author" content="Jack Daniel">
+<link rel="canonical" href="https://jackdanielvo.com/">
+
+<!-- Open Graph (Facebook, LinkedIn, iMessage, Slack link previews) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Jack Daniel · Voiceover">
+<meta property="og:title" content="Jack Daniel · Voiceover">
+<meta property="og:description" content="Classic pipes, modern sound. Promo, trailer, and commercial voiceover by Jack Daniel.">
+<meta property="og:url" content="https://jackdanielvo.com/">
+<meta property="og:image" content="https://jackdanielvo.com/assets/og-image.jpeg">
+<meta property="og:image:alt" content="Jack Daniel voiceover — NHL on TNT Stanley Cup promo">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Jack Daniel · Voiceover">
+<meta name="twitter:description" content="Classic pipes, modern sound. Promo, trailer, and commercial voiceover by Jack Daniel.">
+<meta name="twitter:image" content="https://jackdanielvo.com/assets/og-image.jpeg">
+
+<!-- ——— Favicon ——— Local files, no WordPress paths. -->
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./favicon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="./favicon-512.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./favicon-180.png">
+<link rel="shortcut icon" href="./favicon.svg">
+<meta name="theme-color" content="#8f4fd8">
+
+<link rel="stylesheet" href="tokens.css">
+<!-- Inter (Medium) — scoped to the giant CONTACT wordmark; matches spencergabor.work's closing footer type. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&amp;display=swap">
+<!-- Font override safety net: guarantees Helvetica regardless of cached tokens.css -->
+<style>
+:root {
+  color-scheme: light;
+  --font-family-headline: "Helvetica", "Arial", "Helvetica Neue", sans-serif !important;
+}
+</style>
+<style>
+/* =================================================================
+   Jack Daniel · Landing page
+   Built on the Spencer Gabor design system (tokens.css).
+   Every value here resolves to a token; no bespoke colors/sizes.
+   ================================================================= */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font: var(--font-body);
+  color: var(--color-ink);
+  background: var(--color-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+img { max-width: 100%; display: block; }
+
+/* ——— Layout primitives (from --max-width, --padding, --gap) ——— */
+.wrap {
+  max-width: var(--max-width); /* 860px */
+  padding: 0 var(--padding);
+  margin: 0 auto;
+}
+.wrap-wide { max-width: 1200px; padding: 0 var(--padding); margin: 0 auto; }
+
+/* ——— Reusable primitives that live on .sg-root ——— */
+h1, h2, h3, h4, p, a, button, li { margin: 0; padding: 0; }
+h1, h2, .display {
+  font-family: var(--font-family-headline);
+  font-weight: 400;
+  line-height: 0.82;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+.eyebrow {
+  font-family: var(--font-family-headline);
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+.para-cap {
+  font-family: var(--font-family-headline);
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 1.26px;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+.body {
+  font: var(--font-body);
+  color: var(--color-ink);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ——— Pill chips & buttons (--radius-pill: 800px) ——— */
+.chip, .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-grey-ghost);
+  color: var(--color-black);
+  padding: 14px 22px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-family-headline);
+  font-size: 22.4px;
+  line-height: 1;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 320ms var(--ease-out-quart),
+              color 320ms var(--ease-out-quart),
+              transform 320ms var(--ease-out-back);
+}
+.chip-sm {
+  font-size: 14px;
+  letter-spacing: 1.26px;
+  padding: 9px 16px;
+}
+.chip:hover, .btn:hover {
+  background: var(--color-amber, #B88A3E);
+  color: var(--color-white);
+  transform: translateY(-1px);
+}
+.btn-solid {
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+.btn-solid:hover {
+  /* Amber with a literal fallback so the button still renders if the
+     --color-amber token isn't loaded (e.g. stale tokens.css cache). */
+  background: var(--color-amber, #B88A3E);
+  color: var(--color-white);
+}
+.btn-solid svg { transition: transform 320ms var(--ease-out-back); }
+.btn-solid:hover svg { transform: scale(1.15); }
+
+/* ——— Hero CTA pair — plum + amber cross-swap ———
+   View Reel sits in the deep brand plum; Book Jack in the warm
+   amber. Hovering either one swaps to the other color so the two
+   buttons visually play off each other. Scoped to .hero-actions
+   so the portfolio/coaching/nav buttons keep their original
+   neutral-on-ink palette. */
+.hero-actions .btn-solid {
+  background: var(--tile-purple, #3C0350);
+  color: var(--color-white);
+}
+.hero-actions .btn-solid:hover,
+.hero-actions .btn-solid:focus {
+  background: var(--color-amber, #B88A3E);
+  color: var(--color-white);
+}
+.hero-actions .btn:not(.btn-solid) {
+  background: var(--color-amber, #B88A3E);
+  color: var(--color-white);
+}
+.hero-actions .btn:not(.btn-solid):hover,
+.hero-actions .btn:not(.btn-solid):focus {
+  background: var(--tile-purple, #3C0350);
+  color: var(--color-white);
+}
+
+/* Larger button variant — used for the portfolio CTA below the tile grid. */
+.btn-lg {
+  padding: 20px 32px;
+  font-size: 26px;
+  letter-spacing: 0.02em;
+}
+.btn-lg .btn-arrow {
+  display: inline-block;
+  margin-left: 4px;
+  transition: transform 320ms var(--ease-out-back);
+}
+.btn-lg:hover .btn-arrow { transform: translateX(6px); }
+@media (max-width: 780px) {
+  .btn-lg { padding: 16px 26px; font-size: 20px; }
+}
+
+/* Wrapper that centers the CTA under the tile grid and gives it room. */
+.tile-grid-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 56px;
+}
+@media (max-width: 780px) {
+  .tile-grid-cta { margin-top: 36px; }
+}
+
+/* ——— Header ——— */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px var(--padding);
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: var(--border-hairline);
+}
+.mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-family-headline);
+  color: var(--color-ink);
+  text-decoration: none;
+  line-height: 1;
+}
+.mark-logo {
+  display: block;
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  flex: 0 0 auto;
+}
+.mark-text {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.mark-text .mark-text-sub {
+  font-weight: 500;
+  opacity: 0.55;
+  margin-left: 6px;
+  letter-spacing: 0.08em;
+}
+@media (max-width: 480px) {
+  .mark-text .mark-text-sub { display: none; }
+  .mark-logo { width: 32px; height: 32px; }
+  .mark-text { font-size: 16px; }
+}
+.nav-links {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+}
+.nav-links a {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 16px;
+  background: transparent;
+  color: var(--color-ink);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-family-headline);
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 1.26px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 280ms var(--ease-out-quart), color 280ms var(--ease-out-quart);
+}
+.nav-links a:hover {
+  background: var(--color-grey-ghost);
+}
+.nav-links a.active {
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+.nav-links a.active:hover {
+  background: var(--color-amber, #B88A3E);
+  color: var(--color-white);
+}
+/* Client Area pill — matches the brand violet used inside the client portal */
+.nav-links a.client-area {
+  background: #3C0350;
+  color: var(--color-white) !important;
+  font-weight: 600;
+}
+.nav-links a.client-area:hover {
+  background: #5b1a73;
+  color: var(--color-white);
+}
+
+/* ——— Hero — oversized ghost-stack headline ——— */
+.hero {
+  position: relative;
+  padding: 80px var(--padding) 64px;
+  overflow: hidden;
+  border-bottom: var(--border-hairline);
+}
+.hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+.hero-stack {
+  position: relative;
+  line-height: 0.9;
+}
+.hero-stack .h-ghost,
+.hero-stack .h-ink {
+  font-family: var(--font-family-headline);
+  font-size: clamp(96px, 22vw, 320px);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  display: block;
+}
+.hero-stack .h-ghost { color: var(--color-grey-ghost); }
+.hero-stack .h-ink { color: var(--color-ink); margin-top: 0; }
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+}
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--tile-green);
+  border-radius: var(--radius-circle);
+  box-shadow: 0 0 0 4px rgba(55,175,93,0.25);
+  animation: pulse 1.6s var(--ease-in-out-sine) infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(0.85); }
+}
+.hero-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 36px;
+}
+.hero-tagline {
+  font-family: var(--font-family-headline);
+  font-size: clamp(22px, 2.6vw, 42px);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  margin-top: 48px;
+  max-width: 820px;
+}
+.hero-tagline .gh { color: var(--color-grey-ghost); }
+
+/* ——— Section header (eyebrow + thin rule + big heading) ——— */
+section { padding: 96px 0; }
+.sec-head {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  margin-bottom: 48px;
+}
+.sec-head .eyebrow { flex: 0 0 auto; }
+.sec-head .rule {
+  flex: 1 1 auto;
+  height: 1px;
+  background: rgba(0,0,0,0.15);
+}
+.sec-head .more {
+  font-family: var(--font-family-headline);
+  font-size: 14px;
+  letter-spacing: 1.26px;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  text-decoration: none;
+}
+.sec-head .more:hover { color: var(--tile-blue); }
+
+/* ——— Bio ——— */
+.bio-lede {
+  font-family: var(--font-family-headline);
+  font-size: clamp(44px, 6.2vw, 96px);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  margin-bottom: 40px;
+}
+.bio-lede .gh { color: var(--color-grey-ghost); }
+/* Accent word — colored + slides/fades in on scroll. Starts offset so
+   the reveal reads as a deliberate entrance; transitions only kick in
+   once .is-in is toggled by the IntersectionObserver below. */
+.bio-lede .bio-accent {
+  display: inline-block;
+  color: var(--color-amber, #B88A3E);
+  font-style: italic;
+  opacity: 0;
+  transform: translateX(60vw);
+  transition:
+    opacity 1200ms var(--ease-out-quart) 650ms,
+    transform 1600ms var(--ease-out-quart) 650ms;
+}
+.bio-lede.is-in .bio-accent {
+  opacity: 1;
+  transform: translateX(0);
+}
+.bio-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+.bio-body p {
+  font: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--color-ink);
+  letter-spacing: 0;
+  text-transform: none;
+}
+.bio-body p.secondary { color: #666; }
+.bio-sig {
+  margin-top: 32px;
+  font-family: var(--font-family-headline);
+  font-size: 14px;
+  letter-spacing: 1.26px;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.bio-sig::before {
+  content: "";
+  width: 40px;
+  height: 1px;
+  background: var(--color-ink);
+}
+
+/* ——— Portfolio tiles — the only colored surface ——— */
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 12px;
+}
+.tile {
+  position: relative;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px;
+  text-decoration: none;
+  transition: transform 520ms var(--ease-out-quart);
+}
+.tile:hover { transform: translateY(-2px); }
+.tile-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 720ms var(--ease-out-quart);
+  z-index: 0;
+}
+.tile:hover .tile-bg { transform: scale(1.04); }
+/* Video-thumbnail image shown faintly on every video tile so it's
+   clear at a glance that the tile represents a video. Brightens
+   on hover (or keyboard focus) to preview the full thumbnail. */
+.tile-hover-img {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.28;
+  transform: scale(1.02);
+  transition: opacity 320ms var(--ease-out-quart), transform 520ms var(--ease-out-quart);
+  z-index: 0;
+}
+/* Cream tiles need a touch more contrast since the backing color
+   is light — a darker thumbnail against cream looks washed out at
+   the same opacity that reads fine against ink. */
+.tile.cream .tile-hover-img { opacity: 0.38; }
+.tile-hover-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 100%);
+}
+.tile:hover .tile-hover-img,
+.tile:focus-within .tile-hover-img { opacity: 0.78; transform: scale(1.04); }
+.tile.cream:hover .tile-hover-img,
+.tile.cream:focus-within .tile-hover-img { opacity: 0.88; }
+.tile-overlay {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: multiply;
+  z-index: 1;
+}
+.tile-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.45) 100%);
+  z-index: 2;
+}
+.tile > *:not(.tile-hover-img):not(.tile-bg):not(.tile-scrim):not(.tile-overlay):not(.tile-play-badge) { position: relative; z-index: 3; }
+
+.tile-eyebrow {
+  display: inline-flex;
+  align-self: flex-start;
+  font-family: var(--font-family-headline);
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-white);
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: rgba(0,0,0,0.35);
+}
+.tile-title {
+  font-family: var(--font-family-headline);
+  font-size: clamp(28px, 3vw, 44px);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--color-white);
+}
+.tile-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  font-family: var(--font-family-headline);
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+}
+.tile-play {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-circle);
+  background: var(--color-white);
+  color: var(--color-ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 280ms var(--ease-out-back);
+}
+.tile:hover .tile-play { transform: scale(1.08); }
+
+/* Variant colors per tile */
+.tile.cream { background: var(--tile-cream); }
+.tile.cream .tile-eyebrow,
+.tile.cream .tile-title,
+.tile.cream .tile-meta { color: var(--color-ink); }
+.tile.cream .tile-eyebrow { background: rgba(54,54,54,0.14); }
+.tile.cream .tile-scrim { background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(54,54,54,0.1) 100%); }
+/* On hover, the (dark) YouTube thumbnail is revealed behind the cream tile,
+   so swap the ink text back to white for legibility — matches the other tiles. */
+.tile.cream:hover .tile-eyebrow,
+.tile.cream:hover .tile-title { color: var(--color-white); }
+.tile.cream:hover .tile-meta { color: rgba(255,255,255,0.85); }
+.tile.cream:hover .tile-eyebrow { background: rgba(0,0,0,0.35); }
+
+.tile.blue { background: var(--tile-blue); }
+.tile.green { background: var(--tile-green); }
+.tile.purple { background: var(--tile-purple); }
+.tile.ink { background: var(--color-ink); }
+
+/* ——— Corner play badge ———
+   A small circular ▶ badge sits in the top-right of every video
+   tile to unmistakably signal "this is a playable video" — a
+   secondary, always-on cue that complements the faint thumbnail
+   showing underneath the tile color. Grows slightly on hover. */
+.tile-play-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-circle, 50%);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--color-ink, #1a1a1a);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  line-height: 1;
+  padding-left: 2px; /* optical-center the ▶ glyph */
+  z-index: 3;
+  transition: transform 280ms var(--ease-out-back, cubic-bezier(0.34, 1.56, 0.64, 1)),
+              background 200ms ease;
+  pointer-events: none;
+}
+.tile:hover .tile-play-badge,
+.tile:focus-within .tile-play-badge {
+  transform: scale(1.12);
+  background: var(--color-white, #ffffff);
+}
+
+/* Span classes for asymmetric grid */
+.col-4 { grid-column: span 4; }
+.col-5 { grid-column: span 5; }
+.col-6 { grid-column: span 6; }
+.col-7 { grid-column: span 7; }
+.col-8 { grid-column: span 8; }
+.col-12 { grid-column: span 12; }
+
+.tile.tall { aspect-ratio: 4 / 5; }
+.tile.wide { aspect-ratio: 16 / 9; }
+
+/* When a row mixes a wide-7 with a wide-5, the 16:9 aspect ratios produce
+   different heights. Drop the aspect on the 5-col wide so CSS Grid can
+   stretch it to match its row-neighbor. */
+.tile.wide.col-5 { aspect-ratio: auto; }
+
+/* ——— Reps ——— */
+.reps {
+  background: #FAFAFA;
+  border-top: var(--border-hairline);
+  border-bottom: var(--border-hairline);
+}
+.rep-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.rep {
+  position: relative;
+  padding: 28px;
+  background: var(--color-white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  /* Enter animation: fade + rise */
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 720ms var(--ease-out-quart),
+    transform 720ms var(--ease-out-quart),
+    box-shadow 320ms var(--ease-out-quart);
+}
+.rep.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+.rep:nth-child(2) { transition-delay: 120ms; }
+/* Hover lift + deeper shadow */
+.rep:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 60px rgba(54,54,54,0.12), 0 2px 4px rgba(54,54,54,0.04);
+}
+/* Diagonal arrow in top-right — fades in on hover */
+.rep::after {
+  content: "↗";
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  font-family: var(--font-family-headline);
+  font-size: 22px;
+  color: var(--color-ink);
+  opacity: 0;
+  transform: translate(-6px, 6px);
+  transition: opacity 320ms var(--ease-out-quart), transform 320ms var(--ease-out-quart);
+}
+.rep:hover::after {
+  opacity: 0.6;
+  transform: translate(0, 0);
+}
+/* Stagger the inner content on enter */
+.rep > * {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 520ms var(--ease-out-quart), transform 520ms var(--ease-out-quart);
+}
+.rep.is-in > * { opacity: 1; transform: translateY(0); }
+.rep.is-in > *:nth-child(1) { transition-delay: 120ms; }
+.rep.is-in > *:nth-child(2) { transition-delay: 220ms; }
+.rep.is-in > *:nth-child(3) { transition-delay: 300ms; }
+.rep.is-in > *:nth-child(4) { transition-delay: 360ms; }
+.rep.is-in > *:nth-child(5) { transition-delay: 420ms; }
+.rep:nth-child(2).is-in > *:nth-child(1) { transition-delay: 240ms; }
+.rep:nth-child(2).is-in > *:nth-child(2) { transition-delay: 340ms; }
+.rep:nth-child(2).is-in > *:nth-child(3) { transition-delay: 420ms; }
+.rep:nth-child(2).is-in > *:nth-child(4) { transition-delay: 480ms; }
+.rep:nth-child(2).is-in > *:nth-child(5) { transition-delay: 540ms; }
+
+.rep .eyebrow { margin-bottom: 16px; display: block; }
+/* Hairline sweep under the agency name — draws across on hover */
+.rep h3 {
+  position: relative;
+  font-family: var(--font-family-headline);
+  font-size: clamp(36px, 4vw, 56px);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+.rep h3::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--color-ink);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 520ms var(--ease-out-quart);
+}
+.rep:hover h3::after { transform: scaleX(1); }
+.rep .people { margin-bottom: 12px; font-weight: 500; }
+.rep .tel {
+  font-family: var(--font-family-headline);
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  margin-bottom: 4px;
+  transition: letter-spacing 420ms var(--ease-out-quart);
+}
+.rep:hover .tel { letter-spacing: 0.12em; }
+.rep .mail {
+  font-family: var(--font-family-headline);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #666;
+  word-break: break-word;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rep, .rep > *, .rep::after, .rep h3::after, .rep .tel {
+    transition: none !important;
+  }
+  .rep, .rep > * { opacity: 1; transform: none; }
+}
+
+/* ——— Blog ——— */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.post {
+  text-decoration: none;
+  color: var(--color-ink);
+  display: block;
+}
+.post-img {
+  aspect-ratio: 4/3;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--color-grey);
+  margin-bottom: 16px;
+}
+.post-img > div {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 620ms var(--ease-out-quart);
+}
+.post:hover .post-img > div { transform: scale(1.04); }
+.post-img-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.post-img-placeholder[data-color="cream"] { background: var(--tile-cream, #EDE6D3); }
+.post-img-placeholder[data-color="blue"] { background: var(--tile-blue, #C9D5E4); }
+.post-img-placeholder[data-color="green"] { background: var(--tile-green, #C8D0B5); }
+.post-img-placeholder[data-color="purple"] { background: var(--tile-purple, #C9BED5); }
+.post-img-placeholder span {
+  font-family: var(--font-family-headline);
+  font-size: clamp(56px, 8vw, 96px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--color-ink);
+  opacity: 0.85;
+  transition: transform 620ms var(--ease-out-quart);
+}
+.post:hover .post-img-placeholder span { transform: scale(1.04); }
+.post-meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-family: var(--font-family-headline);
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 10px;
+}
+.post h3 {
+  font-family: var(--font-family-headline);
+  font-size: 24px;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  margin-bottom: 10px;
+}
+.post p {
+  font: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  color: #555;
+}
+.post-more {
+  display: inline-block;
+  margin-top: 14px;
+  font-family: var(--font-family-headline);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  border-bottom: 1px solid var(--color-ink);
+  padding-bottom: 2px;
+}
+
+/* ——— Coaching CTA banner ——— */
+.coaching {
+  background: var(--color-ink);
+  color: var(--color-white);
+  padding: 120px var(--padding);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.coaching .eyebrow {
+  color: var(--color-grey);
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  background: rgba(255,255,255,0.08);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+.coaching h2 {
+  font-size: clamp(64px, 10vw, 168px);
+  letter-spacing: -0.03em;
+  margin: 24px 0 24px;
+  color: var(--color-white);
+}
+.coaching p {
+  font: var(--font-body);
+  color: rgba(255,255,255,0.75);
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: 580px;
+  margin: 0 auto 36px;
+}
+.coaching .lede {
+  font-size: 20px;
+  line-height: 1.45;
+  color: var(--color-white);
+  max-width: 640px;
+  margin: 0 auto 20px;
+}
+.coaching .cred {
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.65);
+  max-width: 640px;
+  margin: 0 auto 40px;
+}
+.coaching .cred em {
+  font-style: normal;
+  color: rgba(255,255,255,0.9);
+  font-weight: 500;
+}
+.coaching .cred a {
+  color: var(--color-white);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.35);
+  padding-bottom: 1px;
+  transition: border-color 0.15s;
+}
+.coaching .cred a:hover {
+  border-bottom-color: var(--color-white);
+}
+.coaching .btn {
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+.coaching .btn:hover {
+  background: var(--tile-cream);
+  color: var(--color-ink);
+}
+
+/* ——— Contact ——— */
+.contact {
+  background: var(--color-white);
+  border-top: var(--border-hairline);
+}
+.contact-head h2 {
+  font-size: clamp(44px, 6vw, 88px);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  margin-bottom: 56px;
+}
+.contact-head h2 .gh { color: var(--color-grey-ghost); }
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px 28px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.field.span2 { grid-column: 1 / -1; }
+.field label {
+  font-family: var(--font-family-headline);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #666;
+}
+.field input, .field textarea {
+  border: 0;
+  border-bottom: 1px solid var(--color-ink);
+  background: transparent;
+  padding: 10px 0;
+  font-family: var(--font-family-body);
+  font-size: 16px;
+  color: var(--color-ink);
+  outline: none;
+  resize: vertical;
+}
+.field input:focus, .field textarea:focus {
+  border-bottom-color: var(--tile-blue);
+}
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ——— Giant "CONTACT" fixed-footer panel ———
+   Matches spencergabor.work: this block is position:fixed at the
+   bottom of the viewport, behind the rest of the page. As the user
+   scrolls to the end of the page, preceding sections scroll UP and
+   reveal it in place — a reveal-by-occlusion effect, not a transform
+   parallax. Preceding sections need solid backgrounds so they occlude
+   it while the user is reading them (the contact/white section above
+   provides this at the end of the flow).
+
+   The spacer below reserves scroll height equal to the panel so the
+   page can be scrolled far enough to fully reveal it. */
+.big-contact {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Full-viewport height so the word can grow enormous and the meta
+     column sits at the bottom. flex-end + column aligns meta to the
+     bottom edge, matching Spencer's layout. */
+  height: 100vh;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--color-grey-ghost);
+  color: var(--color-ink);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 32px;
+  /* Bottom padding reserves room for the fixed meta strip (~212px tall)
+     so the word doesn't get clipped by it. Keep generous headroom. */
+  padding: 64px 0 240px;
+  /* Sits behind everything else in the document flow. Regular sections
+     above have their own backgrounds and sit at the default z-index,
+     so they occlude this until scrolled past. */
+  z-index: -1;
+  pointer-events: auto;
+  overflow: hidden;
+}
+.big-contact-word {
+  display: block;
+  /* Inter Medium — matches spencergabor.work's closing footer wordmark.
+     Scoped to this element only; rest of the site stays on Helvetica. */
+  font-family: "Inter", "Helvetica", "Arial", sans-serif;
+  font-weight: 900;
+  /* One solid line spanning the viewport width. Tuned so the 7-letter
+     word CONTACT in Helvetica bold fills the viewport edge-to-edge
+     without horizontal overflow at full scale. */
+  font-size: 20.5vw;
+  line-height: 0.82;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--color-white);
+  text-align: center;
+  margin: auto 0 0;
+  user-select: none;
+  white-space: nowrap;
+  /* Scroll-driven scale: JS sets --reveal from 0..MAX as the user
+     scrolls the spacer past the viewport. At 0 the word is flat
+     (fully squished); at MAX it's stretched vertically to fill the
+     panel height, matching Spencer's oversized look. Transform
+     origin is the bottom so the word grows UP toward the top of
+     the panel from the meta column below. */
+  transform: scaleY(var(--reveal, 1));
+  transform-origin: center bottom;
+  will-change: transform;
+}
+/* Meta column sits at the bottom of the fixed CONTACT panel (hence on
+   the same grey background as the word). It's at document root in the
+   DOM — NOT a child of .big-contact — because .big-contact lives at
+   z-index:-1 and children can't escape that negative stacking context.
+   Positioned-fixed to the bottom of the viewport so it always appears
+   directly beneath CONTACT whenever the panel is revealed. Because the
+   flow sections above have opaque backgrounds, they occlude this strip
+   while the user is reading them; it only becomes visible once the
+   user scrolls into the spacer and the panel is exposed. */
+.big-contact-meta {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 24px 44px;
+  font-family: var(--font-family-headline);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  /* Bold throughout — all meta text reads heavy to match the CONTACT
+     wordmark's weight and hold its own against the giant grey band. */
+  font-weight: 700;
+  /* Same grey as the CONTACT panel so meta and word share one band. */
+  background: var(--color-grey-ghost);
+  /* z-index: 5 puts the meta column above flow sections so clicks land.
+     When flow sections fully occlude the CONTACT panel (user is reading
+     higher sections), we want meta hidden too. JS toggles --meta-op
+     based on scroll position — 0 until the reveal begins, 1 once it's
+     started, giving meta the "pop in with the grey panel" behavior
+     that matches the user's mental model without fading. */
+  z-index: 5;
+  opacity: var(--meta-op, 0);
+  pointer-events: var(--meta-pe, none);
+}
+.big-contact-meta a {
+  color: var(--color-ink);
+  text-decoration: none;
+  /* Hover: blue tint + slight lift. Motion reinforces clickability. */
+  transition: color 220ms var(--ease-out-quart),
+              transform 220ms var(--ease-out-quart);
+  display: inline-block;
+}
+.big-contact-meta a:hover {
+  /* White + extra-heavy on hover — strong contrast against the grey
+     band so the active link really pops. Still nudges up 2px. */
+  color: var(--color-white);
+  font-weight: 900;
+  transform: translateY(-2px);
+}
+.big-contact-email {
+  font-size: 16px;
+  letter-spacing: 0.16em;
+  margin-bottom: 2px;
+}
+.big-contact-copy {
+  margin-top: 14px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: rgba(54, 54, 54, 0.55);
+}
+/* Spacer sits in the document flow and reserves room equal to TWICE
+   the fixed panel's viewport height so there's a long scroll window
+   for the reveal animation (word squishes to nothing at the start,
+   grows to full height at the end). */
+.big-contact-spacer {
+  height: 200vh;
+  min-height: 200vh;
+  pointer-events: none;
+}
+/* Occlusion chain for the fixed CONTACT panel:
+   Every section in the flow must have its own opaque background so the
+   panel only shows once the user scrolls past .contact and into the
+   spacer. Body background must be TRANSPARENT so the fixed panel can
+   show through at the end — the sections above occlude it piece-by-piece.
+   nav/hero/portfolio/about/blog get explicit white backgrounds below.
+   .reps/.coaching/.contact already set their own. */
+body { background: transparent; }
+.nav,
+.hero,
+#portfolio,
+#about,
+#blog { background: var(--color-white); }
+/* html must be transparent so the fixed panel (z-index:-1) is visible
+   at the end of scroll; the opaque sections above occlude it earlier. */
+html { background: transparent; }
+
+/* ——— Footer ——— */
+.footer {
+  background: var(--color-ink);
+  color: var(--color-white);
+  padding: 80px var(--padding) 40px;
+}
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+.footer h4 {
+  font-family: var(--font-family-headline);
+  font-size: clamp(52px, 7vw, 108px);
+  line-height: 0.82;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.footer .col-title {
+  font-family: var(--font-family-headline);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-grey);
+  margin-bottom: 14px;
+  display: block;
+}
+.footer a, .footer p {
+  display: block;
+  font-family: var(--font-family-headline);
+  font-size: 14px;
+  line-height: 1.6;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-white);
+  text-decoration: none;
+  margin-bottom: 4px;
+}
+.footer a:hover { color: var(--tile-cream); }
+.footer-bot {
+  max-width: 1200px;
+  margin: 64px auto 0;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-family-headline);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-grey);
+}
+
+/* Hamburger button — hidden on desktop, shown on mobile */
+.nav-toggle {
+  display: none;
+  background: transparent;
+  border: 0;
+  padding: 10px;
+  margin: -10px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-toggle-bars {
+  display: block;
+  width: 24px;
+  height: 16px;
+  position: relative;
+}
+.nav-toggle-bars::before,
+.nav-toggle-bars::after,
+.nav-toggle-bars > span {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-ink);
+  border-radius: 1px;
+  transition: transform 280ms var(--ease-out-quart), opacity 200ms linear, top 280ms var(--ease-out-quart);
+}
+.nav-toggle-bars::before { top: 0; }
+.nav-toggle-bars > span { top: 7px; }
+.nav-toggle-bars::after { top: 14px; }
+.nav.is-open .nav-toggle-bars::before { top: 7px; transform: rotate(45deg); }
+.nav.is-open .nav-toggle-bars > span { opacity: 0; }
+.nav.is-open .nav-toggle-bars::after { top: 7px; transform: rotate(-45deg); }
+
+/* Responsive */
+@media (max-width: 780px) {
+  .bio-body, .rep-grid, .form, .footer-inner { grid-template-columns: 1fr; }
+  .blog-grid { grid-template-columns: 1fr; }
+  .col-4, .col-5, .col-6, .col-7, .col-8 { grid-column: span 12; }
+
+  .nav-toggle { display: inline-flex; align-items: center; }
+
+  /* Mobile menu: slide-down panel anchored under the header */
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 8px 12px 16px;
+    background: rgba(255,255,255,0.98);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: var(--border-hairline);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: max-height 320ms var(--ease-out-quart), opacity 200ms linear;
+  }
+  .nav.is-open .nav-links {
+    max-height: 80vh;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .nav-links a {
+    display: flex;
+    padding: 14px 12px;
+    border-radius: 10px;
+    font-size: 15px;
+    letter-spacing: 0.1em;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ——— Nav ——— -->
+<header class="nav">
+  <a href="#top" class="mark" aria-label="Jack Daniel Voiceover — Home">
+    <svg class="mark-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" focusable="false">
+      <rect width="100" height="100" fill="#8f4fd8"></rect>
+      <text x="8" y="52" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-weight="900" font-size="58" textLength="84" lengthAdjust="spacingAndGlyphs" fill="#ffffff">JD</text>
+      <text x="8" y="98" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-weight="900" font-style="italic" font-size="54" textLength="84" lengthAdjust="spacingAndGlyphs" fill="#ffffff">VO</text>
+    </svg>
+    <span class="mark-text">Jack Daniel<span class="mark-text-sub">VO</span></span>
+  </a>
+  <nav>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#portfolio">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#blog">From the Booth</a></li>
+      <li><a href="#coaching">Coaching</a></li>
+      <li><a class="active" href="#contact">Contact</a></li>
+      <li><a class="client-area" href="/client-area/">Client Area</a></li>
+    </ul>
+    <button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+      <span class="nav-toggle-bars"><span></span></span>
+    </button>
+  </nav>
+</header>
+
+<!-- ——— Hero ——— -->
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <div class="hero-meta">
+      <span class="live-dot"></span>
+      <span class="eyebrow">On Air · Booking 2026</span>
+      <span class="chip chip-sm">Narrator · Voiceover</span>
+    </div>
+    <div class="hero-stack" style="margin-top:32px">
+      <span class="h-ghost">Jack</span>
+      <span class="h-ink">Daniel</span>
+    </div>
+    <div class="hero-tagline">
+      <span class="gh">Classic pipes,</span> modern sound.
+    </div>
+    <div class="hero-actions">
+      <a href="#portfolio" class="btn btn-solid">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
+        View Reel
+      </a>
+      <a href="#contact" class="btn">Book Jack →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ——— Portfolio — tiles ——— -->
+<section id="portfolio">
+  <div class="wrap-wide">
+    <div class="sec-head">
+      <span class="eyebrow">Recent Work</span>
+      <span class="rule"></span>
+      <a href="https://jackdanielvo.com/portfolio/gallery-list/" target="_blank" rel="noopener" class="more">All Credits →</a>
+    </div>
+
+    <div class="tile-grid" id="tile-grid"><a href="#" class="tile ink col-7 wide" data-video="MGMZHuDN-y4" data-title="NHL on TNT">
+<div class="tile-hover-img" data-yt="MGMZHuDN-y4" style="background-image: url(&quot;https://img.youtube.com/vi/MGMZHuDN-y4/maxresdefault.jpg&quot;);"></div>
+
+<span class="tile-play-badge" aria-hidden="true">▶</span>
+<span class="tile-eyebrow">Promo · TNT</span>
+<div>
+<div class="tile-title">NHL<br>on TNT</div>
+<div class="tile-meta"><span>Stanley Cup</span></div>
+</div>
+</a><a href="#" class="tile cream col-5 wide" data-video="L5QokvTq2HQ" data-title="Vivi Headphones">
+<div class="tile-hover-img" data-yt="L5QokvTq2HQ" style="background-image:url(https://img.youtube.com/vi/L5QokvTq2HQ/mqdefault.jpg)"></div>
+
+<span class="tile-play-badge" aria-hidden="true">▶</span>
+<span class="tile-eyebrow">Commercial · Launch</span>
+<div>
+<div class="tile-title">Vivi<br>Headphones</div>
+<div class="tile-meta"><span>Vivi Product Launch</span></div>
+</div>
+</a><a href="#" class="tile blue col-4 tall" data-video="xMF5cy9mif0" data-title="Epic Groceries">
+<div class="tile-hover-img" data-yt="xMF5cy9mif0" style="background-image:url(https://img.youtube.com/vi/xMF5cy9mif0/mqdefault.jpg)"></div>
+
+<span class="tile-play-badge" aria-hidden="true">▶</span>
+<span class="tile-eyebrow">Commercial · Hyundai</span>
+<div>
+<div class="tile-title">Epic<br>Groceries</div>
+<div class="tile-meta"><span>w/ John Krasinski</span></div>
+</div>
+</a><a href="#" class="tile purple col-4 tall" data-video="8H1SwTjS0J8" data-title="Pluribus">
+<div class="tile-hover-img" data-yt="8H1SwTjS0J8" style="background-image: url(&quot;https://img.youtube.com/vi/8H1SwTjS0J8/maxresdefault.jpg&quot;);"></div>
+
+<span class="tile-play-badge" aria-hidden="true">▶</span>
+<span class="tile-eyebrow">Promo · Apple TV+</span>
+<div>
+<div class="tile-title">Pluribus</div>
+<div class="tile-meta"><span>Limited Series</span></div>
+</div>
+</a><a href="#" class="tile green col-4 tall" data-video="ItDEzR1s_Cs" data-title="Spaceballs 2 The New One">
+<div class="tile-hover-img" data-yt="ItDEzR1s_Cs" style="background-image: url(&quot;https://img.youtube.com/vi/ItDEzR1s_Cs/maxresdefault.jpg&quot;);"></div>
+
+<span class="tile-play-badge" aria-hidden="true">▶</span>
+<span class="tile-eyebrow">Trailer · Netflix</span>
+<div>
+<div class="tile-title">Spaceballs 2<br>The New One</div>
+<div class="tile-meta"><span>Trailer</span></div>
+</div>
+</a><a href="#" class="tile cream col-6 wide" data-video="pL--wWygzBE" data-title="Georgia vs Alabama">
+<div class="tile-hover-img" data-yt="pL--wWygzBE" style="background-image: url(&quot;https://img.youtube.com/vi/pL--wWygzBE/maxresdefault.jpg&quot;);"></div>
+
+<span class="tile-play-badge" aria-hidden="true">▶</span>
+<span class="tile-eyebrow">Promo · ESPN / ABC</span>
+<div>
+<div class="tile-title">Georgia<br>vs Alabama</div>
+<div class="tile-meta"><span>College Football</span></div>
+</div>
+</a><a href="#" class="tile ink col-6 wide" data-video="I24REvS3wtY" data-title="The First Omen">
+<div class="tile-hover-img" data-yt="I24REvS3wtY" style="background-image: url(&quot;https://img.youtube.com/vi/I24REvS3wtY/maxresdefault.jpg&quot;);"></div>
+
+<span class="tile-play-badge" aria-hidden="true">▶</span>
+<span class="tile-eyebrow">Trailer · 20th Century</span>
+<div>
+<div class="tile-title">The First<br>Omen</div>
+<div class="tile-meta"><span>Retro Trailer</span></div>
+</div>
+</a><a href="#" class="tile green col-4" data-video="0R5itL20wK4" data-title="Australian Open">
+<div class="tile-hover-img" data-yt="0R5itL20wK4" style="background-image: url(&quot;https://img.youtube.com/vi/0R5itL20wK4/maxresdefault.jpg&quot;);"></div>
+
+<span class="tile-play-badge" aria-hidden="true">▶</span>
+<span class="tile-eyebrow">Promo · ESPN</span>
+<div>
+<div class="tile-title">Australian<br>Open</div>
+<div class="tile-meta"><span>ESPN Australian Open</span></div>
+</div>
+</a><a href="#" class="tile purple col-4" data-video="boSpnSzFTrE" data-title="Pluto TV Halloween">
+<div class="tile-hover-img" data-yt="boSpnSzFTrE" style="background-image: url(&quot;https://img.youtube.com/vi/boSpnSzFTrE/maxresdefault.jpg&quot;);"></div>
+
+<span class="tile-play-badge" aria-hidden="true">▶</span>
+<span class="tile-eyebrow">Promo · Pluto TV</span>
+<div>
+<div class="tile-title">Pluto TV<br>Halloween</div>
+<div class="tile-meta"><span>Halloween Hits</span></div>
+</div>
+</a><a href="#" class="tile blue col-4" data-video="NxzfxyjGjwE" data-title="Ford v Ferrari">
+<div class="tile-hover-img" data-yt="NxzfxyjGjwE" style="background-image:url(https://img.youtube.com/vi/NxzfxyjGjwE/mqdefault.jpg)"></div>
+
+<span class="tile-play-badge" aria-hidden="true">▶</span>
+<span class="tile-eyebrow">Trailer · 20th Century Fox</span>
+<div>
+<div class="tile-title">Ford v<br>Ferrari</div>
+<div class="tile-meta"><span>Ford v Ferrari</span></div>
+</div>
+</a></div>
+
+    <div class="tile-grid-cta">
+      <a href="https://jackdanielvo.com/portfolio/gallery-list/" target="_blank" rel="noopener" class="btn btn-solid btn-lg">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
+        See More Videos
+        <span class="btn-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ——— Bio ——— -->
+<section id="about" style="border-top: var(--border-hairline)">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">About Jack</span>
+      <span class="rule"></span>
+    </div>
+    <h2 class="bio-lede">
+      Discovering <span class="gh">classic tones</span><br>
+      in a <span class="bio-accent">contemporary</span> read.
+    </h2>
+    <div class="bio-body">
+      <p>
+        The modern voiceover read is far more nuanced and connected than voices from the past; but today's reads often lack the power, warmth, and charm of yesterday's work. Jack brings classic pipes to modern sensibilities.
+      </p>
+      <p class="secondary">
+        Recognized as one of the top VO talents in the industry, Jack is used by all major studios, networks, and agencies. Consider bringing his special combination of feeling and precision to your project.
+      </p>
+    </div>
+    <div class="bio-sig">Jack</div>
+  </div>
+</section>
+
+<!-- ——— Reps ——— -->
+<section class="reps" id="reps">
+  <div class="wrap-wide">
+    <div class="sec-head">
+      <span class="eyebrow">Representation</span>
+      <span class="rule"></span>
+    </div>
+    <div class="rep-grid">
+      <div class="rep">
+        <span class="eyebrow">Promo · Affiliate · Commercial · Narration</span>
+        <h3>Atlas Talent<br>NYC / LA</h3>
+        <p class="para-cap">Jonn Wasser · Nate Zeitz</p>
+        <div class="tel">212.730.4500</div>
+        <div class="mail"><span class="js-email-text" data-u="jonn" data-d="atlastalent" data-t="com">jonn@atlastalent.com</span> · <span class="js-email-text" data-u="nate" data-d="atlastalent" data-t="com">nate@atlastalent.com</span></div>
+      </div>
+      <div class="rep">
+        <span class="eyebrow">Trailer · Management</span>
+        <h3>Jason<br>Helzner</h3>
+        <p class="para-cap">Helzner Management</p>
+        <div class="tel">818.651.0005</div>
+        <div class="mail"><span class="js-email-text" data-u="jason" data-d="helznermanagement" data-t="com">jason@helznermanagement.com</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ——— Blog ——— -->
+<section id="blog">
+  <div class="wrap-wide">
+    <div class="sec-head">
+      <span class="eyebrow">From the Booth</span>
+      <span class="rule"></span>
+      <a href="https://jackdanielvo.com/portfolio/standard-list/" target="_blank" rel="noopener" class="more">All Posts →</a>
+    </div>
+    <div class="blog-grid" id="blog-grid"><!-- Rendered by JS from BLOG_POSTS below. --></div>
+    <div id="blog-status" style="margin-top:20px;font-family:var(--font-family-headline);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#888"></div>
+  </div>
+</section>
+
+<!-- ——— Coaching CTA ——— -->
+<section class="coaching" id="coaching" style="padding:160px var(--padding)">
+  <span class="eyebrow">Take Your Reads to the Next Level</span>
+  <h2>Voiceover<br>Coaching</h2>
+  <p class="lede">Build your skills in promo and trailer reads; script breakdown; and career strategy.</p>
+  <p class="cred">Jack is a regular teacher at <em><a href="https://sagaftra.foundation/voiceover-labs/" target="_blank" rel="noopener">SAG-AFTRA at the Don LaFontaine VO Lab</a></em>, and teams with such industry icons as <a href="https://mariewestbrook.com/" target="_blank" rel="noopener">Marie Westbrook</a> and <a href="https://brianlee.com/" target="_blank" rel="noopener">Brian Lee</a> in collaborative workshops.</p>
+  <a href="/coaching/book/" class="btn">Book a Session →</a>
+</section>
+
+<!-- Contact form removed — the giant CONTACT panel below (fixed footer
+     with meta links) replaces it. All contact info lives there now. -->
+
+<!-- ——— Giant CONTACT "fixed footer" ———
+     This panel is position:fixed at the bottom of the viewport (matching
+     spencergabor.work). The page scrolls OVER it — revealing it as the
+     last section slides up. All regular sections above have solid
+     backgrounds so they occlude this while you're reading. -->
+<div class="big-contact" id="big-contact" aria-hidden="false">
+  <span class="big-contact-word" id="big-contact-word" style="--reveal: 0.000;">CONTACT</span>
+</div>
+
+<!-- Meta column is a SIBLING of the fixed panel (not a child) because the
+     panel sits at z-index:-1 (to let flow sections occlude it). Children
+     can't escape their parent's stacking context, so the meta column has
+     to live at the document root level to stay interactive. JS fades it
+     in alongside the scroll reveal. -->
+<div class="big-contact-meta" style="--meta-op: 0; --meta-pe: none;">
+  <!-- href is set to a proper mailto: at runtime by _buildEmail() below. -->
+  <a class="big-contact-email js-email" data-u="jack" data-d="jackdanielvo" data-t="com" href="mailto:jack@jackdanielvo.com"><span>jack@jackdanielvo.com</span></a>
+  <a href="https://www.instagram.com/jackdanielvo/" target="_blank" rel="noopener">Instagram</a>
+  <a href="https://www.linkedin.com/in/jackdanielvo/" target="_blank" rel="noopener">LinkedIn</a>
+  <a href="tel:+18056305530">+1 · 805.630.5530</a>
+  <span class="big-contact-copy">© 2026 Jack Daniel VO</span>
+</div>
+
+<!-- Spacer: reserves scroll space so the fixed CONTACT panel can be
+     fully revealed at the end of the page (equal to the panel's height). -->
+<div class="big-contact-spacer" id="contact" aria-hidden="true"></div>
+
+<!-- ——— Video modal ——— -->
+<div id="vmodal" style="position:fixed;inset:0;background:rgba(0,0,0,0.9);display:none;align-items:center;justify-content:center;z-index:100;padding:24px" onclick="if(event.target.id==='vmodal')closeVideo()">
+  <button onclick="closeVideo()" aria-label="Close" style="position:absolute;top:20px;right:24px;background:transparent;border:0;color:#fff;font-family:var(--font-family-headline);font-size:14px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer">Close ✕</button>
+  <div style="width:100%;max-width:1100px">
+    <div id="vmodal-title" style="color:#fff;font-family:var(--font-family-headline);font-size:clamp(24px,3vw,40px);line-height:0.9;letter-spacing:-0.02em;text-transform:uppercase;margin-bottom:14px"></div>
+    <div style="position:relative;padding-bottom:56.25%;background:#000;border-radius:var(--radius-card);overflow:hidden">
+      <iframe id="vmodal-iframe" style="position:absolute;inset:0;width:100%;height:100%;border:0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen=""></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =================================================================
+   PORTFOLIO is loaded from portfolio.json (edit that file to change
+   the lineup). This inline array is the offline fallback used when
+   the JSON can't be fetched (e.g. opening index.html directly
+   from disk without a server).
+   ================================================================= */
+let PORTFOLIO = [
+  { youtube: 'MGMZHuDN-y4', title: ['NHL','on TNT'], eyebrow: 'Promo · TNT', meta: 'Stanley Cup', color: 'ink', span: 7, shape: 'wide' },
+  { youtube: 'L5QokvTq2HQ', title: ['Vivi','Headphones'], eyebrow: 'Commercial · Launch', meta: 'Vivi Product Launch', color: 'cream', span: 5, shape: 'wide' },
+  { youtube: 'xMF5cy9mif0', title: ['Epic','Groceries'], eyebrow: 'Commercial · Hyundai', meta: 'w/ John Krasinski', color: 'blue', span: 4, shape: 'tall' },
+  { youtube: '8H1SwTjS0J8', title: ['Pluribus'], eyebrow: 'Promo · Apple TV+', meta: 'Limited Series', color: 'purple', span: 4, shape: 'tall' },
+  { youtube: 'ItDEzR1s_Cs', title: ['Spaceballs 2','The New One'], eyebrow: 'Trailer · Netflix', meta: 'Trailer', color: 'green', span: 4, shape: 'tall' },
+  { youtube: 'pL--wWygzBE', title: ['Georgia','vs Alabama'], eyebrow: 'Promo · ESPN / ABC', meta: 'College Football', color: 'cream', span: 6, shape: 'wide' },
+  { youtube: 'I24REvS3wtY', title: ['The First','Omen'], eyebrow: 'Trailer · 20th Century', meta: 'Retro Trailer', color: 'ink', span: 6, shape: 'wide' },
+  { youtube: '0R5itL20wK4', title: ['Australian','Open'], eyebrow: 'Promo · ESPN', meta: 'ESPN Australian Open', color: 'green', span: 4 },
+  { youtube: 'boSpnSzFTrE', title: ['Pluto TV','Halloween'], eyebrow: 'Promo · Pluto TV', meta: 'Halloween Hits', color: 'purple', span: 4 },
+  { youtube: 'NxzfxyjGjwE', title: ['Ford v','Ferrari'], eyebrow: 'Trailer · 20th Century Fox', meta: 'Ford v Ferrari', color: 'blue', span: 4 },
+];
+
+/* =================================================================
+   BLOG_POSTS — the "From the Booth" snapshot.
+   This static site has no WordPress backend, so these three posts
+   are rendered directly. When you add a blog backend later, point
+   loadBlog() at its JSON/REST feed and these become the fallback.
+   ================================================================= */
+const BLOG_POSTS = [
+  { url: 'https://jackdanielvo.com/2026/05/01/k3-creatives-industry-summit/', img: 'https://jackdanielvo.com/assets/blog/k3-creatives.jpg', date: 'May 01', cat: 'Work Life', title: 'K3 Creatives industry summit', excerpt: '“The Creatives: Industry Talent Mixer” hosted by The Imaging House took place this year on April 25–a day before my birthday. I mention this…' },
+  { url: 'https://jackdanielvo.com/2026/04/21/sports-spot-heaven/', img: 'https://img.youtube.com/vi/MGMZHuDN-y4/maxresdefault.jpg', date: 'Apr 21', cat: 'Work Life', title: 'sports spot heaven', excerpt: 'When it all comes together, it’s a beautiful thing. I just cut a spot for the NHL Stanley Cup playoffs on TNT,…' },
+  { url: 'https://jackdanielvo.com/2026/02/25/live-announce-stuntman-awards/', img: 'https://img.youtube.com/vi/zjLpHEI9xcg/maxresdefault.jpg', date: 'Feb 25', cat: 'Work Life', title: 'Live Announce: stuntman awards', excerpt: 'This past weekend I did the live announce for the Taurus World Stuntman Awards. It’s a great show and this year the…' },
+];
+
+const esc = s => (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nl2br = s => esc(s).replace(/\n/g, '<br>');
+
+/* Render portfolio tiles */
+function renderTiles() {
+  const root = document.getElementById('tile-grid');
+  root.innerHTML = PORTFOLIO.map(t => {
+    const cls = ['tile', t.color, 'col-' + t.span, t.shape || ''].filter(Boolean).join(' ');
+    const bg = t.image ? `<div class="tile-bg" style="background-image:url(${esc(t.image)});opacity:0.6"></div><div class="tile-scrim"></div>` : '';
+    // Video thumbnail. Use mqdefault.jpg (320x180, true 16:9 with
+    // no letterbox bars) as the default — it exists for every
+    // YouTube video and fills the tile cleanly. We then upgrade
+    // to maxresdefault.jpg below if the HD version exists, for a
+    // sharper image on large tiles. Avoid hqdefault.jpg/sddefault.jpg —
+    // those are 4:3 with black bars baked in around the video frame.
+    const hoverImg = t.youtube ? `<div class="tile-hover-img" data-yt="${esc(t.youtube)}" style="background-image:url(https://img.youtube.com/vi/${esc(t.youtube)}/mqdefault.jpg)"></div>` : '';
+    // Corner play badge on video tiles — signals "this is a video"
+    // at a glance, in addition to the faint resting thumbnail.
+    const playBadge = t.youtube ? `<span class="tile-play-badge" aria-hidden="true">&#9654;</span>` : '';
+    const isExternal = !t.youtube;
+    const href = isExternal ? esc(t.href || '#') : '#';
+    const tgt = isExternal ? ' target="_blank" rel="noopener"' : '';
+    const titleArr = Array.isArray(t.title) ? t.title : String(t.title).split('\n');
+    const titleHtml = titleArr.map(esc).join('<br>');
+    const titlePlain = titleArr.join(' ');
+    const data = t.youtube ? ` data-video="${esc(t.youtube)}" data-title="${esc(titlePlain)}"` : '';
+    // Bottom-right indicator: ↗ for external links so you know
+    // the tile opens in a new tab. Video tiles already carry the
+    // corner play badge, so no bottom indicator is needed there.
+    const arrow = isExternal ? '↗' : '';
+    return `<a href="${href}"${tgt} class="${cls}"${data}>
+${hoverImg}
+${bg}
+${playBadge}
+<span class="tile-eyebrow">${esc(t.eyebrow)}</span>
+<div>
+<div class="tile-title">${titleHtml}</div>
+<div class="tile-meta"><span>${esc(t.meta)}</span>${arrow ? `<span class="tile-play">${arrow}</span>` : ''}</div>
+</div>
+</a>`;
+  }).join('');
+  /* Re-wire video clicks */
+  root.querySelectorAll('.tile[data-video]').forEach(tile => {
+    tile.addEventListener('click', e => {
+      e.preventDefault();
+      const id = tile.dataset.video, title = tile.dataset.title || '';
+      document.getElementById('vmodal-title').textContent = title;
+      document.getElementById('vmodal-iframe').src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0';
+      document.getElementById('vmodal').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  /* Upgrade mqdefault → maxresdefault for videos that have HD thumbs available.
+     YouTube returns a placeholder 120x90 gray "no thumbnail" image (not a 404) when
+     maxresdefault doesn't exist, so we detect it by measuring naturalWidth. */
+  root.querySelectorAll('.tile-hover-img[data-yt]').forEach(el => {
+    const id = el.dataset.yt;
+    const probe = new Image();
+    probe.onload = () => {
+      if (probe.naturalWidth > 320) {
+        el.style.backgroundImage = `url(https://img.youtube.com/vi/${id}/maxresdefault.jpg)`;
+      }
+    };
+    probe.src = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+  });
+}
+
+/* Render blog cards. img may be null → render typographic color placeholder. */
+function renderBlog(posts, note) {
+  const placeholderColors = ['cream', 'blue', 'green', 'purple'];
+  const root = document.getElementById('blog-grid');
+  root.innerHTML = posts.slice(0, 3).map((p, i) => {
+    const imgBlock = p.img
+      ? `<div class="post-img"><div style="background-image:url(${esc(p.img)})"></div></div>`
+      : `<div class="post-img post-img-placeholder" data-color="${placeholderColors[i % placeholderColors.length]}"><span>${esc((p.cat || 'JD').slice(0, 2).toUpperCase())}</span></div>`;
+    return `<a href="${esc(p.url)}" target="_blank" rel="noopener" class="post">
+${imgBlock}
+<div class="post-meta"><span>${esc(p.date)}</span><span>·</span><span>${esc(p.cat)}</span></div>
+<h3>${nl2br(p.title)}</h3>
+<p>${esc(p.excerpt)}</p>
+<span class="post-more">Read More →</span>
+</a>`;
+  }).join('');
+  document.getElementById('blog-status').textContent = note || '';
+}
+
+renderTiles();
+renderBlog(BLOG_POSTS, '');
+
+/* Render obfuscated email addresses client-side.
+   Domain is split so no plain-text email exists in the HTML. */
+const _buildEmail = el => {
+  const u = el.dataset.u, d = el.dataset.d, t = el.dataset.t;
+  if (!u || !d || !t) return '';
+  return u + String.fromCharCode(64) + d + '.' + t;
+};
+document.querySelectorAll('.js-email').forEach(a => {
+  const addr = _buildEmail(a);
+  if (!addr) return;
+  const span = a.querySelector('span') || a;
+  span.textContent = addr;
+  if (a.tagName === 'A') a.setAttribute('href', 'mailto:' + addr);
+});
+/* Plain-text email spans (non-link) — e.g. in the Reps section */
+document.querySelectorAll('.js-email-text').forEach(el => {
+  const addr = _buildEmail(el);
+  if (addr) el.textContent = addr;
+});
+
+/* Try to load portfolio.json — if found, re-render with fresh data.
+   Silent fallback to inline PORTFOLIO when fetch fails (e.g. file://). */
+(async () => {
+  try {
+    const res = await fetch('portfolio.json', { cache: 'no-store' });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (Array.isArray(data?.tiles) && data.tiles.length) {
+      PORTFOLIO = data.tiles;
+      renderTiles();
+    }
+  } catch (e) { /* keep fallback */ }
+})();
+
+/* Modal close */
+function closeVideo() {
+  document.getElementById('vmodal-iframe').src = '';
+  document.getElementById('vmodal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo(); });
+
+/* ——— Reveal on scroll ———
+   Adds .is-in to each target when it scrolls into view.
+   CSS transitions on .rep and .bio-lede do the rest. */
+(() => {
+  const targets = document.querySelectorAll('.rep, .bio-lede');
+  if (!targets.length) return;
+  if (!('IntersectionObserver' in window)) {
+    // Fallback: just show them.
+    targets.forEach(r => r.classList.add('is-in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.25, rootMargin: '0px 0px -8% 0px' });
+  targets.forEach(r => io.observe(r));
+})();
+
+/* ——— Giant CONTACT: scroll-driven scaleY on the wordmark ———
+   Mirror spencergabor.work: the word starts squished (short) and
+   stretches to full height as the last section scrolls away and
+   the fixed panel is revealed. We drive this from the position of
+   the .big-contact-spacer: when its TOP is at the viewport bottom
+   (panel just peeking), --reveal = 0; when its BOTTOM is at the
+   viewport bottom (panel fully revealed), --reveal = 1.
+   rAF-throttled; honors prefers-reduced-motion. */
+(() => {
+  const word = document.getElementById('big-contact-word');
+  const spacer = document.querySelector('.big-contact-spacer');
+  const meta = document.querySelector('.big-contact-meta');
+  if (!word || !spacer) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    word.style.setProperty('--reveal', '1');
+    return;
+  }
+  const MIN = 0.0; // scaleY at the start of the reveal (fully squished to nothing)
+  const MAX = 4.2; // scaleY at the end — stretched vertically to fill the panel height.
+  // (The word's natural line-box height is ~17% of viewport; x4.2 ~= 72%.)
+  let ticking = false;
+
+  const update = () => {
+    ticking = false;
+    const rect = spacer.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    // Progress: 0 when spacer top is at viewport bottom (just starting),
+    // 1 when spacer bottom is at viewport bottom (fully revealed).
+    const total = rect.height; // spacer height (~100vh)
+    const progressed = vh - rect.top; // how far past the top we've scrolled
+    let p = progressed / total;
+    if (p < 0) p = 0;
+    if (p > 1) p = 1;
+    const reveal = MIN + (MAX - MIN) * p;
+    word.style.setProperty('--reveal', reveal.toFixed(3));
+    // Meta pops in IMMEDIATELY once the reveal starts (no gradual fade)
+    // so the contact links are visible the moment the grey panel is
+    // exposed — matches the user's expectation that info shows up with
+    // the CONTACT word, not delayed.
+    if (meta) {
+      const show = p > 0.01;
+      meta.style.setProperty('--meta-op', show ? '1' : '0');
+      meta.style.setProperty('--meta-pe', show ? 'auto' : 'none');
+    }
+  };
+
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+})();
+
+/* Mobile nav toggle.
+   Open/close the hamburger, keep aria-expanded in sync, auto-close
+   when a link is picked (so #anchor scrolls without the menu blocking). */
+(function(){
+  const nav = document.querySelector('.nav');
+  const toggle = nav && nav.querySelector('.nav-toggle');
+  const links = nav && nav.querySelector('.nav-links');
+  if (!nav || !toggle || !links) return;
+
+  const setOpen = open => {
+    nav.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  };
+
+  toggle.addEventListener('click', () => {
+    setOpen(!nav.classList.contains('is-open'));
+  });
+
+  links.addEventListener('click', e => {
+    if (e.target.closest('a')) setOpen(false);
+  });
+
+  /* Close on Escape or when viewport grows past the mobile breakpoint. */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && nav.classList.contains('is-open')) setOpen(false);
+  });
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 780 && nav.classList.contains('is-open')) setOpen(false);
+  });
+})();
+</script>
+
+</body></html>

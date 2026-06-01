@@ -1,0 +1,8 @@
+# Netlify continuous-deploy config. On every push (and every CMS publish),
+# Netlify runs the build and serves the generated _site folder.
+[build]
+  command = "npm run build"
+  publish = "_site"
+
+[build.environment]
+  NODE_VERSION = "22"
