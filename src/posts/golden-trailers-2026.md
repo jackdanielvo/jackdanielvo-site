@@ -4,7 +4,7 @@ date: 2026-05-29
 categories:
   - Work Life
 featured: /assets/uploads/IMG_0430.jpeg
-cover: ''
+cover: /assets/uploads/IMG_0430.jpeg
 excerpt: The Atlas team attended the GTAs again this year at the Saban Theater.
 youtube: ''
 video: ''
