@@ -1,4 +1,8 @@
-<!DOCTYPE html>
+---
+permalink: /index.html
+eleventyExcludeFromCollections: true
+---
+{% raw %}<!DOCTYPE html>
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -1464,7 +1468,7 @@ html { background: transparent; }
     <div class="sec-head">
       <span class="eyebrow">From the Booth</span>
       <span class="rule"></span>
-      <a href="https://jackdanielvo.com/portfolio/standard-list/" target="_blank" rel="noopener" class="more">All Posts →</a>
+      <a href="/blog/" class="more">All Posts →</a>
     </div>
     <div class="blog-grid" id="blog-grid"><!-- Rendered by JS from BLOG_POSTS below. --></div>
     <div id="blog-status" style="margin-top:20px;font-family:var(--font-family-headline);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#888"></div>
@@ -1547,11 +1551,7 @@ let PORTFOLIO = [
    are rendered directly. When you add a blog backend later, point
    loadBlog() at its JSON/REST feed and these become the fallback.
    ================================================================= */
-const BLOG_POSTS = [
-  { url: 'https://jackdanielvo.com/2026/05/01/k3-creatives-industry-summit/', img: 'https://jackdanielvo.com/assets/blog/k3-creatives.jpg', date: 'May 01', cat: 'Work Life', title: 'K3 Creatives industry summit', excerpt: '“The Creatives: Industry Talent Mixer” hosted by The Imaging House took place this year on April 25–a day before my birthday. I mention this…' },
-  { url: 'https://jackdanielvo.com/2026/04/21/sports-spot-heaven/', img: 'https://img.youtube.com/vi/MGMZHuDN-y4/maxresdefault.jpg', date: 'Apr 21', cat: 'Work Life', title: 'sports spot heaven', excerpt: 'When it all comes together, it’s a beautiful thing. I just cut a spot for the NHL Stanley Cup playoffs on TNT,…' },
-  { url: 'https://jackdanielvo.com/2026/02/25/live-announce-stuntman-awards/', img: 'https://img.youtube.com/vi/zjLpHEI9xcg/maxresdefault.jpg', date: 'Feb 25', cat: 'Work Life', title: 'Live Announce: stuntman awards', excerpt: 'This past weekend I did the live announce for the Taurus World Stuntman Awards. It’s a great show and this year the…' },
-];
+const BLOG_POSTS = {% endraw %}{{ collections.posts | boothCardsJson | safe }}{% raw %};
 
 const esc = s => (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const nl2br = s => esc(s).replace(/\n/g, '<br>');
@@ -1798,3 +1798,4 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo()
 </script>
 
 </body></html>
+{% endraw %}

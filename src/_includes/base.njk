@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>{{ title }} · Jack Daniel VO</title>
+<meta name="description" content="{{ excerpt | default('Jack Daniel — voiceover artist bringing classic pipes to modern reads.') }}">
+<link rel="canonical" href="{{ site.url }}{{ page.url }}">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="alternate" type="application/rss+xml" title="{{ site.feedTitle }}" href="/feed.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&amp;display=swap">
+<link rel="stylesheet" href="/tokens.css">
+<link rel="stylesheet" href="/blog.css">
+<style>:root{color-scheme:light;--font-family-headline:"Helvetica","Arial","Helvetica Neue",sans-serif !important;}</style>
+</head>
+<body class="interior">
+
+<header class="nav">
+  <a href="/" class="mark" aria-label="Jack Daniel Voiceover — Home">
+    <svg class="mark-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" focusable="false">
+      <rect width="100" height="100" fill="#8f4fd8"></rect>
+      <text x="8" y="52" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-weight="900" font-size="58" textLength="84" lengthAdjust="spacingAndGlyphs" fill="#ffffff">JD</text>
+      <text x="8" y="98" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-weight="900" font-style="italic" font-size="54" textLength="84" lengthAdjust="spacingAndGlyphs" fill="#ffffff">VO</text>
+    </svg>
+    <span class="mark-text">Jack Daniel<span class="mark-text-sub">VO</span></span>
+  </a>
+  <nav>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="/#portfolio">Work</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a class="active" href="/blog/">From the Booth</a></li>
+      <li><a href="/#coaching">Coaching</a></li>
+      <li><a href="/#contact">Contact</a></li>
+      <li><a class="client-area" href="/client-area/">Client Area</a></li>
+    </ul>
+    <button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+      <span class="nav-toggle-bars"><span></span></span>
+    </button>
+  </nav>
+</header>
+
+<main>
+{{ content | safe }}
+</main>
+
+<footer class="site-footer">
+  <div class="wrap-wide footer-grid">
+    <div>
+      <a href="/" class="footer-mark">Jack Daniel<span>VO</span></a>
+      <p class="footer-tag">Classic pipes, modern sound.</p>
+    </div>
+    <div>
+      <span class="col-title">Explore</span>
+      <a href="/#portfolio">Work</a>
+      <a href="/blog/">From the Booth</a>
+      <a href="/#coaching">Coaching</a>
+    </div>
+    <div>
+      <span class="col-title">Contact</span>
+      <a href="https://www.instagram.com/jackdanielvo/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.linkedin.com/in/jackdanielvo/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="tel:+18056305530">+1 · 805.630.5530</a>
+    </div>
+  </div>
+  <div class="footer-bot wrap-wide"><span>© 2026 Jack Daniel VO</span><a href="/feed.xml">RSS</a></div>
+</footer>
+
+<script>
+(function(){
+  var nav=document.querySelector('.nav'),t=nav&&nav.querySelector('.nav-toggle'),l=nav&&nav.querySelector('.nav-links');
+  if(!nav||!t||!l)return;
+  function set(o){nav.classList.toggle('is-open',o);t.setAttribute('aria-expanded',o?'true':'false');t.setAttribute('aria-label',o?'Close menu':'Open menu');}
+  t.addEventListener('click',function(){set(!nav.classList.contains('is-open'));});
+  l.addEventListener('click',function(e){if(e.target.closest('a'))set(false);});
+  window.addEventListener('resize',function(){if(window.innerWidth>780&&nav.classList.contains('is-open'))set(false);});
+})();
+</script>
+</body></html>
