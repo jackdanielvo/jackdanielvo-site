@@ -7,10 +7,9 @@ backend:
   repo: jackdanielvo/jackdanielvo-site
   branch: main
 
-# Where images uploaded through the editor are stored / referenced.
+# Where images/videos uploaded through the editor are stored / referenced.
 media_folder: "src/assets/uploads"
 public_folder: "/assets/uploads"
-
 
 collections:
   - name: posts
@@ -28,7 +27,16 @@ collections:
       - { name: title, label: "Title", widget: string }
       - { name: date, label: "Date", widget: datetime, date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }
       - { name: categories, label: "Categories", widget: select, multiple: true, options: ["Work Life", "Teaching", "Interview"], default: ["Work Life"] }
-      - { name: featured, label: "Featured image (post hero + archive card)", widget: image, required: false, choose_url: true, hint: "The large image at the top of the post and on the blog grid." }
-      - { name: cover, label: "Homepage card image (optional)", widget: image, required: false, choose_url: true, hint: "Image used for the 'From the Booth' cards on the homepage. Often a YouTube thumbnail." }
+      - { name: featured, label: "Featured image (post hero + blog card)", widget: image, required: false, choose_url: true, hint: "The big image at the top of the post and on the blog grid." }
+      - { name: cover, label: "Homepage card image (optional)", widget: image, required: false, choose_url: true, hint: "Image for the 'From the Booth' cards on the homepage. Leave blank to reuse the featured image; often a YouTube thumbnail for video posts." }
       - { name: excerpt, label: "Excerpt", widget: text, required: false, hint: "1–2 sentence summary shown on cards." }
-      - { name: body, label: "Body", widget: markdown }
+      - { name: body, label: "Body", widget: markdown, hint: "Just write — no need to paste HTML. Use the fields below for video and photo galleries." }
+      - { name: youtube, label: "YouTube video (optional)", widget: string, required: false, hint: "Paste a YouTube link or ID. Shows as a player below the text." }
+      - { name: video, label: "Video file (optional)", widget: file, required: false, choose_url: true, hint: "Upload or link a video clip (e.g. .mp4/.mov)." }
+      - name: gallery
+        label: "Photo gallery (optional)"
+        widget: list
+        required: false
+        summary: "{{fields.image}}"
+        field: { name: image, label: "Photo", widget: image, choose_url: true }
+        hint: "Add multiple photos — shown as a grid below the post."

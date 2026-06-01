@@ -11,6 +11,9 @@ layout: base.njk
     {% if featured %}<div class="post-full-cover"><img src="{{ featured }}" alt="{{ title }}"></div>{% endif %}
     <div class="post-body">
       {{ content | safe }}
+      {% if youtube %}<div class="post-video"><iframe src="https://www.youtube.com/embed/{{ youtube | ytid }}" title="{{ title }}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>{% endif %}
+      {% if video %}<div class="post-video"><video controls preload="metadata" src="{{ video }}"></video></div>{% endif %}
+      {% if gallery and gallery.length %}<div class="post-gallery">{% for img in gallery %}<img loading="lazy" src="{{ img }}" alt="{{ title }}">{% endfor %}</div>{% endif %}
     </div>
     <div class="post-foot">
       <a class="post-back" href="/blog/">← All posts</a>

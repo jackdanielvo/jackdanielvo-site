@@ -19,6 +19,10 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter("monthDay", (d) => fmt(new Date(d), { month: "short", day: "2-digit" }));
   eleventyConfig.addFilter("readableDate", (d) => fmt(new Date(d), { year: "numeric", month: "long", day: "numeric" }));
   eleventyConfig.addFilter("isoDate", (d) => new Date(d).toISOString());
+  eleventyConfig.addFilter("ytid", (s) => {
+    const m = String(s || "").match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([A-Za-z0-9_-]{11})/);
+    return m ? m[1] : String(s || "").trim();
+  });
   eleventyConfig.addFilter("dayMonthCaps", (d) => {
     const dt = new Date(d);
     return fmt(dt, { day: "2-digit" }) + " " + fmt(dt, { month: "short" }).toUpperCase();

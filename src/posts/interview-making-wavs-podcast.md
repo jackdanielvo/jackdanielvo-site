@@ -2,8 +2,8 @@
 title: "Interview: making wavs podcast"
 date: 2025-05-22
 categories: ["Interview"]
-cover: "https://jackdanielvo.com/wp-content/uploads/2025/05/Kevin_and_Bobbi_Headshot_Small60a5debf-d8ae-ce3f-6be4-a6295439167b-copy.jpg"
 featured: "https://jackdanielvo.com/wp-content/uploads/2025/05/Kevin_and_Bobbi_Headshot_Small60a5debf-d8ae-ce3f-6be4-a6295439167b-copy.jpg"
+cover: "https://jackdanielvo.com/wp-content/uploads/2025/05/Kevin_and_Bobbi_Headshot_Small60a5debf-d8ae-ce3f-6be4-a6295439167b-copy.jpg"
 excerpt: "I had a great time with Kevin Kilpatrick and Bobbi Maxwell doing the The Making Wavs VO Podcast. Check it out if you have a few minutes…"
 ---
 I had a great time with Kevin Kilpatrick and Bobbi Maxwell doing the The Making Wavs VO Podcast. Check it out if you have a few minutes to see how I handled the cold-read challenge and responded to their interrogation. The interview can be found here:
