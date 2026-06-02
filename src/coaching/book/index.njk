@@ -1,0 +1,43 @@
+---
+layout: base.njk
+title: "Book a Session"
+permalink: /coaching/book/
+eleventyExcludeFromCollections: true
+---
+<section class="book">
+  <div class="book-wrap">
+    <div class="sec-head"><span class="eyebrow">Coaching</span><span class="rule"></span></div>
+    <h1 class="book-h1">Voiceover<br>Coaching.</h1>
+    <p class="book-lede">Build your skills in promo and trailer reads; script breakdown; and career strategy. Pick a time below — sessions are 60 minutes, $200, paid at booking.</p>
+    <p class="book-cred">Jack is a regular teacher at <em>SAG-AFTRA at the Don LaFontaine VO Lab</em>, and teams with industry icons like Marie Westbrook and Brian Lee in collaborative workshops.</p>
+
+    <div id="cal-book" class="cal-embed"></div>
+
+    <p class="book-policy">No refunds. Sessions can be rescheduled up to 1 hour before the booked time. All times shown in your local timezone.</p>
+  </div>
+</section>
+
+<style>
+.book { padding: 56px 0 96px; }
+.book-wrap { max-width: 900px; margin: 0 auto; padding: 0 var(--padding); }
+.book-h1 { font-family: var(--font-family-headline); font-size: clamp(48px,8vw,110px); line-height:0.86; letter-spacing:-0.03em; text-transform:uppercase; margin:8px 0 20px; }
+.book-lede { font: var(--font-body); font-size:18px; line-height:1.6; color:#444; max-width:620px; margin:0 0 14px; }
+.book-cred { font: var(--font-body); font-size:14px; line-height:1.6; color:#777; max-width:620px; margin:0 0 32px; }
+.book-cred em { font-style:normal; font-weight:600; color:#555; }
+.cal-embed { min-height:640px; border:1px solid var(--color-grey-ghost); border-radius:var(--radius-card); overflow:hidden; background:#fff; }
+.book-policy { font-family:var(--font-family-headline); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#999; margin-top:20px; }
+</style>
+
+<script>
+/* ===========================================================
+   Set this to your Cal.com event link after you create it,
+   e.g. "jackdanielvo/60min-coaching" (username/event-slug).
+   =========================================================== */
+var CAL_LINK = "jack-daniel-bcka8d/60-minute-coaching-session";
+
+(function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+
+Cal("init", "coaching", { origin: "https://cal.com" });
+Cal.ns.coaching("inline", { elementOrSelector: "#cal-book", calLink: CAL_LINK, layout: "month_view" });
+Cal.ns.coaching("ui", { hideEventTypeDetails: false, layout: "month_view", cssVarsPerTheme: { light: { "cal-brand": "#3C0350" } } });
+</script>
