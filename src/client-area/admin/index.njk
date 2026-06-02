@@ -1,0 +1,179 @@
+---
+layout: base.njk
+title: "Portal Admin"
+permalink: /client-area/admin/
+eleventyExcludeFromCollections: true
+---
+<section class="portal">
+  <div class="portal-wrap">
+    <div class="sec-head"><span class="eyebrow">Portal Admin</span><span class="rule"></span></div>
+    <div id="a-status" class="portal-msg">Loading…</div>
+
+    <div id="a-login" hidden>
+      <h1 class="portal-h1">Admin<br>sign-in.</h1>
+      <p class="portal-lede">Enter the admin email and we'll send a one-click sign-in link.</p>
+      <form id="a-login-form" class="portal-form">
+        <input type="email" id="a-email" placeholder="jack@jackdanielvo.com" required>
+        <button class="btn-portal" type="submit">Email me a link →</button>
+      </form>
+      <p id="a-login-note" class="portal-note" hidden></p>
+    </div>
+
+    <div id="a-app" hidden>
+      <div class="portal-greet"><span>Admin · <span id="a-who"></span></span><a href="/client-area/logout">Sign out</a></div>
+
+      <h2 class="a-h2">New delivery</h2>
+      <form id="a-form" class="a-form">
+        <label>Client
+          <select id="a-client"><option value="">— New client —</option></select>
+        </label>
+        <div id="a-newclient" class="a-grid2">
+          <input id="a-agency" placeholder="Agency name">
+          <input id="a-contact" placeholder="Contact name">
+          <input id="a-cemail" type="email" placeholder="Contact email">
+          <input id="a-cphone" placeholder="Phone (optional)">
+        </div>
+        <label>Project <input id="a-project" placeholder="e.g. NHL on TNT — Spring promos"></label>
+        <label>Delivery title <input id="a-title" required placeholder="e.g. Final Mix — Stanley Cup :60"></label>
+        <label>Recipient emails <input id="a-recips" required placeholder="comma-separated"></label>
+        <label>Note to client (optional) <textarea id="a-note" rows="2"></textarea></label>
+        <label>Default label
+          <select id="a-label">
+            <option value="final_approved">Final Approved</option>
+            <option value="cutdown">Cutdown</option>
+            <option value="pickup">Pickup / Alts</option>
+            <option value="reference">Reference</option>
+            <option value="raw">Raw / Unprocessed</option>
+          </select>
+        </label>
+        <label class="a-check"><input type="checkbox" id="a-notify" checked> Email me when a client downloads</label>
+        <label>Audio files <input id="a-files" type="file" multiple accept=".wav,.mp3,.aiff,.aif,.flac,.m4a,.ogg,audio/*"></label>
+        <button class="btn-portal" type="submit">Create &amp; upload →</button>
+      </form>
+      <div id="a-progress" class="a-progress"></div>
+      <div id="a-send" hidden></div>
+
+      <h2 class="a-h2" style="margin-top:48px;">Recent deliveries</h2>
+      <div id="a-list" class="a-list"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+.a-h2 { font-family:var(--font-family-headline); font-size:22px; letter-spacing:-0.01em; text-transform:uppercase; margin:32px 0 16px; }
+.a-form { display:flex; flex-direction:column; gap:16px; max-width:620px; }
+.a-form label { display:flex; flex-direction:column; gap:6px; font-family:var(--font-family-headline); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#888; }
+.a-form input, .a-form select, .a-form textarea { border:0; border-bottom:1.5px solid var(--color-ink); background:transparent; padding:9px 2px; font-family:var(--font-family-body); font-size:15px; color:var(--color-ink); outline:none; text-transform:none; letter-spacing:0; }
+.a-form input:focus, .a-form select:focus, .a-form textarea:focus { border-bottom-color:var(--tile-purple); }
+.a-grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.a-grid2[hidden] { display:none; }
+.a-check { flex-direction:row !important; align-items:center; gap:8px !important; }
+.a-check input { width:auto; }
+.a-progress { margin-top:16px; font-size:14px; color:#555; }
+.a-progress div { padding:3px 0; }
+.a-list a { color:var(--tile-purple); text-decoration:none; }
+.a-row { display:flex; justify-content:space-between; gap:12px; padding:12px 0; border-top:1px solid var(--color-grey-ghost); font-size:14px; }
+.a-row:first-child { border-top:0; }
+.a-badge { font-family:var(--font-family-headline); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; padding:3px 9px; border-radius:var(--radius-pill); background:var(--color-grey-ghost); }
+.a-badge.sent { background:var(--tile-green); color:#fff; }
+</style>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var statusEl = $("a-status"), loginEl = $("a-login"), appEl = $("a-app");
+  var esc = function (s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[c];}); };
+  var created = null; // delivery created in this session
+
+  function showLogin(){
+    statusEl.hidden=true; appEl.hidden=true; loginEl.hidden=false;
+    $("a-login-form").addEventListener("submit", function(e){
+      e.preventDefault();
+      var note=$("a-login-note"); var btn=e.target.querySelector("button"); btn.disabled=true; btn.textContent="Sending…";
+      fetch("/api/admin/request-link",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({email:$("a-email").value.trim()})})
+        .then(function(r){return r.json();}).then(function(d){ note.textContent=d.message||"Check your inbox."; note.hidden=false; btn.textContent="Sent ✓"; });
+    });
+  }
+
+  function renderApp(data){
+    statusEl.hidden=true; loginEl.hidden=true; appEl.hidden=false;
+    $("a-who").textContent=data.email;
+    var sel=$("a-client");
+    data.clients.forEach(function(c){ var o=document.createElement("option"); o.value=c.id; o.textContent=(c.agency_name||c.contact_name||"Client")+(c.email?" · "+c.email:""); o.dataset.email=c.email||""; sel.appendChild(o); });
+    sel.addEventListener("change", function(){
+      $("a-newclient").hidden = !!sel.value;
+      var em=sel.options[sel.selectedIndex] && sel.options[sel.selectedIndex].dataset.email;
+      if (sel.value && em && !$("a-recips").value) $("a-recips").value=em;
+    });
+    renderList(data.deliveries);
+    $("a-form").addEventListener("submit", onCreate);
+  }
+
+  function renderList(list){
+    $("a-list").innerHTML = list.length ? list.map(function(d){
+      return '<div class="a-row"><div><strong>'+esc(d.title)+'</strong><br><span style="color:#999;font-size:12px;">'+esc((d.recipients||[]).join(", "))+' · '+d.file_count+' file(s)</span></div>'
+        +'<span class="a-badge '+(d.status==="sent"?"sent":"")+'">'+esc(d.status)+'</span></div>';
+    }).join("") : '<p style="color:#999;">No deliveries yet.</p>';
+  }
+
+  function fileDuration(file){
+    return new Promise(function(res){
+      try { var a=document.createElement("audio"); a.preload="metadata";
+        a.onloadedmetadata=function(){ URL.revokeObjectURL(a.src); res(isFinite(a.duration)?a.duration:null); };
+        a.onerror=function(){ res(null); }; a.src=URL.createObjectURL(file);
+      } catch(e){ res(null); }
+    });
+  }
+
+  function log(msg){ var p=$("a-progress"); var d=document.createElement("div"); d.innerHTML=msg; p.appendChild(d); }
+
+  async function onCreate(e){
+    e.preventDefault();
+    var btn=e.target.querySelector("button[type=submit]"); btn.disabled=true; btn.textContent="Working…";
+    $("a-progress").innerHTML=""; $("a-send").hidden=true;
+    try {
+      var clientId = $("a-client").value;
+      if (!clientId) {
+        var cr = await api("/api/admin/clients",{ agency_name:$("a-agency").value, contact_name:$("a-contact").value, email:$("a-cemail").value, phone:$("a-cphone").value });
+        clientId = cr.client.id; log("✓ Client created");
+      }
+      var dr = await api("/api/admin/deliveries",{ client_id:clientId, project_name:$("a-project").value, title:$("a-title").value, note_from_jack:$("a-note").value, recipients:$("a-recips").value, notify_on_download:$("a-notify").checked });
+      created = dr.delivery; log("✓ Delivery created: "+esc(created.title));
+      var files=$("a-files").files, label=$("a-label").value;
+      for (var i=0;i<files.length;i++){
+        var f=files[i]; log("↑ Uploading "+esc(f.name)+" ("+(f.size/1048576).toFixed(1)+" MB)…");
+        var ct=f.type||"application/octet-stream";
+        var up = await api("/api/admin/upload-url",{ delivery_id:created.id, filename:f.name, content_type:ct });
+        var put = await fetch(up.url,{ method:"PUT", headers:{"content-type":ct}, body:f });
+        if(!put.ok) throw new Error("Upload failed for "+f.name+" ("+put.status+")");
+        var dur = await fileDuration(f);
+        await api("/api/admin/attach-file",{ delivery_id:created.id, r2_key:up.key, display_name:f.name, label:label, size_bytes:f.size, mime_type:ct, duration_sec:dur });
+        log("&nbsp;&nbsp;✓ "+esc(f.name)+" stored");
+      }
+      log("<strong>Ready to send.</strong>");
+      var send=$("a-send"); send.hidden=false;
+      send.innerHTML='<button class="btn-portal" id="a-sendbtn">Send to recipients →</button>';
+      $("a-sendbtn").addEventListener("click", doSend);
+    } catch(err){ log('<span style="color:#b00;">✗ '+esc(err.message)+'</span>'); }
+    btn.disabled=false; btn.textContent="Create & upload →";
+  }
+
+  async function doSend(){
+    var b=$("a-sendbtn"); b.disabled=true; b.textContent="Sending…";
+    try {
+      var r = await api("/api/admin/send",{ delivery_id:created.id });
+      b.textContent="Sent to "+r.sent+" recipient(s) ✓";
+      var me = await fetch("/api/admin/me").then(function(x){return x.json();}); renderList(me.deliveries);
+    } catch(err){ b.disabled=false; b.textContent="Send failed — retry"; }
+  }
+
+  async function api(url, body){
+    var r = await fetch(url,{ method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify(body) });
+    var d = await r.json(); if(!r.ok) throw new Error(d.error||("HTTP "+r.status)); return d;
+  }
+
+  fetch("/api/admin/me",{headers:{accept:"application/json"}})
+    .then(function(r){ if(r.status===200) return r.json().then(renderApp); showLogin(); })
+    .catch(showLogin);
+})();
+</script>

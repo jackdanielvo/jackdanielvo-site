@@ -1,7 +1,7 @@
 {
   "name": "jackdanielvo-site",
   "version": "1.0.0",
-  "description": "Jack Daniel VO — static site (Eleventy)",
+  "description": "Jack Daniel VO \u2014 static site (Eleventy)",
   "scripts": {
     "build": "eleventy",
     "serve": "eleventy --serve",
@@ -12,5 +12,10 @@
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",
     "@11ty/eleventy-plugin-rss": "^2.0.2"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0",
+    "@aws-sdk/client-s3": "^3.670.0",
+    "@aws-sdk/s3-request-presigner": "^3.670.0"
   }
 }
