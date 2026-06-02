@@ -76,6 +76,22 @@ eleventyExcludeFromCollections: true
 .a-row:first-child { border-top:0; }
 .a-badge { font-family:var(--font-family-headline); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; padding:3px 9px; border-radius:var(--radius-pill); background:var(--color-grey-ghost); }
 .a-badge.sent { background:var(--tile-green); color:#fff; }
+.portal-msg { font-family: var(--font-family-headline); font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:#999; padding:8px 0; }
+.portal-note { margin-top:14px; font-size:15px; color:var(--tile-green); }
+.portal-note.err { color:#b00; }
+.btn-portal { display:inline-flex; align-items:center; background:var(--tile-purple); color:#fff; border:0; border-radius:var(--radius-pill); padding:13px 24px; font-family:var(--font-family-headline); font-size:14px; letter-spacing:0.06em; text-transform:uppercase; cursor:pointer; transition:background 240ms var(--ease-out-quart); text-decoration:none; }
+.btn-portal:hover { background: var(--color-amber,#B88A3E); }
+.btn-portal:disabled { opacity:0.55; cursor:default; }
+.a-actions { display:flex; gap:10px; flex-wrap:wrap; }
+.btn-portal.ghost { background:transparent; color:var(--color-ink); border:1px solid var(--color-ink); }
+.btn-portal.ghost:hover { background:var(--color-ink); color:#fff; }
+.btn-portal.sm { padding:7px 14px; font-size:12px; }
+.a-rowact { display:flex; gap:8px; align-items:center; }
+.a-linkpanel:not(:empty) { padding:6px 0 14px; }
+.a-hint { font-size:13px; color:#666; margin:4px 0 10px; }
+.linkrow { display:flex; gap:8px; align-items:center; margin-bottom:8px; flex-wrap:wrap; }
+.linkemail { font-family:var(--font-family-headline); font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#888; min-width:150px; }
+.linkrow input { flex:1 1 280px; border:1px solid var(--color-grey-ghost); border-radius:8px; padding:8px 10px; font-size:12px; font-family:monospace; color:#444; background:#fafafa; }
 </style>
 
 <script>
@@ -112,8 +128,9 @@ eleventyExcludeFromCollections: true
   function renderList(list){
     $("a-list").innerHTML = list.length ? list.map(function(d){
       return '<div class="a-row"><div><strong>'+esc(d.title)+'</strong><br><span style="color:#999;font-size:12px;">'+esc((d.recipients||[]).join(", "))+' · '+d.file_count+' file(s)</span></div>'
-        +'<span class="a-badge '+(d.status==="sent"?"sent":"")+'">'+esc(d.status)+'</span></div>';
+        +'<div class="a-rowact"><button class="btn-portal sm" data-links="'+esc(d.id)+'">Copy link</button><span class="a-badge '+(d.status==="sent"?"sent":"")+'">'+esc(d.status)+'</span></div></div>'+'<div class="a-linkpanel" id="lp-'+esc(d.id)+'"></div>';
     }).join("") : '<p style="color:#999;">No deliveries yet.</p>';
+    $("a-list").querySelectorAll("[data-links]").forEach(function(b){ b.addEventListener("click", function(){ renderLinks(b.getAttribute("data-links"), document.getElementById("lp-"+b.getAttribute("data-links"))); }); });
   }
 
   function fileDuration(file){
@@ -150,10 +167,12 @@ eleventyExcludeFromCollections: true
         await api("/api/admin/attach-file",{ delivery_id:created.id, r2_key:up.key, display_name:f.name, label:label, size_bytes:f.size, mime_type:ct, duration_sec:dur });
         log("&nbsp;&nbsp;✓ "+esc(f.name)+" stored");
       }
-      log("<strong>Ready to send.</strong>");
+      log("<strong>Ready.</strong> Copy the link to send it yourself, and/or email it.");
       var send=$("a-send"); send.hidden=false;
-      send.innerHTML='<button class="btn-portal" id="a-sendbtn">Send to recipients →</button>';
+      send.innerHTML='<div class="a-actions"><button class="btn-portal" id="a-linksbtn">Copy shareable link</button> <button class="btn-portal ghost" id="a-sendbtn">Also email recipient(s)</button></div><div id="a-links"></div>';
       $("a-sendbtn").addEventListener("click", doSend);
+      $("a-linksbtn").addEventListener("click", function(){ renderLinks(created.id, document.getElementById("a-links")); });
+      renderLinks(created.id, document.getElementById("a-links"));
     } catch(err){ log('<span style="color:#b00;">✗ '+esc(err.message)+'</span>'); }
     btn.disabled=false; btn.textContent="Create & upload →";
   }
@@ -165,6 +184,18 @@ eleventyExcludeFromCollections: true
       b.textContent="Sent to "+r.sent+" recipient(s) ✓";
       var me = await fetch("/api/admin/me").then(function(x){return x.json();}); renderList(me.deliveries);
     } catch(err){ b.disabled=false; b.textContent="Send failed — retry"; }
+  }
+
+  async function renderLinks(id, el){
+    if(!el) return;
+    el.innerHTML='<div class="portal-msg" style="padding:8px 0;">Generating link…</div>';
+    try{
+      var r = await fetch("/api/admin/links",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({delivery_id:id})});
+      var d = await r.json(); if(!d.links) throw new Error(d.error||("HTTP "+r.status));
+      el.innerHTML='<p class="a-hint">Paste this into your own email or text to the client — works for '+d.days+' days, no password needed:</p>'+
+        d.links.map(function(l){ return '<div class="linkrow"><span class="linkemail">'+esc(l.email)+'</span><input readonly value="'+esc(l.url)+'" onclick="this.select()"><button class="btn-portal sm" data-copy="'+esc(l.url)+'">Copy</button></div>'; }).join("");
+      el.querySelectorAll("[data-copy]").forEach(function(b){ b.addEventListener("click", function(){ navigator.clipboard.writeText(b.getAttribute("data-copy")).then(function(){ var t=b.textContent; b.textContent="Copied \u2713"; setTimeout(function(){ b.textContent=t; },1500); }); }); });
+    }catch(e){ el.innerHTML='<p class="portal-note err">'+esc(e.message)+'</p>'; }
   }
 
   async function api(url, body){
