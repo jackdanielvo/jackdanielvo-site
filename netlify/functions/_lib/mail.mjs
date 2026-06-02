@@ -41,9 +41,32 @@ export function magicLinkEmail(url) {
   return { subject: "Your link to Jack Daniel VO Client Area", html: shell(inner) };
 }
 
+const fmtDate = (iso) => {
+  if (!iso) return "";
+  try { return new Date(iso).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }); }
+  catch { return ""; }
+};
+
 export function deliveryEmail(delivery, recipientEmail, magicLink) {
   const contact = delivery.client?.contact_name || "";
   const first = contact ? contact.trim().split(" ")[0] : "there";
+  const project = (delivery.project_name || "").trim();
+  const agency = (delivery.client?.agency_name || "").trim();
+  const delivered = fmtDate(delivery.delivered_at);
+  const detailRow = (label, value) => value ? `
+    <tr>
+      <td style="padding:5px 0;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:${BRAND.textMuted};white-space:nowrap;vertical-align:top;width:90px;">${label}</td>
+      <td style="padding:5px 0 5px 14px;font-size:14px;font-weight:600;line-height:1.4;">${value}</td>
+    </tr>` : "";
+  const detailsBlock = `
+    <table role="presentation" width="100%" style="background:white;border:1px solid ${BRAND.line};border-radius:10px;margin:22px 0;"><tr><td style="padding:18px 22px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+        ${detailRow("Project", project)}
+        ${detailRow("Delivery", delivery.title)}
+        ${detailRow("For", agency)}
+        ${detailRow("Delivered", delivered)}
+      </table>
+    </td></tr></table>`;
   const files = (delivery.files || []).map((f, i) => `
     <table role="presentation" width="100%" style="${i ? `border-top:1px solid ${BRAND.line};` : ""}"><tr>
       <td style="padding:8px 0;font-size:13px;font-weight:500;">${f.display_name}</td>
@@ -58,9 +81,11 @@ export function deliveryEmail(delivery, recipientEmail, magicLink) {
       <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:${BRAND.gold};margin-bottom:8px;">Note from Jack</div>
       <div style="font-size:14px;line-height:1.6;font-style:italic;color:#5a4a25;">${delivery.note_from_jack}</div>
     </td></tr></table>` : "";
+  const headline = project ? `${project}: ${delivery.title}` : delivery.title;
   const inner = brandBar +
     `<p style="font-size:16px;margin:0 0 18px;">Hi ${first},</p>
-     <p style="font-size:15px;line-height:1.6;margin:0 0 8px;">Final files for <strong>${delivery.title}</strong> are ready to grab. Click below to open your files page — you're already signed in, no password needed.</p>` +
+     <p style="font-size:15px;line-height:1.6;margin:0 0 8px;">Your files for <strong>${delivery.title}</strong> are ready to grab. Here are the details, and the button opens your files page — you're already signed in, no password needed.</p>` +
+    detailsBlock +
     ctaButton(magicLink, "Open Your Files") +
     `<p style="text-align:center;font-size:11px;color:${BRAND.textMuted};margin:0 0 8px;">Link valid for ${SETTINGS.tokenLifetimeDays} days &middot; click anytime</p>` +
     fileBlock + note +
@@ -73,12 +98,15 @@ export function deliveryEmail(delivery, recipientEmail, magicLink) {
        </div>
      </td></tr></table>
      <p style="font-size:11px;color:${BRAND.textMuted};margin:18px 0 0;text-align:center;">Sent to ${recipientEmail} &middot; this link is unique to you, please don't forward.</p>`;
-  return { subject: `Your files for ${delivery.title} are ready`, html: shell(inner) };
+  return { subject: `Your files are ready — ${headline}`, html: shell(inner) };
 }
 
 export function downloadNotifyEmail(delivery, email, what) {
+  const project = (delivery.project_name || "").trim();
+  const line = project ? `${project}: ${delivery.title}` : delivery.title;
   const inner = brandBar +
     `<p style="font-size:15px;"><strong>${email}</strong> just downloaded ${what}.</p>
-     <p style="font-size:14px;color:${BRAND.textMuted};">Project: <strong>${delivery.title}</strong></p>`;
-  return { subject: `📥 ${email} picked up files: ${delivery.title}`, html: shell(inner) };
+     ${project ? `<p style="font-size:14px;color:${BRAND.textMuted};margin:0 0 4px;">Project: <strong>${project}</strong></p>` : ""}
+     <p style="font-size:14px;color:${BRAND.textMuted};margin:0;">Delivery: <strong>${delivery.title}</strong></p>`;
+  return { subject: `📥 ${email} picked up files: ${line}`, html: shell(inner) };
 }
