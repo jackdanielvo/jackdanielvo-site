@@ -4,94 +4,250 @@ title: "Portal Admin"
 permalink: /client-area/admin/
 eleventyExcludeFromCollections: true
 ---
-<section class="portal">
-  <div class="portal-wrap">
-    <div class="sec-head"><span class="eyebrow">Portal Admin</span><span class="rule"></span></div>
-    <div id="a-status" class="portal-msg">Loading…</div>
+<section class="jdvo-admin">
+  <div class="jdvo-wrap">
 
+    <div id="a-status" class="jdvo-loading">Loading…</div>
+
+    <!-- ===== Login ===== -->
     <div id="a-login" hidden>
-      <h1 class="portal-h1">Admin<br>sign-in.</h1>
-      <p class="portal-lede">Enter the admin email and we'll send a one-click sign-in link.</p>
-      <form id="a-login-form" class="portal-form">
-        <input type="email" id="a-email" placeholder="jack@jackdanielvo.com" required>
-        <button class="btn-portal" type="submit">Email me a link →</button>
-      </form>
-      <p id="a-login-note" class="portal-note" hidden></p>
+      <div class="jdvo-card jdvo-login-card">
+        <div class="jdvo-card-label">Portal Admin</div>
+        <h1>Admin sign-in</h1>
+        <p class="muted">Enter the admin email and we'll send a one-click sign-in link — no password needed.</p>
+        <form id="a-login-form" class="jdvo-login-form">
+          <input type="email" id="a-email" placeholder="jack@jackdanielvo.com" required>
+          <button class="jdvo-btn-primary" type="submit">Email me a link →</button>
+        </form>
+        <p id="a-login-note" class="jdvo-note-msg" hidden></p>
+      </div>
     </div>
 
+    <!-- ===== App ===== -->
     <div id="a-app" hidden>
-      <div class="portal-greet"><span>Admin · <span id="a-who"></span></span><a href="/client-area/logout">Sign out</a></div>
+      <div class="jdvo-topbar">
+        <span class="muted">Signed in as <strong id="a-who"></strong></span>
+        <a href="/client-area/logout" class="jdvo-signout">Sign out</a>
+      </div>
 
-      <h2 class="a-h2">New delivery</h2>
-      <form id="a-form" class="a-form">
-        <label>Client
-          <select id="a-client"><option value="">— New client —</option></select>
-        </label>
-        <div id="a-newclient" class="a-grid2">
-          <input id="a-agency" placeholder="Agency name">
-          <input id="a-contact" placeholder="Contact name">
-          <input id="a-cemail" type="email" placeholder="Contact email">
-          <input id="a-cphone" placeholder="Phone (optional)">
+      <div class="jdvo-page-header">
+        <div>
+          <h1>New delivery</h1>
+          <p class="muted">Add the files, pick the client, send.</p>
         </div>
-        <label>Project <input id="a-project" placeholder="e.g. NHL on TNT — Spring promos"></label>
-        <label>Delivery title <input id="a-title" required placeholder="e.g. Final Mix — Stanley Cup :60"></label>
-        <label>Recipient emails <input id="a-recips" required placeholder="comma-separated"></label>
-        <label>Note to client (optional) <textarea id="a-note" rows="2"></textarea></label>
-        <label>Default label
-          <select id="a-label">
-            <option value="final_approved">Final Approved</option>
-            <option value="cutdown">Cutdown</option>
-            <option value="pickup">Pickup / Alts</option>
-            <option value="reference">Reference</option>
-            <option value="raw">Raw / Unprocessed</option>
-          </select>
-        </label>
-        <label class="a-check"><input type="checkbox" id="a-notify" checked> Email me when a client downloads</label>
-        <label>Audio files <input id="a-files" type="file" multiple accept=".wav,.mp3,.aiff,.aif,.flac,.m4a,.ogg,audio/*"></label>
-        <button class="btn-portal" type="submit">Create &amp; upload →</button>
+      </div>
+
+      <form id="a-form" class="jdvo-form">
+
+        <!-- 1 · Project -->
+        <div class="jdvo-card">
+          <div class="jdvo-card-label">1 · Project</div>
+
+          <div class="jdvo-row">
+            <label for="a-client">Client</label>
+            <select id="a-client"><option value="">+ Add new client…</option></select>
+          </div>
+
+          <div id="a-newclient" class="jdvo-row jdvo-new-client">
+            <div class="jdvo-grid-2">
+              <div><label for="a-agency">Agency name</label><input id="a-agency" type="text" placeholder="Bright Agency"></div>
+              <div><label for="a-contact">Contact name</label><input id="a-contact" type="text" placeholder="Sarah Chen"></div>
+            </div>
+            <div class="jdvo-grid-2">
+              <div><label for="a-cemail">Email</label><input id="a-cemail" type="email" placeholder="sarah@brightagency.com"></div>
+              <div><label for="a-cphone">Phone (optional)</label><input id="a-cphone" type="text"></div>
+            </div>
+          </div>
+
+          <div class="jdvo-row">
+            <label for="a-project">Project name</label>
+            <input id="a-project" type="text" placeholder="e.g. NHL on TNT — Spring promos">
+          </div>
+
+          <div class="jdvo-row">
+            <label for="a-title">Delivery title</label>
+            <input id="a-title" type="text" required placeholder="e.g. Final Mix — Stanley Cup :60">
+          </div>
+
+          <div class="jdvo-row">
+            <label for="a-recips">Recipients</label>
+            <input id="a-recips" type="text" required placeholder="comma-separated email addresses">
+            <p class="jdvo-hint">Every recipient gets their own copy of the email with their own private magic link. Picking a client above auto-fills their saved email here.</p>
+          </div>
+        </div>
+
+        <!-- 2 · Files -->
+        <div class="jdvo-card">
+          <div class="jdvo-card-label">2 · Files</div>
+
+          <div class="jdvo-dropzone" id="a-dropzone">
+            <div class="icon">⤴</div>
+            <div class="main">Drop audio files here</div>
+            <div class="sub">or click to browse · WAV, MP3, AIFF, FLAC, M4A, OGG</div>
+            <input id="a-files" type="file" multiple accept=".wav,.mp3,.aiff,.aif,.flac,.m4a,.ogg,audio/*" style="display:none;">
+          </div>
+          <div id="a-filelist" class="jdvo-file-list"></div>
+
+          <div class="jdvo-row" style="margin-top:14px;">
+            <label for="a-label">Default file label</label>
+            <select id="a-label">
+              <option value="final_approved">Final Approved</option>
+              <option value="cutdown">Cutdown</option>
+              <option value="pickup">Pickup / Alts</option>
+              <option value="reference">Reference</option>
+              <option value="raw">Raw / Unprocessed</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 3 · Note -->
+        <div class="jdvo-card">
+          <div class="jdvo-card-label">3 · Note from Jack <span class="muted normal">(optional)</span></div>
+          <div class="jdvo-row">
+            <textarea id="a-note" rows="3" placeholder="Anything they should know? Pickup notes, file labeling, recommendations…"></textarea>
+            <p class="jdvo-hint">Appears in the email and on their files page.</p>
+          </div>
+        </div>
+
+        <!-- 4 · Settings -->
+        <div class="jdvo-card">
+          <div class="jdvo-card-label">4 · Delivery settings</div>
+          <label class="jdvo-toggle-row">
+            <span>
+              <span class="name">Notify me when a client downloads</span>
+              <span class="desc">Email ping when files are picked up</span>
+            </span>
+            <input type="checkbox" id="a-notify" checked>
+          </label>
+        </div>
+
+        <!-- Action bar -->
+        <div class="jdvo-action-bar">
+          <div class="muted" id="a-summary">No files yet</div>
+          <button class="jdvo-btn-primary" type="submit">Create &amp; upload →</button>
+        </div>
       </form>
-      <div id="a-progress" class="a-progress"></div>
+
+      <div id="a-progress" class="jdvo-progress"></div>
       <div id="a-send" hidden></div>
 
-      <h2 class="a-h2" style="margin-top:48px;">Recent deliveries</h2>
-      <div id="a-list" class="a-list"></div>
+      <div class="jdvo-section-rule"></div>
+
+      <div class="jdvo-page-header">
+        <div><h1>Recent deliveries</h1></div>
+      </div>
+      <div id="a-list"></div>
     </div>
   </div>
 </section>
 
 <style>
-.a-h2 { font-family:var(--font-family-headline); font-size:22px; letter-spacing:-0.01em; text-transform:uppercase; margin:32px 0 16px; }
-.a-form { display:flex; flex-direction:column; gap:16px; max-width:620px; }
-.a-form label { display:flex; flex-direction:column; gap:6px; font-family:var(--font-family-headline); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#888; }
-.a-form input, .a-form select, .a-form textarea { border:0; border-bottom:1.5px solid var(--color-ink); background:transparent; padding:9px 2px; font-family:var(--font-family-body); font-size:15px; color:var(--color-ink); outline:none; text-transform:none; letter-spacing:0; }
-.a-form input:focus, .a-form select:focus, .a-form textarea:focus { border-bottom-color:var(--tile-purple); }
-.a-grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.a-grid2[hidden] { display:none; }
-.a-check { flex-direction:row !important; align-items:center; gap:8px !important; }
-.a-check input { width:auto; }
-.a-progress { margin-top:16px; font-size:14px; color:#555; }
-.a-progress div { padding:3px 0; }
-.a-list a { color:var(--tile-purple); text-decoration:none; }
-.a-row { display:flex; justify-content:space-between; gap:12px; padding:12px 0; border-top:1px solid var(--color-grey-ghost); font-size:14px; }
-.a-row:first-child { border-top:0; }
-.a-badge { font-family:var(--font-family-headline); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; padding:3px 9px; border-radius:var(--radius-pill); background:var(--color-grey-ghost); }
-.a-badge.sent { background:var(--tile-green); color:#fff; }
-.portal-msg { font-family: var(--font-family-headline); font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:#999; padding:8px 0; }
-.portal-note { margin-top:14px; font-size:15px; color:var(--tile-green); }
-.portal-note.err { color:#b00; }
-.btn-portal { display:inline-flex; align-items:center; background:var(--tile-purple); color:#fff; border:0; border-radius:var(--radius-pill); padding:13px 24px; font-family:var(--font-family-headline); font-size:14px; letter-spacing:0.06em; text-transform:uppercase; cursor:pointer; transition:background 240ms var(--ease-out-quart); text-decoration:none; }
-.btn-portal:hover { background: var(--color-amber,#B88A3E); }
-.btn-portal:disabled { opacity:0.55; cursor:default; }
-.a-actions { display:flex; gap:10px; flex-wrap:wrap; }
-.btn-portal.ghost { background:transparent; color:var(--color-ink); border:1px solid var(--color-ink); }
-.btn-portal.ghost:hover { background:var(--color-ink); color:#fff; }
-.btn-portal.sm { padding:7px 14px; font-size:12px; }
-.a-rowact { display:flex; gap:8px; align-items:center; }
-.a-linkpanel:not(:empty) { padding:6px 0 14px; }
-.a-hint { font-size:13px; color:#666; margin:4px 0 10px; }
-.linkrow { display:flex; gap:8px; align-items:center; margin-bottom:8px; flex-wrap:wrap; }
-.linkemail { font-family:var(--font-family-headline); font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#888; min-width:150px; }
-.linkrow input { flex:1 1 280px; border:1px solid var(--color-grey-ghost); border-radius:8px; padding:8px 10px; font-size:12px; font-family:monospace; color:#444; background:#fafafa; }
+.jdvo-admin { background: #FAF9F5; min-height: 70vh; padding: 40px 0 96px; }
+.jdvo-wrap {
+  --jdvo-bg:#FAF9F5; --jdvo-text:#363636; --jdvo-muted:#8a8a86;
+  --jdvo-violet:#3C0350; --jdvo-gold:#B88A3E; --jdvo-cream:#EDE6D3;
+  --jdvo-line:rgba(54,54,54,0.14); --jdvo-green:#37AF5D;
+  font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif;
+  color:var(--jdvo-text); max-width:1040px; margin:0 auto; padding:0 24px;
+  -webkit-font-smoothing:antialiased;
+}
+.jdvo-wrap h1 { font-family:inherit; font-size:24px; font-weight:700; letter-spacing:-0.3px; text-transform:none; line-height:1.2; margin:6px 0 4px; color:var(--jdvo-text); }
+.jdvo-wrap p { margin:0 0 8px; font-size:14px; line-height:1.5; }
+.jdvo-wrap .muted { color:var(--jdvo-muted); font-size:13px; }
+.jdvo-wrap .muted.normal { text-transform:none; letter-spacing:0; font-weight:400; }
+.jdvo-loading { color:var(--jdvo-muted); font-size:13px; padding:24px 0; }
+
+.jdvo-topbar { display:flex; justify-content:space-between; align-items:center; gap:12px; padding-bottom:18px; margin-bottom:6px; border-bottom:1px solid rgba(54,54,54,0.14); }
+.jdvo-topbar .muted { font-size:13px; }
+.jdvo-signout { color:var(--jdvo-violet); text-decoration:none; font-size:13px; font-weight:600; }
+.jdvo-signout:hover { text-decoration:underline; }
+
+.jdvo-page-header { display:flex; justify-content:space-between; align-items:flex-start; gap:18px; margin:18px 0; }
+
+/* Buttons */
+.jdvo-btn-primary { display:inline-block; background:var(--jdvo-violet); color:#fff; text-decoration:none; padding:11px 24px; border-radius:22px; font-size:12px; font-weight:600; letter-spacing:0.8px; text-transform:uppercase; border:none; cursor:pointer; transition:background .15s; font-family:inherit; }
+.jdvo-btn-primary:hover { background:#5b1a73; }
+.jdvo-btn-primary:disabled { opacity:.55; cursor:default; }
+.jdvo-btn-secondary { display:inline-block; background:#fff; color:var(--jdvo-text); border:1px solid var(--jdvo-line); padding:10px 18px; border-radius:22px; font-size:12px; font-weight:600; letter-spacing:0.8px; text-transform:uppercase; cursor:pointer; text-decoration:none; font-family:inherit; }
+.jdvo-btn-secondary:hover { background:var(--jdvo-cream); }
+.jdvo-btn-sm { padding:7px 14px; font-size:11px; }
+
+/* Cards / forms */
+.jdvo-form { max-width:920px; }
+.jdvo-card { background:#fff; border:1px solid var(--jdvo-line); border-radius:12px; padding:22px 24px; margin-bottom:16px; }
+.jdvo-card-label { font-size:10px; font-weight:700; color:var(--jdvo-muted); text-transform:uppercase; letter-spacing:1.2px; margin-bottom:16px; }
+.jdvo-login-card { max-width:520px; }
+.jdvo-login-card h1 { margin-top:0; }
+.jdvo-login-form { display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; }
+.jdvo-login-form input { flex:1 1 240px; }
+
+.jdvo-row { margin-bottom:16px; }
+.jdvo-row:last-child { margin-bottom:0; }
+.jdvo-row label { display:block; font-size:12px; font-weight:600; color:var(--jdvo-text); margin-bottom:6px; }
+.jdvo-wrap input[type=text], .jdvo-wrap input[type=email], .jdvo-wrap select, .jdvo-wrap textarea {
+  width:100%; border:1px solid var(--jdvo-line); border-radius:7px; padding:10px 12px;
+  font-size:14px; font-family:inherit; background:var(--jdvo-bg); color:var(--jdvo-text); box-sizing:border-box;
+}
+.jdvo-wrap input:focus, .jdvo-wrap select:focus, .jdvo-wrap textarea:focus { outline:none; border-color:var(--jdvo-violet); background:#fff; }
+.jdvo-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+.jdvo-new-client[hidden] { display:none; }
+.jdvo-hint { font-size:11px; color:var(--jdvo-muted); margin:6px 0 0; line-height:1.5; }
+
+/* Dropzone */
+.jdvo-dropzone { border:2px dashed #d6c9a8; border-radius:10px; padding:32px 20px; text-align:center; background:var(--jdvo-cream); cursor:pointer; transition:background .15s; }
+.jdvo-dropzone.is-over { background:#e3d7b3; }
+.jdvo-dropzone .icon { font-size:26px; color:var(--jdvo-gold); }
+.jdvo-dropzone .main { font-size:14px; font-weight:600; margin-top:4px; }
+.jdvo-dropzone .sub { font-size:12px; color:var(--jdvo-muted); margin-top:4px; }
+.jdvo-file-list { display:flex; flex-direction:column; gap:8px; }
+.jdvo-file-list:not(:empty) { margin-top:12px; }
+.jdvo-file-row { display:grid; grid-template-columns:32px 1fr auto; gap:12px; align-items:center; padding:11px 14px; background:#fff; border:1px solid var(--jdvo-line); border-radius:8px; }
+.jdvo-file-row .file-icon { width:28px; height:28px; background:var(--jdvo-violet); color:#fff; border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; }
+.jdvo-file-row .name { font-size:13px; font-weight:600; }
+.jdvo-file-row .sub { font-size:11px; color:var(--jdvo-muted); margin-top:2px; }
+
+/* Toggle */
+.jdvo-toggle-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; cursor:pointer; }
+.jdvo-toggle-row .name { display:block; font-size:13px; font-weight:500; }
+.jdvo-toggle-row .desc { display:block; font-size:11px; color:var(--jdvo-muted); margin-top:2px; }
+.jdvo-toggle-row input[type=checkbox] { width:36px; height:20px; -webkit-appearance:none; appearance:none; background:#d2d2d2; border-radius:10px; position:relative; cursor:pointer; margin:0; flex:0 0 auto; }
+.jdvo-toggle-row input[type=checkbox]::before { content:''; position:absolute; width:14px; height:14px; background:#fff; border-radius:50%; top:3px; left:3px; transition:all .15s; }
+.jdvo-toggle-row input[type=checkbox]:checked { background:var(--jdvo-violet); }
+.jdvo-toggle-row input[type=checkbox]:checked::before { left:19px; }
+
+/* Action bar */
+.jdvo-action-bar { display:flex; justify-content:space-between; align-items:center; gap:14px; padding:16px 24px; background:#fff; border:1px solid var(--jdvo-line); border-radius:12px; }
+
+/* Progress + send */
+.jdvo-progress:not(:empty) { background:#fff; border:1px solid var(--jdvo-line); border-radius:10px; padding:16px 20px; margin-top:14px; font-size:13px; color:#555; }
+.jdvo-progress div { padding:3px 0; }
+#a-send:not([hidden]) { margin-top:14px; }
+.jdvo-actions { display:flex; gap:10px; flex-wrap:wrap; }
+
+/* Note message (login / status) */
+.jdvo-note-msg { margin-top:14px; font-size:14px; color:var(--jdvo-green); }
+.jdvo-note-msg.err { color:#b00; }
+
+/* Recent deliveries table */
+.jdvo-table { width:100%; background:#fff; border:1px solid var(--jdvo-line); border-radius:10px; border-collapse:separate; border-spacing:0; overflow:hidden; }
+.jdvo-table th { text-align:left; font-size:10px; text-transform:uppercase; letter-spacing:0.8px; color:var(--jdvo-muted); padding:12px 16px; background:#faf9f5; border-bottom:1px solid var(--jdvo-line); }
+.jdvo-table td { font-size:13px; padding:13px 16px; border-bottom:1px solid var(--jdvo-line); vertical-align:middle; }
+.jdvo-table tr:last-child td { border-bottom:none; }
+.jdvo-table td .sub { color:var(--jdvo-muted); font-size:11px; margin-top:2px; }
+.jdvo-pill { display:inline-block; font-size:10px; font-weight:600; padding:3px 9px; border-radius:10px; text-transform:uppercase; letter-spacing:0.8px; }
+.jdvo-pill.green { background:rgba(55,175,93,0.15); color:var(--jdvo-green); }
+.jdvo-pill.grey  { background:rgba(0,0,0,0.06); color:var(--jdvo-muted); }
+.jdvo-empty { background:#fff; padding:28px; border-radius:10px; border:1px solid var(--jdvo-line); text-align:center; color:var(--jdvo-muted); font-size:14px; }
+
+.jdvo-section-rule { height:1px; background:rgba(54,54,54,0.14); margin:40px 0 8px; }
+
+/* Copy-link panel */
+.jdvo-linkpanel:not(:empty) { padding:10px 0 4px; }
+.jdvo-linkrow { display:flex; gap:8px; align-items:center; margin-bottom:8px; flex-wrap:wrap; }
+.jdvo-linkemail { font-size:11px; font-weight:600; letter-spacing:0.4px; color:var(--jdvo-muted); min-width:150px; }
+.jdvo-linkrow input { flex:1 1 280px; width:auto; border:1px solid var(--jdvo-line); border-radius:7px; padding:8px 10px; font-size:12px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; color:#444; background:#fafafa; }
+
+@media (max-width:680px){ .jdvo-grid-2{grid-template-columns:1fr;} .jdvo-action-bar{flex-direction:column;align-items:stretch;} }
 </style>
 
 <script>
@@ -99,7 +255,9 @@ eleventyExcludeFromCollections: true
   var $ = function (id) { return document.getElementById(id); };
   var statusEl = $("a-status"), loginEl = $("a-login"), appEl = $("a-app");
   var esc = function (s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[c];}); };
-  var created = null; // delivery created in this session
+  var created = null;
+  var ext = function (n){ var m=String(n||"").split("."); return (m.length>1?m.pop():"").toUpperCase().slice(0,4)||"AUD"; };
+  var mb = function (b){ return (Number(b)/1048576).toFixed(1)+" MB"; };
 
   function showLogin(){
     statusEl.hidden=true; appEl.hidden=true; loginEl.hidden=false;
@@ -116,21 +274,48 @@ eleventyExcludeFromCollections: true
     $("a-who").textContent=data.email;
     var sel=$("a-client");
     data.clients.forEach(function(c){ var o=document.createElement("option"); o.value=c.id; o.textContent=(c.agency_name||c.contact_name||"Client")+(c.email?" · "+c.email:""); o.dataset.email=c.email||""; sel.appendChild(o); });
+    // new-client fields hidden unless "+ Add new client" (empty value) is selected
+    function syncNewClient(){ $("a-newclient").hidden = !!sel.value; }
     sel.addEventListener("change", function(){
-      $("a-newclient").hidden = !!sel.value;
+      syncNewClient();
       var em=sel.options[sel.selectedIndex] && sel.options[sel.selectedIndex].dataset.email;
       if (sel.value && em && !$("a-recips").value) $("a-recips").value=em;
     });
+    syncNewClient();
+    setupDropzone();
     renderList(data.deliveries);
     $("a-form").addEventListener("submit", onCreate);
   }
 
+  function setupDropzone(){
+    var dz=$("a-dropzone"), input=$("a-files");
+    dz.addEventListener("click", function(){ input.click(); });
+    dz.addEventListener("dragover", function(e){ e.preventDefault(); dz.classList.add("is-over"); });
+    dz.addEventListener("dragleave", function(){ dz.classList.remove("is-over"); });
+    dz.addEventListener("drop", function(e){ e.preventDefault(); dz.classList.remove("is-over"); if(e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files.length){ input.files=e.dataTransfer.files; renderFileList(); } });
+    input.addEventListener("change", renderFileList);
+  }
+  function renderFileList(){
+    var files=$("a-files").files, list=$("a-filelist");
+    list.innerHTML = Array.prototype.map.call(files, function(f){
+      return '<div class="jdvo-file-row"><span class="file-icon">'+esc(ext(f.name))+'</span><div><div class="name">'+esc(f.name)+'</div><div class="sub">'+mb(f.size)+'</div></div><span class="jdvo-pill grey">Queued</span></div>';
+    }).join("");
+    $("a-summary").textContent = files.length ? (files.length+" file"+(files.length>1?"s":"")+" ready") : "No files yet";
+  }
+
   function renderList(list){
-    $("a-list").innerHTML = list.length ? list.map(function(d){
-      return '<div class="a-row"><div><strong>'+esc(d.title)+'</strong><br><span style="color:#999;font-size:12px;">'+esc((d.recipients||[]).join(", "))+' · '+d.file_count+' file(s)</span></div>'
-        +'<div class="a-rowact"><button class="btn-portal sm" data-links="'+esc(d.id)+'">Copy link</button><span class="a-badge '+(d.status==="sent"?"sent":"")+'">'+esc(d.status)+'</span></div></div>'+'<div class="a-linkpanel" id="lp-'+esc(d.id)+'"></div>';
-    }).join("") : '<p style="color:#999;">No deliveries yet.</p>';
-    $("a-list").querySelectorAll("[data-links]").forEach(function(b){ b.addEventListener("click", function(){ renderLinks(b.getAttribute("data-links"), document.getElementById("lp-"+b.getAttribute("data-links"))); }); });
+    var el=$("a-list");
+    if(!list.length){ el.innerHTML='<div class="jdvo-empty">No deliveries yet. Create your first one above.</div>'; return; }
+    var rows = list.map(function(d){
+      var pill = d.status==="sent" ? '<span class="jdvo-pill green">Sent</span>' : '<span class="jdvo-pill grey">'+esc(d.status||"draft")+'</span>';
+      return '<tr><td><strong>'+esc(d.title)+'</strong><div class="sub">'+esc((d.recipients||[]).join(", "))+'</div></td>'
+        +'<td>'+d.file_count+'</td>'
+        +'<td>'+pill+'</td>'
+        +'<td><button class="jdvo-btn-secondary jdvo-btn-sm" data-links="'+esc(d.id)+'">Copy link</button></td></tr>'
+        +'<tr><td colspan="4" style="padding:0 16px;"><div class="jdvo-linkpanel" id="lp-'+esc(d.id)+'"></div></td></tr>';
+    }).join("");
+    el.innerHTML='<table class="jdvo-table"><thead><tr><th>Delivery</th><th>Files</th><th>Status</th><th></th></tr></thead><tbody>'+rows+'</tbody></table>';
+    el.querySelectorAll("[data-links]").forEach(function(b){ b.addEventListener("click", function(){ renderLinks(b.getAttribute("data-links"), document.getElementById("lp-"+b.getAttribute("data-links"))); }); });
   }
 
   function fileDuration(file){
@@ -158,7 +343,7 @@ eleventyExcludeFromCollections: true
       created = dr.delivery; log("✓ Delivery created: "+esc(created.title));
       var files=$("a-files").files, label=$("a-label").value;
       for (var i=0;i<files.length;i++){
-        var f=files[i]; log("↑ Uploading "+esc(f.name)+" ("+(f.size/1048576).toFixed(1)+" MB)…");
+        var f=files[i]; log("↑ Uploading "+esc(f.name)+" ("+mb(f.size)+")…");
         var ct=f.type||"application/octet-stream";
         var up = await api("/api/admin/upload-url",{ delivery_id:created.id, filename:f.name, content_type:ct });
         var put = await fetch(up.url,{ method:"PUT", headers:{"content-type":ct}, body:f });
@@ -169,7 +354,7 @@ eleventyExcludeFromCollections: true
       }
       log("<strong>Ready.</strong> Copy the link to send it yourself, and/or email it.");
       var send=$("a-send"); send.hidden=false;
-      send.innerHTML='<div class="a-actions"><button class="btn-portal" id="a-linksbtn">Copy shareable link</button> <button class="btn-portal ghost" id="a-sendbtn">Also email recipient(s)</button></div><div id="a-links"></div>';
+      send.innerHTML='<div class="jdvo-actions"><button class="jdvo-btn-primary" id="a-linksbtn">Copy shareable link</button> <button class="jdvo-btn-secondary" id="a-sendbtn">Also email recipient(s)</button></div><div id="a-links"></div>';
       $("a-sendbtn").addEventListener("click", doSend);
       $("a-linksbtn").addEventListener("click", function(){ renderLinks(created.id, document.getElementById("a-links")); });
       renderLinks(created.id, document.getElementById("a-links"));
@@ -188,14 +373,14 @@ eleventyExcludeFromCollections: true
 
   async function renderLinks(id, el){
     if(!el) return;
-    el.innerHTML='<div class="portal-msg" style="padding:8px 0;">Generating link…</div>';
+    el.innerHTML='<div class="muted" style="padding:8px 0;">Generating link…</div>';
     try{
       var r = await fetch("/api/admin/links",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({delivery_id:id})});
       var d = await r.json(); if(!d.links) throw new Error(d.error||("HTTP "+r.status));
-      el.innerHTML='<p class="a-hint">Paste this into your own email or text to the client — works for '+d.days+' days, no password needed:</p>'+
-        d.links.map(function(l){ return '<div class="linkrow"><span class="linkemail">'+esc(l.email)+'</span><input readonly value="'+esc(l.url)+'" onclick="this.select()"><button class="btn-portal sm" data-copy="'+esc(l.url)+'">Copy</button></div>'; }).join("");
-      el.querySelectorAll("[data-copy]").forEach(function(b){ b.addEventListener("click", function(){ navigator.clipboard.writeText(b.getAttribute("data-copy")).then(function(){ var t=b.textContent; b.textContent="Copied \u2713"; setTimeout(function(){ b.textContent=t; },1500); }); }); });
-    }catch(e){ el.innerHTML='<p class="portal-note err">'+esc(e.message)+'</p>'; }
+      el.innerHTML='<p class="jdvo-hint">Paste this into your own email or text to the client — works for '+d.days+' days, no password needed:</p>'+
+        d.links.map(function(l){ return '<div class="jdvo-linkrow"><span class="jdvo-linkemail">'+esc(l.email)+'</span><input readonly value="'+esc(l.url)+'" onclick="this.select()"><button class="jdvo-btn-secondary jdvo-btn-sm" data-copy="'+esc(l.url)+'">Copy</button></div>'; }).join("");
+      el.querySelectorAll("[data-copy]").forEach(function(b){ b.addEventListener("click", function(){ navigator.clipboard.writeText(b.getAttribute("data-copy")).then(function(){ var t=b.textContent; b.textContent="Copied ✓"; setTimeout(function(){ b.textContent=t; },1500); }); }); });
+    }catch(e){ el.innerHTML='<p class="jdvo-note-msg err">'+esc(e.message)+'</p>'; }
   }
 
   async function api(url, body){
