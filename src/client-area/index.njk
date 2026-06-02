@@ -3,57 +3,114 @@ layout: base.njk
 title: "Client Area"
 permalink: /client-area/
 ---
-<section class="portal">
-  <div class="portal-wrap">
-    <div class="sec-head"><span class="eyebrow">Client Area</span><span class="rule"></span></div>
+<section class="jdvo-portal">
+  <div id="portal-status" class="jdvo-portal-main jdvo-loading">Loading…</div>
 
-    <div id="portal-status" class="portal-msg">Loading…</div>
-
-    <!-- Login -->
-    <div id="portal-login" hidden>
-      <h1 class="portal-h1">Your files,<br>on demand.</h1>
-      <p class="portal-lede">Enter the email your delivery was sent to and we'll send you a one-click sign-in link — no password needed.</p>
-      <form id="portal-login-form" class="portal-form">
-        <input type="email" id="portal-email" name="email" placeholder="you@agency.com" autocomplete="email" required>
-        <button type="submit" class="btn-portal">Email me a link →</button>
+  <!-- ===== Login ===== -->
+  <div id="portal-login" class="jdvo-portal-main jdvo-login" hidden>
+    <div class="jdvo-login-card">
+      <div class="jdvo-brand-mark"><span>JD</span><span>VO</span></div>
+      <h1>Client Area</h1>
+      <p class="jdvo-muted">Enter the email address Jack delivers files to and we'll email you a sign-in link.</p>
+      <form id="portal-login-form">
+        <input type="email" id="portal-email" name="email" placeholder="you@youragency.com" autocomplete="email" required class="jdvo-input">
+        <button type="submit" class="jdvo-btn-primary">Email me a sign-in link</button>
       </form>
-      <p id="portal-login-note" class="portal-note" hidden></p>
+      <p class="jdvo-muted small">No password — we just email you a magic link. Links expire after 14 days.</p>
+      <p id="portal-login-note" class="jdvo-flash" hidden></p>
     </div>
-
-    <!-- Files -->
-    <div id="portal-files" hidden></div>
   </div>
+
+  <!-- ===== Files ===== -->
+  <div id="portal-files" class="jdvo-portal-main" hidden></div>
 </section>
 
 <style>
-.portal { padding: 56px 0 96px; }
-.portal-wrap { max-width: 820px; margin: 0 auto; padding: 0 var(--padding); }
-.portal-h1 { font-family: var(--font-family-headline); font-size: clamp(40px,6vw,84px); line-height:0.88; letter-spacing:-0.03em; text-transform:uppercase; margin:8px 0 18px; }
-.portal-lede { font: var(--font-body); font-size:17px; line-height:1.6; color:#555; max-width:520px; margin:0 0 24px; }
-.portal-msg { font-family: var(--font-family-headline); font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:#999; padding:24px 0; }
-.portal-form { display:flex; gap:10px; flex-wrap:wrap; max-width:520px; }
-.portal-form input { flex:1 1 240px; border:0; border-bottom:1.5px solid var(--color-ink); background:transparent; padding:12px 2px; font-family:var(--font-family-body); font-size:16px; color:var(--color-ink); outline:none; }
-.portal-form input:focus { border-bottom-color: var(--tile-purple); }
-.btn-portal { display:inline-flex; align-items:center; background:var(--tile-purple); color:#fff; border:0; border-radius:var(--radius-pill); padding:13px 26px; font-family:var(--font-family-headline); font-size:14px; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; transition:background 240ms var(--ease-out-quart); }
-.btn-portal:hover { background: var(--color-amber,#B88A3E); }
-.portal-note { margin-top:18px; font-size:15px; color:var(--tile-green); }
-.portal-note.err { color:#b00; }
+.jdvo-portal {
+  --jdvo-bg:#FAF9F5; --jdvo-text:#363636; --jdvo-muted:#8a8a86;
+  --jdvo-violet:#3C0350; --jdvo-gold:#B88A3E; --jdvo-cream:#EDE6D3;
+  --jdvo-line:rgba(54,54,54,0.14); --jdvo-green:#37AF5D;
+  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--jdvo-text); background:var(--jdvo-bg); -webkit-font-smoothing:antialiased; min-height:62vh;
+}
+.jdvo-portal-main { max-width:1080px; margin:0 auto; padding:34px 24px 90px; }
+.jdvo-portal h1 { font-family:inherit; font-size:36px; font-weight:700; letter-spacing:-0.5px; text-transform:none; line-height:1.1; margin:0 0 6px; color:var(--jdvo-text); }
+.jdvo-portal p { margin:0 0 8px; font-size:14px; line-height:1.55; }
+.jdvo-muted { color:var(--jdvo-muted); font-size:14px; }
+.jdvo-muted.small { font-size:12px; }
+.jdvo-loading { color:var(--jdvo-muted); font-size:14px; }
+.jdvo-portal [hidden] { display:none !important; }
 
-.portal-greet { font-family:var(--font-family-headline); font-size:13px; letter-spacing:0.12em; text-transform:uppercase; color:#888; margin-bottom:24px; display:flex; justify-content:space-between; align-items:center; gap:12px; }
-.portal-greet a { color:var(--tile-purple); text-decoration:none; }
-.delivery { border:1px solid var(--color-grey-ghost); border-radius:var(--radius-card); padding:24px 26px; margin-bottom:22px; }
-.delivery-title { font-family:var(--font-family-headline); font-size:clamp(26px,3.4vw,40px); line-height:0.9; letter-spacing:-0.02em; text-transform:uppercase; margin:0 0 6px; }
-.delivery-meta { font-family:var(--font-family-headline); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#999; margin-bottom:18px; }
-.delivery-note { background:var(--tile-cream); border-radius:10px; padding:14px 18px; margin:0 0 18px; font-size:14px; line-height:1.55; font-style:italic; color:#5a4a25; }
-.delivery-note b { display:block; font-style:normal; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--color-amber,#B88A3E); margin-bottom:5px; }
-.file-row { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 0; border-top:1px solid var(--color-grey-ghost); }
-.file-row:first-of-type { border-top:0; }
-.file-name { font-weight:500; font-size:15px; }
-.file-specs { font-family:var(--font-family-headline); font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#999; margin-top:3px; }
-.file-dl { flex:0 0 auto; display:inline-flex; align-items:center; background:var(--color-ink); color:#fff; border-radius:var(--radius-pill); padding:9px 18px; font-family:var(--font-family-headline); font-size:12px; letter-spacing:0.08em; text-transform:uppercase; text-decoration:none; transition:background 240ms var(--ease-out-quart); }
-.file-dl:hover { background:var(--tile-purple); }
-.dl-all { margin-top:16px; }
-.expired { color:#b00; }
+/* Login */
+.jdvo-login { display:flex; justify-content:center; align-items:center; min-height:60vh; }
+.jdvo-login-card { background:#fff; border:1px solid var(--jdvo-line); border-radius:12px; padding:40px 36px; max-width:440px; width:100%; }
+.jdvo-login-card h1 { font-size:26px; margin:14px 0 6px; }
+.jdvo-input { width:100%; box-sizing:border-box; border:1px solid var(--jdvo-line); border-radius:8px; padding:11px 14px; font-size:14px; font-family:inherit; background:var(--jdvo-bg); color:var(--jdvo-text); margin:14px 0 12px; }
+.jdvo-input:focus { outline:none; border-color:var(--jdvo-violet); background:#fff; }
+.jdvo-flash { background:var(--jdvo-cream); border-left:3px solid var(--jdvo-gold); padding:10px 14px; border-radius:0 6px 6px 0; font-size:13px; color:#6a5a30; margin:16px 0 0; }
+.jdvo-flash.err { background:#fbeaea; border-left-color:#c0392b; color:#a33; }
+.jdvo-brand-mark { width:44px; height:44px; background:var(--jdvo-violet); border-radius:8px; color:#fff; display:inline-flex; flex-direction:column; align-items:center; justify-content:center; font-weight:800; font-size:11px; line-height:1.05; }
+
+/* Buttons */
+.jdvo-portal .jdvo-btn-primary { display:inline-block; background:var(--jdvo-violet); color:#fff; text-decoration:none; padding:12px 22px; border-radius:24px; font-size:12px; font-weight:600; letter-spacing:0.8px; text-transform:uppercase; border:none; cursor:pointer; font-family:inherit; transition:background .15s; }
+.jdvo-portal .jdvo-btn-primary:hover { background:#5b1a73; }
+.jdvo-portal .jdvo-btn-primary:disabled { opacity:.55; cursor:default; }
+
+/* Welcome row */
+.jdvo-welcome-row { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:24px; gap:20px; }
+.jdvo-quick-contact { display:flex; gap:12px; margin-top:14px; flex-wrap:wrap; }
+.jdvo-quick-contact a { display:inline-flex; align-items:center; gap:8px; color:var(--jdvo-text); text-decoration:none; font-size:13px; font-weight:500; padding:8px 14px; background:#fff; border:1px solid var(--jdvo-line); border-radius:22px; }
+.jdvo-quick-contact a:hover { border-color:var(--jdvo-violet); color:var(--jdvo-violet); }
+.jdvo-quick-contact .label { color:var(--jdvo-muted); font-size:11px; text-transform:uppercase; letter-spacing:0.8px; }
+.jdvo-status-pill { display:inline-flex; align-items:center; gap:8px; background:rgba(54,54,54,0.08); font-size:11px; font-weight:600; padding:7px 14px; border-radius:20px; text-transform:uppercase; letter-spacing:1px; white-space:nowrap; }
+.jdvo-status-pill .dot { width:8px; height:8px; border-radius:50%; background:var(--jdvo-green); }
+.jdvo-status-pill a { color:inherit; text-decoration:none; }
+
+/* Section divider */
+.jdvo-section-divider { display:flex; align-items:center; margin:44px 0 22px; gap:16px; }
+.jdvo-section-divider .label { font-size:17px; font-weight:800; letter-spacing:1px; text-transform:uppercase; white-space:nowrap; color:var(--jdvo-text); }
+.jdvo-section-divider .line { flex:1; height:1px; background:var(--jdvo-line); }
+
+/* Project / file card */
+.jdvo-project-card { background:#fff; border:1px solid var(--jdvo-line); border-radius:12px; padding:26px 28px; }
+.jdvo-project-header { display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1px solid var(--jdvo-line); padding-bottom:18px; margin-bottom:8px; gap:18px; }
+.jdvo-project-title { font-size:22px; font-weight:700; letter-spacing:-0.3px; }
+.jdvo-file-row { display:grid; grid-template-columns:36px 1fr 90px 80px 110px; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--jdvo-line); }
+.jdvo-file-row:last-child { border-bottom:none; }
+.jdvo-file-row .play-btn { width:32px; height:32px; border-radius:50%; background:var(--jdvo-violet); color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; }
+.jdvo-file-row .name { font-size:14px; font-weight:600; }
+.jdvo-file-row .sub { font-size:12px; color:var(--jdvo-muted); margin-top:2px; }
+.jdvo-file-row .size, .jdvo-file-row .dur { font-size:12px; color:var(--jdvo-muted); }
+.jdvo-file-row .dl { font-size:11px; color:var(--jdvo-gold); text-decoration:none; font-weight:600; text-transform:uppercase; letter-spacing:1px; }
+.jdvo-file-row .dl:hover { text-decoration:underline; }
+.jdvo-expired { color:#b00; }
+
+/* Note */
+.jdvo-portal .jdvo-note { background:var(--jdvo-cream); border-left:3px solid var(--jdvo-gold); padding:16px 20px; margin:24px 0; font-size:14px; font-style:italic; color:#5a4a25; border-radius:0 8px 8px 0; line-height:1.6; }
+.jdvo-portal .jdvo-note .label { display:block; font-style:normal; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--jdvo-gold); margin-bottom:8px; }
+
+/* History */
+.jdvo-history-card { background:#fff; border:1px solid var(--jdvo-line); border-radius:12px; padding:6px 24px; }
+.jdvo-history-row { display:grid; grid-template-columns:1fr 140px 110px; gap:14px; padding:14px 0; border-bottom:1px solid var(--jdvo-line); align-items:center; text-decoration:none; color:var(--jdvo-text); cursor:pointer; background:none; border-left:none; border-right:none; border-top:none; width:100%; text-align:left; font-family:inherit; }
+.jdvo-history-row:last-child { border-bottom:none; }
+.jdvo-history-row .name { font-size:14px; font-weight:500; }
+.jdvo-history-row .date { font-size:12px; color:var(--jdvo-muted); }
+.jdvo-history-row .link { font-size:11px; color:var(--jdvo-gold); text-decoration:none; font-weight:600; text-transform:uppercase; letter-spacing:1px; text-align:right; }
+
+/* Footer note */
+.jdvo-footer-note { text-align:center; margin-top:56px; padding-top:24px; border-top:1px solid var(--jdvo-line); font-size:12px; color:var(--jdvo-muted); line-height:1.7; }
+.jdvo-footer-note a { color:var(--jdvo-gold); text-decoration:none; }
+
+@media (max-width:720px){
+  .jdvo-portal h1 { font-size:28px; }
+  .jdvo-welcome-row { flex-direction:column; }
+  .jdvo-project-header { flex-direction:column; }
+  .jdvo-file-row { grid-template-columns:36px 1fr; }
+  .jdvo-file-row .size, .jdvo-file-row .dur { display:none; }
+  .jdvo-file-row .dl { grid-column:1 / -1; text-align:right; }
+  .jdvo-history-row { grid-template-columns:1fr; }
+  .jdvo-history-row .date, .jdvo-history-row .link { text-align:left; }
+}
 </style>
 
 <script>
@@ -65,7 +122,11 @@ permalink: /client-area/
   var fmtSize = function (b) { b = Number(b)||0; if (b>=1073741824) return (b/1073741824).toFixed(1)+" GB"; if (b>=1048576) return (b/1048576).toFixed(1)+" MB"; if (b>=1024) return (b/1024).toFixed(1)+" KB"; return b+" B"; };
   var fmtDate = function (iso) { if(!iso) return ""; try { return new Date(iso).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}); } catch(e){ return ""; } };
   var fmtDur = function (s) { if(!s) return ""; s=Math.round(s); return Math.floor(s/60)+":"+String(s%60).padStart(2,"0"); };
+  var labelHuman = function (k){ return ({final_approved:"Final Approved",cutdown:"Cutdown",pickup:"Pickup / Alts",reference:"Reference",raw:"Raw / Unprocessed"})[k] || k; };
   var params = new URLSearchParams(location.search);
+
+  var JACK_EMAIL = "jack@jackdanielvo.com";
+  var JACK_PHONE = "+1 805.630.5530";
 
   function show(el){ el.hidden=false; } function hide(el){ el.hidden=true; }
 
@@ -79,51 +140,94 @@ permalink: /client-area/
       var btn = e.target.querySelector("button"); btn.disabled = true; btn.textContent = "Sending…";
       fetch("/api/portal/request-link", { method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify({ email: email }) })
         .then(function(r){ return r.json(); })
-        .then(function(d){ note.classList.remove("err"); note.textContent = d.message || "Check your inbox."; show(note); btn.textContent="Sent ✓"; })
-        .catch(function(){ note.classList.add("err"); note.textContent="Something went wrong. Please try again."; show(note); btn.disabled=false; btn.textContent="Email me a link →"; });
+        .then(function(d){ note.classList.remove("err"); note.textContent = d.message || "If that email is in the system, a sign-in link is on the way. Check your inbox."; show(note); btn.textContent="Sent ✓"; })
+        .catch(function(){ note.classList.add("err"); note.textContent="Something went wrong. Please try again."; show(note); btn.disabled=false; btn.textContent="Email me a sign-in link"; });
     });
   }
 
   function specLine(f){
     var bits=[]; if(f.label) bits.push(labelHuman(f.label));
-    if(f.duration_sec) bits.push(fmtDur(f.duration_sec));
-    if(f.sample_rate) bits.push(Math.round(f.sample_rate/1000)+" kHz");
+    if(f.sample_rate) bits.push((f.sample_rate>=1000?Math.round(f.sample_rate/1000)+" kHz":f.sample_rate+" Hz"));
     if(f.bit_depth) bits.push(f.bit_depth+"-bit");
-    bits.push(fmtSize(f.size_bytes));
     return bits.join(" · ");
   }
-  function labelHuman(k){ return ({final_approved:"Final Approved",cutdown:"Cutdown",pickup:"Pickup / Alts",reference:"Reference",raw:"Raw / Unprocessed"})[k] || k; }
 
-  function renderFiles(data){
-    hide(statusEl); hide(loginEl); show(filesEl);
-    var focus = params.get("d");
-    var html = '<div class="portal-greet"><span>Signed in as ' + esc(data.email) + '</span><a href="/client-area/logout">Sign out</a></div>';
-    if (!data.deliveries.length) { html += '<p class="portal-lede">No deliveries yet. When Jack sends you files, they\'ll appear here.</p>'; filesEl.innerHTML = html; return; }
-    data.deliveries.forEach(function (d) {
-      var expired = d.expires_at && new Date(d.expires_at).getTime() < Date.now();
-      html += '<div class="delivery" id="d-' + esc(d.id) + '">';
-      html += '<h2 class="delivery-title">' + esc(d.title) + '</h2>';
-      var meta = []; if(d.agency_name) meta.push(esc(d.agency_name)); if(d.delivered_at) meta.push("Delivered " + esc(fmtDate(d.delivered_at)));
-      if(d.expires_at) meta.push(expired ? '<span class="expired">Expired</span>' : "Available until " + esc(fmtDate(d.expires_at)));
-      html += '<div class="delivery-meta">' + meta.join(" &middot; ") + '</div>';
-      if (d.note_from_jack) html += '<div class="delivery-note"><b>Note from Jack</b>' + esc(d.note_from_jack) + '</div>';
-      (d.files||[]).forEach(function (f) {
-        html += '<div class="file-row"><div><div class="file-name">' + esc(f.display_name) + '</div><div class="file-specs">' + esc(specLine(f)) + '</div></div>'
-             + '<a class="file-dl" href="/client-area/dl?delivery=' + encodeURIComponent(d.id) + '&file=' + encodeURIComponent(f.id) + '">Download</a></div>';
-      });
-      if ((d.files||[]).length > 1) {
-        html += '<a class="btn-portal dl-all" data-all="' + esc(d.id) + '" href="#">Download all (' + d.files.length + ') →</a>';
-      }
-      html += '</div>';
+  function deliveryCard(d){
+    var expired = d.expires_at && new Date(d.expires_at).getTime() < Date.now();
+    var meta = [];
+    if(d.delivered_at) meta.push("Delivered " + fmtDate(d.delivered_at));
+    meta.push((d.files||[]).length + " files");
+    if(d.expires_at) meta.push(expired ? '<span class="jdvo-expired">Expired</span>' : "available until " + fmtDate(d.expires_at));
+    var h = '<div class="jdvo-project-card" id="d-'+esc(d.id)+'">';
+    h += '<div class="jdvo-project-header"><div><div class="jdvo-project-title">'+esc(d.title)+'</div>'
+       + '<div class="jdvo-muted small">'+meta.join(" · ")+'</div></div>';
+    if ((d.files||[]).length > 1) h += '<a href="#" class="jdvo-btn-primary" data-all="'+esc(d.id)+'">↓ Download all</a>';
+    h += '</div>';
+    (d.files||[]).forEach(function (f) {
+      h += '<div class="jdvo-file-row"><div class="play-btn">▶</div>'
+        + '<div class="meta"><div class="name">'+esc(f.display_name)+'</div><div class="sub">'+esc(specLine(f))+'</div></div>'
+        + '<div class="size">'+esc(fmtSize(f.size_bytes))+'</div>'
+        + '<div class="dur">'+esc(fmtDur(f.duration_sec))+'</div>'
+        + '<a class="dl" href="/client-area/dl?delivery='+encodeURIComponent(d.id)+'&file='+encodeURIComponent(f.id)+'">Download ↓</a></div>';
     });
+    h += '</div>';
+    if (d.note_from_jack) h += '<div class="jdvo-note"><span class="label">Note from Jack</span>'+esc(d.note_from_jack)+'</div>';
+    return h;
+  }
+
+  function render(data, currentId){
+    hide(statusEl); hide(loginEl); show(filesEl);
+    var dels = data.deliveries || [];
+    var current = dels.filter(function(x){ return x.id===currentId; })[0] || dels[0];
+    var history = dels.filter(function(x){ return !current || x.id!==current.id; });
+
+    var subtitle = [];
+    if (data.agency_name) subtitle.push(esc(data.agency_name));
+    if (dels.length) subtitle.push(dels.length + " project" + (dels.length>1?"s":"") + " available");
+
+    var html = '<div class="jdvo-welcome-row"><div>'
+      + '<h1>Welcome back…to Jack.</h1>'
+      + (subtitle.length ? '<p class="jdvo-muted">'+subtitle.join(" · ")+'</p>' : '')
+      + '<div class="jdvo-quick-contact">'
+      + '<a href="tel:'+JACK_PHONE.replace(/[^0-9+]/g,"")+'"><span class="label">Call</span> '+esc(JACK_PHONE)+'</a>'
+      + '<a href="mailto:'+JACK_EMAIL+'"><span class="label">Email</span> '+esc(JACK_EMAIL)+'</a>'
+      + '</div></div>'
+      + '<div class="jdvo-status-pill"><span class="dot"></span> Signed in · '+esc(data.email)+'</div></div>';
+
+    if (!current) {
+      html += '<p class="jdvo-muted">No deliveries yet. When Jack sends you files, they\'ll appear here.</p>';
+      filesEl.innerHTML = html; return;
+    }
+
+    html += '<div class="jdvo-section-divider"><span class="label">Current Delivery</span><span class="line"></span></div>';
+    html += deliveryCard(current);
+
+    if (history.length) {
+      html += '<div class="jdvo-section-divider"><span class="label">Project History</span><span class="line"></span></div>';
+      html += '<div class="jdvo-history-card">';
+      history.forEach(function(h){
+        html += '<button type="button" class="jdvo-history-row" data-open="'+esc(h.id)+'">'
+          + '<span class="name">'+esc(h.title)+'</span>'
+          + '<span class="date">'+esc(fmtDate(h.delivered_at))+'</span>'
+          + '<span class="link">View files →</span></button>';
+      });
+      html += '</div>';
+    }
+
+    html += '<div class="jdvo-footer-note">Need something? <a href="mailto:'+JACK_EMAIL+'">Email Jack</a> · <a href="/client-area/logout">Sign out</a><br>Files encrypted in transit and at rest.</div>';
+
     filesEl.innerHTML = html;
-    // "Download all" = trigger each file's signed download with a small stagger.
+    wire(data, dels);
+  }
+
+  function wire(data, dels){
+    // Download all (per-file signed links, staggered — no server-side zip)
     filesEl.querySelectorAll("[data-all]").forEach(function (btn) {
       btn.addEventListener("click", function (e) {
         e.preventDefault();
-        var d = data.deliveries.find(function(x){ return x.id === btn.getAttribute("data-all"); });
+        var d = dels.filter(function(x){ return x.id === btn.getAttribute("data-all"); })[0];
         if(!d) return;
-        d.files.forEach(function (f, i) {
+        (d.files||[]).forEach(function (f, i) {
           setTimeout(function () {
             var a = document.createElement("a");
             a.href = "/client-area/dl?delivery=" + encodeURIComponent(d.id) + "&file=" + encodeURIComponent(f.id);
@@ -132,13 +236,19 @@ permalink: /client-area/
         });
       });
     });
-    if (focus) { var el = document.getElementById("d-" + focus); if (el) el.scrollIntoView({ behavior:"smooth", block:"start" }); }
+    // History → make that delivery the current one
+    filesEl.querySelectorAll("[data-open]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        render(data, btn.getAttribute("data-open"));
+        window.scrollTo({ top:0, behavior:"smooth" });
+      });
+    });
   }
 
   // Boot
   var err = params.get("error");
   fetch("/api/portal/me", { headers:{ "accept":"application/json" } })
-    .then(function (r) { if (r.status === 200) return r.json().then(renderFiles); showLogin(err); })
+    .then(function (r) { if (r.status === 200) return r.json().then(function(d){ render(d, params.get("d")); }); showLogin(err); })
     .catch(function () { showLogin(err); });
 })();
 </script>
