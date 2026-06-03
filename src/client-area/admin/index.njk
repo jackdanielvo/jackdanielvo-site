@@ -119,6 +119,13 @@ eleventyExcludeFromCollections: true
             </span>
             <input type="checkbox" id="a-notify" checked>
           </label>
+          <label class="jdvo-toggle-row">
+            <span>
+              <span class="name">Email recipient(s) now</span>
+              <span class="desc">Send the delivery email automatically once it's created</span>
+            </span>
+            <input type="checkbox" id="a-emailnow" checked>
+          </label>
         </div>
 
         <!-- Action bar -->
@@ -352,12 +359,14 @@ eleventyExcludeFromCollections: true
         await api("/api/admin/attach-file",{ delivery_id:created.id, r2_key:up.key, display_name:f.name, label:label, size_bytes:f.size, mime_type:ct, duration_sec:dur });
         log("&nbsp;&nbsp;✓ "+esc(f.name)+" stored");
       }
-      log("<strong>Ready.</strong> Copy the link to send it yourself, and/or email it.");
+      var emailNow = $("a-emailnow").checked;
+      log("<strong>Ready.</strong> " + (emailNow ? "Emailing the recipient(s) now — you can also copy the link below." : "Copy the link to send it yourself, and/or email it."));
       var send=$("a-send"); send.hidden=false;
-      send.innerHTML='<div class="jdvo-actions"><button class="jdvo-btn-primary" id="a-linksbtn">Copy shareable link</button> <button class="jdvo-btn-secondary" id="a-sendbtn">Also email recipient(s)</button></div><div id="a-links"></div>';
+      send.innerHTML='<div class="jdvo-actions"><button class="jdvo-btn-primary" id="a-linksbtn">Copy shareable link</button> <button class="jdvo-btn-secondary" id="a-sendbtn">Email recipient(s)</button></div><div id="a-links"></div>';
       $("a-sendbtn").addEventListener("click", doSend);
       $("a-linksbtn").addEventListener("click", function(){ renderLinks(created.id, document.getElementById("a-links")); });
       renderLinks(created.id, document.getElementById("a-links"));
+      if (emailNow) doSend();
     } catch(err){ log('<span style="color:#b00;">✗ '+esc(err.message)+'</span>'); }
     btn.disabled=false; btn.textContent="Create & upload →";
   }
