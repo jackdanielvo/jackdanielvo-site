@@ -36,6 +36,7 @@ module.exports = class {
         const tile = {
           video: v.fileSlug,
           youtube: ytid(v.data.youtube || ""),
+          clip: v.data.clip || "",
           title: String(t.title || v.data.title || "").split("\n"),
           eyebrow: t.eyebrow || (v.data.categories && v.data.categories[0]) || "",
           meta: t.meta || "",

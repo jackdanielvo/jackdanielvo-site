@@ -19,6 +19,7 @@ module.exports = class {
         youtube: id,
         vimeo: v.data.vimeo || "",
         thumbnail: v.data.thumbnail || (id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : ""),
+        clip: v.data.clip || "",
         categories: v.data.categories || [],
         order: v.data.order || 999,
       };

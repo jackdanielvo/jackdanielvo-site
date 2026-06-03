@@ -42,6 +42,7 @@ function resolveTiles(raw, videos) {
     const tile = {
       video: v.slug,
       youtube: v.youtube || "",
+      clip: v.clip || "",
       vimeo: v.vimeo || "",
       thumbnail: v.thumbnail || "",
       title: String(t.title || v.title || "").split("\n"),
