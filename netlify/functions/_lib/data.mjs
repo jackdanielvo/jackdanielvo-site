@@ -57,6 +57,7 @@ export const Deliveries = {
   get: (id) => store("deliveries").get(id, { type: "json" }),
   list: () => listAll("deliveries"),
   async save(row) { await store("deliveries").setJSON(row.id, row); return row; },
+  async remove(id) { await store("deliveries").delete(String(id)); },
   async markSent(id) {
     const row = await Deliveries.get(id);
     if (!row) return null;
@@ -148,5 +149,13 @@ export const Events = {
     const all = await listAll("events");
     return all.filter((e) => e && e.delivery_id === deliveryId)
       .sort((a, b) => (b.created_at || "").localeCompare(a.created_at || ""));
+  },
+  async deleteForDelivery(deliveryId) {
+    const s = store("events");
+    const { blobs } = await s.list();
+    for (const b of blobs) {
+      const e = await s.get(b.key, { type: "json" });
+      if (e && e.delivery_id === deliveryId) await s.delete(b.key);
+    }
   },
 };

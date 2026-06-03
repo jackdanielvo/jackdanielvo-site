@@ -1,0 +1,967 @@
+{
+  "version": 1,
+  "clients": [
+    {
+      "id": "1",
+      "agency_name": "Nachtrab VO",
+      "contact_name": "Dan Nachtrab",
+      "email": "dannachtrab@gmail.com",
+      "phone": "",
+      "notes": "",
+      "created_at": "2026-05-06T22:49:36Z"
+    },
+    {
+      "id": "2",
+      "agency_name": "WABC",
+      "contact_name": "Christina Georgiou",
+      "email": "christina.g.georgiou@abc.com",
+      "phone": "",
+      "notes": "",
+      "created_at": "2026-05-08T17:44:18Z"
+    },
+    {
+      "id": "3",
+      "agency_name": "CBS",
+      "contact_name": "Mike Henelly",
+      "email": "mike.hennelly@cbs.com",
+      "phone": "",
+      "notes": "",
+      "created_at": "2026-05-14T17:28:29Z"
+    },
+    {
+      "id": "4",
+      "agency_name": "Capstone Productions",
+      "contact_name": "Jason Huggins",
+      "email": "jason@capstoneproductiongroup.com",
+      "phone": "(919) 899-9919",
+      "notes": "",
+      "created_at": "2026-05-14T17:50:09Z"
+    },
+    {
+      "id": "6",
+      "agency_name": "TNT",
+      "contact_name": "Alex Bente",
+      "email": "alex.bente@wbd.com",
+      "phone": "",
+      "notes": "",
+      "created_at": "2026-05-20T20:32:10Z"
+    },
+    {
+      "id": "8",
+      "agency_name": "981 Media",
+      "contact_name": "Austin Brooks",
+      "email": "austin@981media.com",
+      "phone": "",
+      "notes": "",
+      "created_at": "2026-05-21T18:13:45Z"
+    },
+    {
+      "id": "9",
+      "agency_name": "Chimaeric",
+      "contact_name": "David Anderson",
+      "email": "david@chimaeric.com",
+      "phone": "",
+      "notes": "for Shelter Insurance",
+      "created_at": "2026-05-21T18:14:57Z"
+    },
+    {
+      "id": "14",
+      "agency_name": "Thomas Moretti Global Casting",
+      "contact_name": "Thomas Moretti",
+      "email": "thomasmorettiglobalcasting@gmail.com",
+      "phone": "",
+      "notes": "",
+      "created_at": "2026-05-25T15:27:39Z"
+    },
+    {
+      "id": "17",
+      "agency_name": "PlutoTV - Liz Weinstein",
+      "contact_name": "Liz Weinstein",
+      "email": "liz.weinstein@paramount.com",
+      "phone": "718-781-0803",
+      "notes": "",
+      "created_at": "2026-05-28T16:30:34Z"
+    }
+  ],
+  "deliveries": [
+    {
+      "id": "1",
+      "client_id": "1",
+      "project_name": "Test - would you mind checking this out",
+      "title": "Test - would you mind checking this out",
+      "note_from_jack": "Test note - here i would describe what i did",
+      "show_recent_work": true,
+      "notify_on_download": true,
+      "status": "sent",
+      "recipients": [
+        "dannachtrab@gmail.com"
+      ],
+      "files": [
+        {
+          "stored_name": "f_69fbc580a39f84.82596559.mp3",
+          "display_name": "Jack_Daniel_Masters_031726_Atlas.mp3",
+          "label": "final_approved",
+          "size_bytes": 1098124,
+          "mime_type": "audio/mpeg",
+          "duration_sec": 45,
+          "sample_rate": 48000,
+          "bit_depth": null
+        }
+      ],
+      "expires_at": "2026-08-04T22:49:36Z",
+      "created_at": "2026-05-06T22:49:36Z",
+      "delivered_at": "2026-05-06T22:49:36Z"
+    },
+    {
+      "id": "2",
+      "client_id": "2",
+      "project_name": "AM POP",
+      "title": "AM POP",
+      "note_from_jack": "Here is where I would put in notes such as \\\"first read fast, second normal\\\" etc.",
+      "show_recent_work": true,
+      "notify_on_download": true,
+      "status": "sent",
+      "recipients": [
+        "christina.g.georgiou@abc.com"
+      ],
+      "files": [
+        {
+          "stored_name": "f_69fe20f2b26b08.74366573.mp3",
+          "display_name": "WABC7_20260508_AM-POP_Jack-D.mp3",
+          "label": "final_approved",
+          "size_bytes": 2996236,
+          "mime_type": "audio/mpeg",
+          "duration_sec": 93,
+          "sample_rate": 48000,
+          "bit_depth": null
+        }
+      ],
+      "expires_at": "2026-08-06T17:44:18Z",
+      "created_at": "2026-05-08T17:44:18Z",
+      "delivered_at": "2026-05-08T17:44:19Z"
+    },
+    {
+      "id": "3",
+      "client_id": "3",
+      "project_name": "NFL Draft on CBS",
+      "title": "NFL Draft on CBS",
+      "note_from_jack": "Edited out our chats bw takes.",
+      "show_recent_work": true,
+      "notify_on_download": true,
+      "status": "sent",
+      "recipients": [
+        "jwnydesk@atlastalent.com",
+        "nate@atlastalent.com"
+      ],
+      "files": [
+        {
+          "stored_name": "f_6a06063d628250.36127729.wav",
+          "display_name": "CBS_20260514_NFL-DRAFT_Jack-Daniel.wav",
+          "label": "final_approved",
+          "size_bytes": 41483824,
+          "mime_type": "audio/x-wav",
+          "duration_sec": 288,
+          "sample_rate": 48000,
+          "bit_depth": 24
+        }
+      ],
+      "expires_at": "2026-08-12T17:28:29Z",
+      "created_at": "2026-05-14T17:28:29Z",
+      "delivered_at": "2026-05-14T17:28:30Z"
+    },
+    {
+      "id": "4",
+      "client_id": "4",
+      "project_name": "Houser FHIL-0054-H",
+      "title": "Houser FHIL-0054-H",
+      "note_from_jack": "",
+      "show_recent_work": true,
+      "notify_on_download": true,
+      "status": "sent",
+      "recipients": [
+        "jeff@capstoneproductiongroup.com"
+      ],
+      "files": [
+        {
+          "stored_name": "f_6a060b51073bf7.32733298.wav",
+          "display_name": "Capstone_20260514_Housner-New-Name-Same-Team-30FHIL-0054-H_Jack-Daniel.wav",
+          "label": "final_approved",
+          "size_bytes": 9949446,
+          "mime_type": "audio/x-wav",
+          "duration_sec": 69,
+          "sample_rate": 48000,
+          "bit_depth": 24
+        }
+      ],
+      "expires_at": "2026-08-12T17:50:09Z",
+      "created_at": "2026-05-14T17:50:09Z",
+      "delivered_at": "2026-05-14T17:50:09Z"
+    },
+    {
+      "id": "5",
+      "client_id": null,
+      "project_name": "NFL Draft on CBS",
+      "title": "NFL Draft on CBS",
+      "note_from_jack": "testing with a second send...",
+      "show_recent_work": true,
+      "notify_on_download": true,
+      "status": "sent",
+      "recipients": [
+        "jack@voiceofjack.com",
+        "mike.hennelly@cbs.com"
+      ],
+      "files": [
+        {
+          "stored_name": "f_6a063f525f7843.75615324.wav",
+          "display_name": "CBS_20260514_NFL-DRAFT_Jack-Daniel.wav",
+          "label": "final_approved",
+          "size_bytes": 41483824,
+          "mime_type": "audio/x-wav",
+          "duration_sec": 288,
+          "sample_rate": 48000,
+          "bit_depth": 24
+        }
+      ],
+      "expires_at": "2026-08-12T21:32:02Z",
+      "created_at": "2026-05-14T21:32:02Z",
+      "delivered_at": "2026-05-14T21:32:02Z"
+    },
+    {
+      "id": "6",
+      "client_id": null,
+      "project_name": "2026 Conf Final Game 1 Script",
+      "title": "2026 Conf Final Game 1 Script",
+      "note_from_jack": "I edited out the conversation -  hope that makes things easier",
+      "show_recent_work": true,
+      "notify_on_download": true,
+      "status": "sent",
+      "recipients": [
+        "alex.bente@wbd.com",
+        "george.adams@wbd.com"
+      ],
+      "files": [
+        {
+          "stored_name": "f_6a0e1a9d1b6ae2.14574562.wav",
+          "display_name": "TNT_2026-Conf-Final-Game-1-Script_Jack-Daniel.wav",
+          "label": "final_approved",
+          "size_bytes": 90384768,
+          "mime_type": "audio/x-wav",
+          "duration_sec": 627,
+          "sample_rate": 48000,
+          "bit_depth": 24
+        }
+      ],
+      "expires_at": "2026-08-18T20:33:33Z",
+      "created_at": "2026-05-20T20:33:33Z",
+      "delivered_at": "2026-05-20T20:33:33Z"
+    },
+    {
+      "id": "7",
+      "client_id": null,
+      "project_name": "Venstar’s Explorer Portable",
+      "title": "Venstar’s Explorer Portable",
+      "note_from_jack": "Enjoyed the AI voice :)",
+      "show_recent_work": true,
+      "notify_on_download": true,
+      "status": "sent",
+      "recipients": [
+        "austin@981media.com"
+      ],
+      "files": [
+        {
+          "stored_name": "f_6a0f4be246a884.56682671.wav",
+          "display_name": "Austin_20260521_Venstar-Explorer-Portable_Jack-Daniel.wav",
+          "label": "final_approved",
+          "size_bytes": 29507586,
+          "mime_type": "audio/x-wav",
+          "duration_sec": 205,
+          "sample_rate": 48000,
+          "bit_depth": 24
+        }
+      ],
+      "expires_at": "2026-08-19T18:16:02Z",
+      "created_at": "2026-05-21T18:16:02Z",
+      "delivered_at": "2026-05-21T18:16:02Z"
+    },
+    {
+      "id": "8",
+      "client_id": null,
+      "project_name": "Shelter - Lifetime of Service, A Bit Much",
+      "title": "Shelter - Lifetime of Service, A Bit Much",
+      "note_from_jack": "David, I saw the note about reading only the last line of the first spot after recording, so please feel free to discard the extra lines. If you find any value in them, great!",
+      "show_recent_work": true,
+      "notify_on_download": true,
+      "status": "sent",
+      "recipients": [
+        "christopher@atlastalent.com",
+        "david@chimaeric.com",
+        "emmy@atlastalent.com"
+      ],
+      "files": [
+        {
+          "stored_name": "f_6a0f4c7997c8f7.68488018.wav",
+          "display_name": "Chimaeric_20260521_Shelter-Insurance-2026_Jack-Daniel-VO.wav",
+          "label": "final_approved",
+          "size_bytes": 42243232,
+          "mime_type": "audio/x-wav",
+          "duration_sec": 293,
+          "sample_rate": 48000,
+          "bit_depth": 24
+        }
+      ],
+      "expires_at": "2026-08-19T18:18:33Z",
+      "created_at": "2026-05-21T18:18:33Z",
+      "delivered_at": "2026-05-21T18:18:34Z"
+    },
+    {
+      "id": "9",
+      "client_id": null,
+      "project_name": "TNT NHL playoffs round 2 PU",
+      "title": "TNT NHL playoffs round 2 PU",
+      "note_from_jack": "Here are the new ALTs, George!",
+      "show_recent_work": true,
+      "notify_on_download": true,
+      "status": "sent",
+      "recipients": [
+        "alex.bente@wbd.com",
+        "george.adams@wbd.com",
+        "jwnydesk@atlastalent.com"
+      ],
+      "files": [
+        {
+          "stored_name": "f_6a0f59d2a32dd7.78077036.wav",
+          "display_name": "TNT_20260521_2026-Conf-Final-Game-1-Script_PU-01_Jack-Daniel.wav",
+          "label": "pickup",
+          "size_bytes": 16306242,
+          "mime_type": "audio/x-wav",
+          "duration_sec": 113,
+          "sample_rate": 48000,
+          "bit_depth": 24
+        }
+      ],
+      "expires_at": "2026-08-19T19:15:30Z",
+      "created_at": "2026-05-21T19:15:30Z",
+      "delivered_at": "2026-05-21T19:15:31Z"
+    },
+    {
+      "id": "10",
+      "client_id": null,
+      "project_name": "Shelter - Lifetime of Service (last line only), A Bit Much",
+      "title": "Shelter - Lifetime of Service (last line only), A Bit Much",
+      "note_from_jack": "Edited the file so the first spot is only the last line :)",
+      "show_recent_work": true,
+      "notify_on_download": true,
+      "status": "sent",
+      "recipients": [
+        "david@chimaeric.com",
+        "emmy@atlastalent.com"
+      ],
+      "files": [
+        {
+          "stored_name": "f_6a0f65018810e1.64564589.wav",
+          "display_name": "Chimaeric_20260521_Shelter-Insurance-2026-v02_Jack-Daniel-VO.wav",
+          "label": "final_approved",
+          "size_bytes": 23743654,
+          "mime_type": "audio/x-wav",
+          "duration_sec": 165,
+          "sample_rate": 48000,
+          "bit_depth": 24
+        }
+      ],
+      "expires_at": "2026-08-19T20:03:13Z",
+      "created_at": "2026-05-21T20:03:13Z",
+      "delivered_at": "2026-05-21T20:03:14Z"
+    },
+    {
+      "id": "13",
+      "client_id": null,
+      "project_name": "PlutoTV Summer Campaign - Moviephone",
+      "title": "PlutoTV Summer Campaign - Moviephone",
+      "note_from_jack": "",
+      "show_recent_work": true,
+      "notify_on_download": true,
+      "status": "sent",
+      "recipients": [
+        "jarrad@atlastalent.com",
+        "liz.weinstein@paramount.com"
+      ],
+      "files": [
+        {
+          "stored_name": "f_6a186e325086f8.46691254.wav",
+          "display_name": "PLUTOTV_20260528_Moviephone-Summer-Movies-Brand-Campaign_Jack-Daniel.wav",
+          "label": "final_approved",
+          "size_bytes": 87367738,
+          "mime_type": "audio/x-wav",
+          "duration_sec": 607,
+          "sample_rate": 48000,
+          "bit_depth": 24
+        }
+      ],
+      "expires_at": "2026-08-26T16:32:50Z",
+      "created_at": "2026-05-28T16:32:50Z",
+      "delivered_at": "2026-05-28T16:32:50Z"
+    }
+  ],
+  "events": [
+    {
+      "id": "1",
+      "event_type": "link_opened",
+      "delivery_id": "1",
+      "file_id": null,
+      "email": "dannachtrab@gmail.com",
+      "ip": "50.39.220.120",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+      "created_at": "2026-05-06T22:56:46Z"
+    },
+    {
+      "id": "2",
+      "event_type": "link_opened",
+      "delivery_id": "1",
+      "file_id": null,
+      "email": "dannachtrab@gmail.com",
+      "ip": "172.253.15.232",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+      "created_at": "2026-05-06T22:56:57Z"
+    },
+    {
+      "id": "3",
+      "event_type": "zip_downloaded",
+      "delivery_id": "1",
+      "file_id": null,
+      "email": "dannachtrab@gmail.com",
+      "ip": "50.39.220.120",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+      "created_at": "2026-05-06T22:56:59Z"
+    },
+    {
+      "id": "4",
+      "event_type": "link_opened",
+      "delivery_id": "2",
+      "file_id": null,
+      "email": "christina.g.georgiou@abc.com",
+      "ip": "206.15.117.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-08T17:44:37Z"
+    },
+    {
+      "id": "5",
+      "event_type": "link_opened",
+      "delivery_id": "2",
+      "file_id": null,
+      "email": "christina.g.georgiou@abc.com",
+      "ip": "72.152.84.204",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.7444.163 Safari/537.36",
+      "created_at": "2026-05-08T17:44:51Z"
+    },
+    {
+      "id": "6",
+      "event_type": "zip_downloaded",
+      "delivery_id": "2",
+      "file_id": null,
+      "email": "christina.g.georgiou@abc.com",
+      "ip": "206.15.117.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-08T17:45:01Z"
+    },
+    {
+      "id": "7",
+      "event_type": "link_opened",
+      "delivery_id": "3",
+      "file_id": null,
+      "email": "jwnydesk@atlastalent.com",
+      "ip": "206.252.197.130",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-14T17:32:41Z"
+    },
+    {
+      "id": "8",
+      "event_type": "zip_downloaded",
+      "delivery_id": "3",
+      "file_id": null,
+      "email": "jwnydesk@atlastalent.com",
+      "ip": "206.252.197.130",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-14T17:32:48Z"
+    },
+    {
+      "id": "9",
+      "event_type": "link_opened",
+      "delivery_id": "3",
+      "file_id": null,
+      "email": "jwnydesk@atlastalent.com",
+      "ip": "23.228.131.197",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+      "created_at": "2026-05-14T17:32:48Z"
+    },
+    {
+      "id": "10",
+      "event_type": "zip_downloaded",
+      "delivery_id": "3",
+      "file_id": null,
+      "email": "jwnydesk@atlastalent.com",
+      "ip": "23.228.131.197",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+      "created_at": "2026-05-14T17:33:03Z"
+    },
+    {
+      "id": "11",
+      "event_type": "link_opened",
+      "delivery_id": "3",
+      "file_id": null,
+      "email": "jwnydesk@atlastalent.com",
+      "ip": "206.252.197.130",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-14T17:35:36Z"
+    },
+    {
+      "id": "12",
+      "event_type": "email_resent",
+      "delivery_id": "4",
+      "file_id": null,
+      "email": "",
+      "ip": "47.143.202.206",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+      "created_at": "2026-05-14T21:08:34Z"
+    },
+    {
+      "id": "13",
+      "event_type": "email_resent",
+      "delivery_id": "4",
+      "file_id": null,
+      "email": "",
+      "ip": "47.143.202.206",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+      "created_at": "2026-05-14T21:19:44Z"
+    },
+    {
+      "id": "14",
+      "event_type": "link_opened",
+      "delivery_id": "6",
+      "file_id": null,
+      "email": "george.adams@wbd.com",
+      "ip": "107.128.17.21",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-20T20:35:33Z"
+    },
+    {
+      "id": "15",
+      "event_type": "file_downloaded",
+      "delivery_id": "6",
+      "file_id": "6",
+      "email": "george.adams@wbd.com",
+      "ip": "107.128.17.21",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-20T20:35:40Z"
+    },
+    {
+      "id": "16",
+      "event_type": "link_opened",
+      "delivery_id": null,
+      "file_id": null,
+      "email": "austin@981media.com",
+      "ip": "98.167.22.228",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-21T18:39:01Z"
+    },
+    {
+      "id": "17",
+      "event_type": "zip_downloaded",
+      "delivery_id": "7",
+      "file_id": null,
+      "email": "austin@981media.com",
+      "ip": "98.167.22.228",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-21T18:39:09Z"
+    },
+    {
+      "id": "18",
+      "event_type": "file_downloaded",
+      "delivery_id": "7",
+      "file_id": "7",
+      "email": "austin@981media.com",
+      "ip": "98.167.22.228",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-21T18:39:12Z"
+    },
+    {
+      "id": "19",
+      "event_type": "link_opened",
+      "delivery_id": "8",
+      "file_id": null,
+      "email": "emmy@atlastalent.com",
+      "ip": "35.150.131.153",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-21T19:00:21Z"
+    },
+    {
+      "id": "20",
+      "event_type": "file_downloaded",
+      "delivery_id": "8",
+      "file_id": "8",
+      "email": "emmy@atlastalent.com",
+      "ip": "35.150.131.153",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-21T19:00:28Z"
+    },
+    {
+      "id": "21",
+      "event_type": "link_opened",
+      "delivery_id": "8",
+      "file_id": null,
+      "email": "emmy@atlastalent.com",
+      "ip": "208.54.41.229",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+      "created_at": "2026-05-21T19:00:28Z"
+    },
+    {
+      "id": "22",
+      "event_type": "link_opened",
+      "delivery_id": "9",
+      "file_id": null,
+      "email": "george.adams@wbd.com",
+      "ip": "140.209.215.180",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-21T19:17:18Z"
+    },
+    {
+      "id": "23",
+      "event_type": "file_downloaded",
+      "delivery_id": "9",
+      "file_id": "9",
+      "email": "george.adams@wbd.com",
+      "ip": "140.209.215.180",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-21T19:17:22Z"
+    },
+    {
+      "id": "24",
+      "event_type": "link_opened",
+      "delivery_id": "8",
+      "file_id": null,
+      "email": "emmy@atlastalent.com",
+      "ip": "35.150.131.153",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-21T19:56:36Z"
+    },
+    {
+      "id": "25",
+      "event_type": "zip_downloaded",
+      "delivery_id": "8",
+      "file_id": null,
+      "email": "emmy@atlastalent.com",
+      "ip": "35.150.131.153",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-21T19:56:59Z"
+    },
+    {
+      "id": "26",
+      "event_type": "link_opened",
+      "delivery_id": "10",
+      "file_id": null,
+      "email": "emmy@atlastalent.com",
+      "ip": "35.150.131.153",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-21T20:03:36Z"
+    },
+    {
+      "id": "27",
+      "event_type": "zip_downloaded",
+      "delivery_id": "10",
+      "file_id": null,
+      "email": "emmy@atlastalent.com",
+      "ip": "35.150.131.153",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-21T20:03:44Z"
+    },
+    {
+      "id": "28",
+      "event_type": "link_opened",
+      "delivery_id": "10",
+      "file_id": null,
+      "email": "emmy@atlastalent.com",
+      "ip": "74.51.221.36",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+      "created_at": "2026-05-21T20:03:44Z"
+    },
+    {
+      "id": "29",
+      "event_type": "zip_downloaded",
+      "delivery_id": "10",
+      "file_id": null,
+      "email": "emmy@atlastalent.com",
+      "ip": "35.150.131.153",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-21T20:03:48Z"
+    },
+    {
+      "id": "30",
+      "event_type": "zip_downloaded",
+      "delivery_id": "10",
+      "file_id": null,
+      "email": "emmy@atlastalent.com",
+      "ip": "35.150.131.153",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-21T20:06:55Z"
+    },
+    {
+      "id": "31",
+      "event_type": "zip_downloaded",
+      "delivery_id": "10",
+      "file_id": null,
+      "email": "emmy@atlastalent.com",
+      "ip": "35.150.131.153",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-21T20:07:28Z"
+    },
+    {
+      "id": "32",
+      "event_type": "link_opened",
+      "delivery_id": "9",
+      "file_id": null,
+      "email": "jwnydesk@atlastalent.com",
+      "ip": "206.252.197.130",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+      "created_at": "2026-05-21T20:31:02Z"
+    },
+    {
+      "id": "33",
+      "event_type": "zip_downloaded",
+      "delivery_id": "9",
+      "file_id": null,
+      "email": "jwnydesk@atlastalent.com",
+      "ip": "206.252.197.130",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+      "created_at": "2026-05-21T20:31:10Z"
+    },
+    {
+      "id": "34",
+      "event_type": "link_opened",
+      "delivery_id": "9",
+      "file_id": null,
+      "email": "jwnydesk@atlastalent.com",
+      "ip": "50.203.146.9",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+      "created_at": "2026-05-21T20:31:12Z"
+    },
+    {
+      "id": "35",
+      "event_type": "link_opened",
+      "delivery_id": "12",
+      "file_id": null,
+      "email": "thomasmorettiglobalcasting@gmail.com",
+      "ip": "102.93.11.222",
+      "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.4 Mobile/15E148 Safari/604.1 OPT/6.4.1",
+      "created_at": "2026-05-25T15:39:14Z"
+    },
+    {
+      "id": "36",
+      "event_type": "file_downloaded",
+      "delivery_id": "12",
+      "file_id": "12",
+      "email": "thomasmorettiglobalcasting@gmail.com",
+      "ip": "102.93.11.222",
+      "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.4 Mobile/15E148 Safari/604.1 OPT/6.4.1",
+      "created_at": "2026-05-25T15:39:25Z"
+    },
+    {
+      "id": "37",
+      "event_type": "file_downloaded",
+      "delivery_id": "12",
+      "file_id": "12",
+      "email": "thomasmorettiglobalcasting@gmail.com",
+      "ip": "102.93.11.222",
+      "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.4 Mobile/15E148 Safari/604.1 OPT/6.4.1",
+      "created_at": "2026-05-25T15:39:34Z"
+    },
+    {
+      "id": "38",
+      "event_type": "zip_downloaded",
+      "delivery_id": "12",
+      "file_id": null,
+      "email": "thomasmorettiglobalcasting@gmail.com",
+      "ip": "102.93.11.222",
+      "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.4 Mobile/15E148 Safari/604.1 OPT/6.4.1",
+      "created_at": "2026-05-25T15:39:45Z"
+    },
+    {
+      "id": "39",
+      "event_type": "zip_downloaded",
+      "delivery_id": "12",
+      "file_id": null,
+      "email": "thomasmorettiglobalcasting@gmail.com",
+      "ip": "102.93.11.222",
+      "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.4 Mobile/15E148 Safari/604.1 OPT/6.4.1",
+      "created_at": "2026-05-25T15:39:50Z"
+    },
+    {
+      "id": "40",
+      "event_type": "zip_downloaded",
+      "delivery_id": "12",
+      "file_id": null,
+      "email": "thomasmorettiglobalcasting@gmail.com",
+      "ip": "102.93.11.222",
+      "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.4 Mobile/15E148 Safari/604.1 OPT/6.4.1",
+      "created_at": "2026-05-25T15:39:57Z"
+    },
+    {
+      "id": "41",
+      "event_type": "file_downloaded",
+      "delivery_id": "12",
+      "file_id": "12",
+      "email": "thomasmorettiglobalcasting@gmail.com",
+      "ip": "102.93.11.222",
+      "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.4 Mobile/15E148 Safari/604.1 OPT/6.4.1",
+      "created_at": "2026-05-25T15:39:58Z"
+    },
+    {
+      "id": "42",
+      "event_type": "link_opened",
+      "delivery_id": "10",
+      "file_id": null,
+      "email": "david@chimaeric.com",
+      "ip": "67.6.12.199",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-26T13:49:01Z"
+    },
+    {
+      "id": "43",
+      "event_type": "zip_downloaded",
+      "delivery_id": "10",
+      "file_id": null,
+      "email": "david@chimaeric.com",
+      "ip": "67.6.12.199",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-26T13:49:12Z"
+    },
+    {
+      "id": "44",
+      "event_type": "link_opened",
+      "delivery_id": "11",
+      "file_id": null,
+      "email": "thomasmorettiglobalcasting@gmail.com",
+      "ip": "102.89.83.152",
+      "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.4 Mobile/15E148 Safari/604.1 OPT/6.4.1",
+      "created_at": "2026-05-26T16:19:32Z"
+    },
+    {
+      "id": "45",
+      "event_type": "link_opened",
+      "delivery_id": "12",
+      "file_id": null,
+      "email": "thomasmorettiglobalcasting@gmail.com",
+      "ip": "102.89.83.152",
+      "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.4 Mobile/15E148 Safari/604.1 OPT/6.4.1",
+      "created_at": "2026-05-26T16:41:54Z"
+    },
+    {
+      "id": "46",
+      "event_type": "file_downloaded",
+      "delivery_id": "12",
+      "file_id": "12",
+      "email": "thomasmorettiglobalcasting@gmail.com",
+      "ip": "102.89.83.152",
+      "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.4 Mobile/15E148 Safari/604.1 OPT/6.4.1",
+      "created_at": "2026-05-26T16:42:02Z"
+    },
+    {
+      "id": "47",
+      "event_type": "zip_downloaded",
+      "delivery_id": "12",
+      "file_id": null,
+      "email": "thomasmorettiglobalcasting@gmail.com",
+      "ip": "102.89.83.152",
+      "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.4 Mobile/15E148 Safari/604.1 OPT/6.4.1",
+      "created_at": "2026-05-26T16:42:15Z"
+    },
+    {
+      "id": "48",
+      "event_type": "zip_downloaded",
+      "delivery_id": "12",
+      "file_id": null,
+      "email": "thomasmorettiglobalcasting@gmail.com",
+      "ip": "102.89.83.152",
+      "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.4 Mobile/15E148 Safari/604.1 OPT/6.4.1",
+      "created_at": "2026-05-26T16:42:22Z"
+    },
+    {
+      "id": "49",
+      "event_type": "zip_downloaded",
+      "delivery_id": "12",
+      "file_id": null,
+      "email": "thomasmorettiglobalcasting@gmail.com",
+      "ip": "102.89.83.152",
+      "user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.4 Mobile/15E148 Safari/604.1 OPT/6.4.1",
+      "created_at": "2026-05-26T16:42:29Z"
+    },
+    {
+      "id": "50",
+      "event_type": "link_opened",
+      "delivery_id": "13",
+      "file_id": null,
+      "email": "jarrad@atlastalent.com",
+      "ip": "174.206.161.109",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-28T16:33:20Z"
+    },
+    {
+      "id": "51",
+      "event_type": "zip_downloaded",
+      "delivery_id": "13",
+      "file_id": null,
+      "email": "jarrad@atlastalent.com",
+      "ip": "174.206.161.109",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-28T16:33:32Z"
+    },
+    {
+      "id": "52",
+      "event_type": "link_opened",
+      "delivery_id": "13",
+      "file_id": null,
+      "email": "liz.weinstein@paramount.com",
+      "ip": "32.215.239.58",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-28T16:35:58Z"
+    },
+    {
+      "id": "53",
+      "event_type": "zip_downloaded",
+      "delivery_id": "13",
+      "file_id": null,
+      "email": "liz.weinstein@paramount.com",
+      "ip": "32.215.239.58",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-28T16:36:09Z"
+    },
+    {
+      "id": "54",
+      "event_type": "link_opened",
+      "delivery_id": "13",
+      "file_id": null,
+      "email": "liz.weinstein@paramount.com",
+      "ip": "44.219.63.56",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-28T16:36:09Z"
+    },
+    {
+      "id": "55",
+      "event_type": "link_opened",
+      "delivery_id": "13",
+      "file_id": null,
+      "email": "liz.weinstein@paramount.com",
+      "ip": "98.116.40.86",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-28T16:37:04Z"
+    },
+    {
+      "id": "56",
+      "event_type": "zip_downloaded",
+      "delivery_id": "13",
+      "file_id": null,
+      "email": "liz.weinstein@paramount.com",
+      "ip": "98.116.40.86",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "created_at": "2026-05-28T16:37:34Z"
+    }
+  ]
+}

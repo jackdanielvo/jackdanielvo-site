@@ -254,7 +254,19 @@ eleventyExcludeFromCollections: true
 .jdvo-linkemail { font-size:11px; font-weight:600; letter-spacing:0.4px; color:var(--jdvo-muted); min-width:150px; }
 .jdvo-linkrow input { flex:1 1 280px; width:auto; border:1px solid var(--jdvo-line); border-radius:7px; padding:8px 10px; font-size:12px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; color:#444; background:#fafafa; }
 
-@media (max-width:680px){ .jdvo-grid-2{grid-template-columns:1fr;} .jdvo-action-bar{flex-direction:column;align-items:stretch;} }
+.jdvo-rowactions { white-space:nowrap; text-align:right; }
+.jdvo-rowactions .jdvo-btn-sm { margin-left:4px; }
+.jdvo-btn-danger { background:#fff; color:#b00; border:1px solid rgba(176,0,0,0.4); border-radius:7px; padding:5px 10px; font-size:12px; font-weight:600; cursor:pointer; }
+.jdvo-btn-danger:hover { background:#b00; color:#fff; }
+.jdvo-detail { padding:14px 4px 18px; }
+.jdvo-detail-proj { font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--jdvo-muted,#8a8a86); }
+.jdvo-detail-note { font-style:italic; color:#444; margin:6px 0 14px; }
+.jdvo-detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+.jdvo-detail h4 { font-size:11px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase; color:var(--jdvo-muted,#8a8a86); margin:0 0 8px; }
+.jdvo-detail-recips { font-size:13px; margin:0 0 16px; word-break:break-word; }
+.jdvo-evrow { display:flex; justify-content:space-between; gap:10px; padding:4px 0; border-bottom:1px solid var(--jdvo-line,#eee); font-size:12px; }
+.jdvo-evrow .sub { color:var(--jdvo-muted,#8a8a86); }
+@media (max-width:680px){ .jdvo-grid-2{grid-template-columns:1fr;} .jdvo-action-bar{flex-direction:column;align-items:stretch;} .jdvo-detail-grid{grid-template-columns:1fr;} .jdvo-rowactions{text-align:left;} }
 </style>
 
 <script>
@@ -315,14 +327,64 @@ eleventyExcludeFromCollections: true
     if(!list.length){ el.innerHTML='<div class="jdvo-empty">No deliveries yet. Create your first one above.</div>'; return; }
     var rows = list.map(function(d){
       var pill = d.status==="sent" ? '<span class="jdvo-pill green">Sent</span>' : '<span class="jdvo-pill grey">'+esc(d.status||"draft")+'</span>';
-      return '<tr><td><strong>'+esc(d.title)+'</strong><div class="sub">'+esc((d.recipients||[]).join(", "))+'</div></td>'
-        +'<td>'+d.file_count+'</td>'
-        +'<td>'+pill+'</td>'
-        +'<td><button class="jdvo-btn-secondary jdvo-btn-sm" data-links="'+esc(d.id)+'">Copy link</button></td></tr>'
-        +'<tr><td colspan="4" style="padding:0 16px;"><div class="jdvo-linkpanel" id="lp-'+esc(d.id)+'"></div></td></tr>';
+      var when = d.delivered_at ? new Date(d.delivered_at).toLocaleDateString() : (d.created_at ? new Date(d.created_at).toLocaleDateString() : "");
+      return '<tr>'
+        +'<td><strong>'+esc(d.title)+'</strong><div class="sub">'+esc((d.recipients||[]).join(", "))+'</div></td>'
+        +'<td>'+(d.file_count||0)+'</td>'
+        +'<td>'+pill+'<div class="sub">'+esc(when)+'</div></td>'
+        +'<td class="jdvo-rowactions">'
+          +'<button class="jdvo-btn-secondary jdvo-btn-sm" data-open="'+esc(d.id)+'">Open</button> '
+          +'<button class="jdvo-btn-secondary jdvo-btn-sm" data-links="'+esc(d.id)+'">Copy link</button> '
+          +'<button class="jdvo-btn-secondary jdvo-btn-sm" data-resend="'+esc(d.id)+'">Resend</button> '
+          +'<button class="jdvo-btn-danger jdvo-btn-sm" data-del="'+esc(d.id)+'">Delete</button>'
+        +'</td></tr>'
+        +'<tr><td colspan="4" style="padding:0 16px;"><div class="jdvo-linkpanel" id="lp-'+esc(d.id)+'"></div><div class="jdvo-detail" id="dt-'+esc(d.id)+'" hidden></div></td></tr>';
     }).join("");
     el.innerHTML='<table class="jdvo-table"><thead><tr><th>Delivery</th><th>Files</th><th>Status</th><th></th></tr></thead><tbody>'+rows+'</tbody></table>';
     el.querySelectorAll("[data-links]").forEach(function(b){ b.addEventListener("click", function(){ renderLinks(b.getAttribute("data-links"), document.getElementById("lp-"+b.getAttribute("data-links"))); }); });
+    el.querySelectorAll("[data-open]").forEach(function(b){ b.addEventListener("click", function(){ toggleDetail(b.getAttribute("data-open")); }); });
+    el.querySelectorAll("[data-resend]").forEach(function(b){ b.addEventListener("click", function(){ doResend(b.getAttribute("data-resend"), b); }); });
+    el.querySelectorAll("[data-del]").forEach(function(b){ b.addEventListener("click", function(){ doDelete(b.getAttribute("data-del"), b); }); });
+  }
+
+  function humanEvent(t){ return ({link_opened:"Opened link",zip_downloaded:"Downloaded all (zip)",file_downloaded:"Downloaded file",email_resent:"Email resent",email_sent:"Email sent"})[t] || t; }
+
+  async function toggleDetail(id){
+    var panel=document.getElementById("dt-"+id);
+    if(!panel) return;
+    if(!panel.hidden){ panel.hidden=true; panel.innerHTML=""; return; }
+    panel.hidden=false; panel.innerHTML='<div class="muted" style="padding:8px 0;">Loading…</div>';
+    try{
+      var r=await api("/api/admin/delivery",{ delivery_id:id });
+      var d=r.delivery, ev=r.events||[];
+      var files=(d.files||[]).map(function(f){
+        return '<div class="jdvo-file-row"><span class="file-icon">'+esc(ext(f.display_name))+'</span><div><div class="name">'+esc(f.display_name)+'</div><div class="sub">'+esc(f.label||"")+' · '+mb(f.size_bytes)+'</div></div></div>';
+      }).join("") || '<p class="muted">No files.</p>';
+      var hist=ev.length ? ev.map(function(e){
+        return '<div class="jdvo-evrow"><span>'+esc(humanEvent(e.event_type))+'</span><span class="sub">'+esc(e.email||"")+'</span><span class="sub">'+esc(e.created_at? new Date(e.created_at).toLocaleString():"")+'</span></div>';
+      }).join("") : '<p class="muted">No activity recorded yet.</p>';
+      panel.innerHTML=
+        (d.project_name? '<div class="jdvo-detail-proj">'+esc(d.project_name)+'</div>':'')
+        +(d.note_from_jack? '<p class="jdvo-detail-note">“'+esc(d.note_from_jack)+'”</p>':'')
+        +'<div class="jdvo-detail-grid">'
+          +'<div><h4>Files</h4>'+files+'</div>'
+          +'<div><h4>Recipients</h4><p class="jdvo-detail-recips">'+esc((d.recipients||[]).join(", "))+'</p><h4>Activity</h4>'+hist+'</div>'
+        +'</div>';
+    }catch(e){ panel.innerHTML='<p class="jdvo-note-msg err">'+esc(e.message)+'</p>'; }
+  }
+
+  async function doResend(id, btn){
+    if(!confirm("Re-send the delivery email (with a fresh sign-in link) to all recipients of this delivery?")) return;
+    var t=btn.textContent; btn.disabled=true; btn.textContent="Sending…";
+    try{ var r=await api("/api/admin/send",{ delivery_id:id }); btn.textContent="Sent to "+r.sent+" ✓"; setTimeout(function(){ btn.textContent=t; btn.disabled=false; },2000); }
+    catch(e){ btn.disabled=false; btn.textContent=t; alert("Resend failed: "+e.message); }
+  }
+
+  async function doDelete(id, btn){
+    if(!confirm("Permanently delete this delivery, its files, and its activity log? This cannot be undone.")) return;
+    btn.disabled=true; btn.textContent="Deleting…";
+    try{ await api("/api/admin/delete-delivery",{ delivery_id:id }); var me=await fetch("/api/admin/me").then(function(x){return x.json();}); renderList(me.deliveries); }
+    catch(e){ btn.disabled=false; btn.textContent="Delete"; alert("Delete failed: "+e.message); }
   }
 
   function fileDuration(file){
