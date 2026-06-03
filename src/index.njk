@@ -504,12 +504,13 @@ section { padding: 96px 0; }
 .tile:focus-within .tile-hover-img { opacity: 0.78; transform: scale(1.04); }
 .tile.cream:hover .tile-hover-img,
 .tile.cream:focus-within .tile-hover-img { opacity: 0.88; }
-/* ——— Hover-to-play preview ———
-   On hover/focus, a muted YouTube preview of that card's video streams in the
-   tile background to add motion. Nothing to host — it uses the card's own video
-   id, so swapping a video needs no extra files. The wrapper fills the tile and
-   the iframe is sized to fully cover it (container units) so there are no black
-   bars on wide/tall/square tiles. Scrim/overlay/title sit above for legibility. */
+/* ——— Always-on ambient preview ———
+   A muted YouTube preview of each card's video streams in the tile background
+   so the grid is constantly in motion (only on-screen cards play; see the JS).
+   Nothing to host — it uses the card's own video id, so swapping a video needs
+   no extra files. The wrapper fills the tile and the iframe is sized to fully
+   cover it (container units) so there are no black bars on wide/tall/square
+   tiles. Scrim/overlay/title sit above for legibility. */
 .tile-clipwrap {
   position: absolute;
   inset: 0;
@@ -1666,53 +1667,50 @@ ${playBadge}
     probe.src = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
   });
 
-  setupTileHover(root);
+  setupTileClips(root);
 }
 
-/* ——— Hover-to-play previews ———
-   On hover/keyboard-focus, stream a muted, looping YouTube preview into the
-   tile (privacy-nocookie embed, no controls/branding). Only the hovered card
-   plays, so it stays light. A short delay avoids loading on a quick pass-by.
-   Skipped for reduced-motion users and touch devices (which open the lightbox
-   on tap as before). Uses each card's own video id, so updating a video needs
-   no extra files. */
-function setupTileHover(root) {
-  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const fine = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  if (reduce || !fine) return;
+/* ——— Always-on ambient previews ———
+   Each card autoplays a muted, looping YouTube preview of its own video so the
+   grid is constantly in motion. To stay performant, only cards currently on
+   screen play: an IntersectionObserver loads the embed when a card scrolls into
+   view and unloads it when it leaves, so just the handful you can see run at
+   once. Uses each card's own video id (no files to host), and updating a video
+   needs no extra steps. Skipped for reduced-motion / data-saver visitors and on
+   small/touch screens (where many autoplaying embeds are too heavy) — those
+   keep the still thumbnails and tap-to-open. */
+function setupTileClips(root) {
+  const mm = window.matchMedia;
+  const reduce = mm && mm('(prefers-reduced-motion: reduce)').matches;
+  const saveData = navigator.connection && navigator.connection.saveData;
+  const bigEnough = mm && mm('(min-width: 760px) and (pointer: fine)').matches;
+  if (reduce || saveData || !bigEnough || !('IntersectionObserver' in window)) return;
 
-  root.querySelectorAll('.tile[data-video]').forEach((tile) => {
-    const id = tile.dataset.video;
-    const wrap = tile.querySelector('.tile-clipwrap');
-    if (!id || !wrap) return;
-    let timer = null;
+  const load = (tile, wrap, id) => {
+    if (wrap.querySelector('iframe')) return;
+    const f = document.createElement('iframe');
+    f.setAttribute('tabindex', '-1');
+    f.setAttribute('aria-hidden', 'true');
+    f.allow = 'autoplay; encrypted-media';
+    f.src = 'https://www.youtube-nocookie.com/embed/' + id +
+      '?autoplay=1&mute=1&controls=0&loop=1&playlist=' + id +
+      '&modestbranding=1&playsinline=1&rel=0&disablekb=1&fs=0&iv_load_policy=3';
+    f.addEventListener('load', () => tile.classList.add('is-clipping'));
+    wrap.appendChild(f);
+  };
+  const unload = (tile, wrap) => { tile.classList.remove('is-clipping'); wrap.innerHTML = ''; };
 
-    const start = () => {
-      if (wrap.querySelector('iframe') || timer) return;
-      timer = setTimeout(() => {
-        timer = null;
-        const f = document.createElement('iframe');
-        f.setAttribute('tabindex', '-1');
-        f.setAttribute('aria-hidden', 'true');
-        f.allow = 'autoplay; encrypted-media';
-        f.src = 'https://www.youtube-nocookie.com/embed/' + id +
-          '?autoplay=1&mute=1&controls=0&loop=1&playlist=' + id +
-          '&modestbranding=1&playsinline=1&rel=0&disablekb=1&fs=0&iv_load_policy=3';
-        f.addEventListener('load', () => tile.classList.add('is-clipping'));
-        wrap.appendChild(f);
-      }, 150);
-    };
-    const stop = () => {
-      if (timer) { clearTimeout(timer); timer = null; }
-      tile.classList.remove('is-clipping');
-      wrap.innerHTML = '';
-    };
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      const tile = e.target;
+      const wrap = tile.querySelector('.tile-clipwrap');
+      if (!wrap) return;
+      if (e.isIntersecting) load(tile, wrap, tile.dataset.video);
+      else unload(tile, wrap);
+    });
+  }, { threshold: 0.35 });
 
-    tile.addEventListener('mouseenter', start);
-    tile.addEventListener('mouseleave', stop);
-    tile.addEventListener('focusin', start);
-    tile.addEventListener('focusout', stop);
-  });
+  root.querySelectorAll('.tile[data-video]').forEach((tile) => io.observe(tile));
 }
 
 /* Render blog cards. img may be null → render typographic color placeholder. */
