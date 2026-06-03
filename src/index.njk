@@ -411,6 +411,10 @@ section { padding: 96px 0; }
   opacity: 1;
   transform: translateX(0);
 }
+/* Respect reduced-motion: no slide/fade, just show the word in place. */
+@media (prefers-reduced-motion: reduce) {
+  .bio-lede .bio-accent { transition: none; transform: none; }
+}
 .bio-body {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1686,25 +1690,42 @@ function closeVideo() {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeVideo(); });
 
 /* ——— Reveal on scroll ———
-   Adds .is-in to each target when it scrolls into view.
-   CSS transitions on .rep and .bio-lede do the rest. */
+   Adds .is-in to each target when it scrolls into view; the CSS transitions on
+   .rep and .bio-lede (incl. the "contemporary" accent) do the rest.
+   Hardened so the text can NEVER stay permanently hidden: if motion is reduced,
+   if IntersectionObserver is unsupported, or if a callback is ever missed
+   (background/throttled tab, refresh mid-page), a scroll/resize/load sweep
+   reveals anything that's in view. */
 (() => {
-  const targets = document.querySelectorAll('.rep, .bio-lede');
+  const targets = [...document.querySelectorAll('.rep, .bio-lede')];
   if (!targets.length) return;
-  if (!('IntersectionObserver' in window)) {
-    // Fallback: just show them.
-    targets.forEach(r => r.classList.add('is-in'));
-    return;
-  }
+  const reveal = el => el.classList.add('is-in');
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || !('IntersectionObserver' in window)) { targets.forEach(reveal); return; }
+
   const io = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-in');
-        io.unobserve(entry.target);
-      }
+      if (entry.isIntersecting) { reveal(entry.target); io.unobserve(entry.target); }
     });
-  }, { threshold: 0.25, rootMargin: '0px 0px -8% 0px' });
-  targets.forEach(r => io.observe(r));
+  }, { threshold: 0.2, rootMargin: '0px 0px -10% 0px' });
+  targets.forEach(t => io.observe(t));
+
+  const sweep = () => {
+    let remaining = false;
+    targets.forEach(t => {
+      if (t.classList.contains('is-in')) return;
+      const r = t.getBoundingClientRect();
+      if (r.top < window.innerHeight * 0.85 && r.bottom > 0) { reveal(t); io.unobserve(t); }
+      else remaining = true;
+    });
+    if (!remaining) {
+      window.removeEventListener('scroll', sweep);
+      window.removeEventListener('resize', sweep);
+    }
+  };
+  window.addEventListener('scroll', sweep, { passive: true });
+  window.addEventListener('resize', sweep);
+  window.addEventListener('load', () => setTimeout(sweep, 200));
 })();
 
 /* ——— Giant CONTACT: scroll-driven scaleY on the wordmark ———
