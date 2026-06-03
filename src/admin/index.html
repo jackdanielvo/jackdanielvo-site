@@ -6,9 +6,73 @@
   <meta name="robots" content="noindex">
   <title>Content Manager — Jack Daniel VO</title>
   <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
+  <style>
+    /* ——— On-brand light theme for the Sveltia editor ———
+       Sveltia themes via --sui-* design tokens (no Shadow DOM), so overriding
+       them reskins the whole editor to match the site: light cream/white,
+       ink text, brand-violet accent. Each collection gets its own subtle tint
+       (Work = violet, Press = gold, From the Booth = green) so it's obvious
+       which section you're in. Thumbnails are enlarged so they're easy to see. */
+    :root {
+      --sui-primary-accent-color: #3C0350 !important;
+      --sui-content-background-color: #ffffff !important;
+      --sui-primary-background-color: #FAF9F5 !important;
+      --sui-secondary-background-color: #F1EFE8 !important;
+      --sui-tertiary-background-color: #EDE6D3 !important;
+      --sui-primary-foreground-color: #363636 !important;
+      --sui-secondary-foreground-color: #6E6A60 !important;
+      --sui-disabled-foreground-color: #A8A49B !important;
+      --sui-primary-border-color: rgba(54,54,54,0.16) !important;
+      --sui-secondary-border-color: rgba(54,54,54,0.10) !important;
+      --sui-textbox-background-color: #ffffff !important;
+      --sui-hover-background-color: rgba(60,3,80,0.06) !important;
+      --sui-selected-background-color: rgba(60,3,80,0.10) !important;
+      --sui-textbox-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif !important;
+    }
+    /* Larger, clearer entry-list thumbnails (default is ~36px). */
+    .preview.icon { width: 96px !important; height: 56px !important; border-radius: 8px !important; overflow: hidden !important; }
+    .preview.icon img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+
+    /* Per-collection accent + faint page tint. */
+    body[data-coll="videos"] {
+      --sui-primary-accent-color: #3C0350 !important;
+      --sui-primary-background-color: #F7F2FA !important;
+      --sui-hover-background-color: rgba(60,3,80,0.07) !important;
+      --sui-selected-background-color: rgba(60,3,80,0.12) !important;
+    }
+    body[data-coll="media"] {
+      --sui-primary-accent-color: #8A6A2E !important;
+      --sui-primary-background-color: #FAF6EC !important;
+      --sui-hover-background-color: rgba(138,106,46,0.08) !important;
+      --sui-selected-background-color: rgba(138,106,46,0.14) !important;
+    }
+    body[data-coll="posts"] {
+      --sui-primary-accent-color: #2F8F4E !important;
+      --sui-primary-background-color: #F0F7F2 !important;
+      --sui-hover-background-color: rgba(47,143,78,0.08) !important;
+      --sui-selected-background-color: rgba(47,143,78,0.14) !important;
+    }
+  </style>
 </head>
 <body>
   <!-- Sveltia CMS: a modern, actively-maintained, Decap-compatible editor. -->
   <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js" type="module"></script>
+  <script>
+    /* Tag <body> with the current collection so the per-collection tints apply.
+       Sveltia is a single-page app, so we read the route from the URL hash and
+       keep it in sync as you navigate. */
+    (function () {
+      function setColl() {
+        var m = (location.hash || '').match(/collections\/([^\/?#]+)/);
+        document.body.setAttribute('data-coll', m ? m[1] : '');
+      }
+      addEventListener('hashchange', setColl);
+      setInterval(setColl, 600);
+      setColl();
+    })();
+  </script>
 </body>
 </html>
