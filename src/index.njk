@@ -390,6 +390,25 @@ h1, h2, .display {
   .hero-wave svg { animation: none; }
 }
 
+/* ——— Hero entrance — a single calm reveal on load: meta + name rise in,
+   the waveform fades on, the tagline arrives word-by-word, buttons last.
+   Pure CSS (fill: both leaves everything visible at rest), and fully
+   disabled for reduced-motion so the hero simply renders complete. */
+.hero .ha { opacity: 0; }
+.hero .hero-tagline .w { display: inline-block; }
+.hero-meta.ha    { animation: hero-rise .7s .05s ease-out both; }
+.h-ghost.ha      { animation: hero-rise .9s .18s ease-out both; }
+.h-ink.ha        { animation: hero-rise .9s .34s ease-out both; }
+.hero-wave.ha    { animation: hero-fade 1s .62s ease-out both; }
+.hero-tagline .w.ha { animation: hero-word .55s ease-out both; }
+.hero-actions.ha { animation: hero-rise .7s 1.25s ease-out both; }
+@keyframes hero-rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes hero-word { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes hero-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .hero .ha { opacity: 1 !important; animation: none !important; transform: none !important; }
+}
+
 /* ——— Section header (eyebrow + thin rule + big heading) ——— */
 section { padding: 96px 0; }
 .sec-head {
@@ -1364,22 +1383,25 @@ html { background: transparent; }
 <!-- ——— Hero ——— -->
 <section class="hero" id="top">
   <div class="hero-inner">
-    <div class="hero-meta">
+    <div class="hero-meta ha">
       <span class="live-dot"></span>
       <span class="eyebrow">On Air · Booking 2026</span>
       <span class="chip chip-sm">Narrator · Voiceover</span>
     </div>
     <div class="hero-stack" style="margin-top:32px">
-      <span class="h-ghost">Jack</span>
-      <span class="h-ink">Daniel</span>
+      <span class="h-ghost ha">Jack</span>
+      <span class="h-ink ha">Daniel</span>
     </div>
-    <div class="hero-wave" aria-hidden="true">
+    <div class="hero-wave ha" aria-hidden="true">
       <svg viewBox="0 0 1600 32" width="1600" height="32" preserveAspectRatio="none"><path d="M0 16 Q40 7 80 16 T160 16 T240 16 T320 16 T400 16 T480 16 T560 16 T640 16 T720 16 T800 16 T880 16 T960 16 T1040 16 T1120 16 T1200 16 T1280 16 T1360 16 T1440 16 T1520 16 T1600 16"/></svg>
     </div>
     <div class="hero-tagline">
-      <span class="gh">Classic pipes,</span> modern sound.
+      <span class="w ha gh" style="animation-delay:.72s">Classic</span>
+      <span class="w ha gh" style="animation-delay:.82s">pipes,</span>
+      <span class="w ha" style="animation-delay:.95s">modern</span>
+      <span class="w ha" style="animation-delay:1.05s">sound.</span>
     </div>
-    <div class="hero-actions">
+    <div class="hero-actions ha">
       <a href="#portfolio" class="btn btn-solid">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
         View Reel
