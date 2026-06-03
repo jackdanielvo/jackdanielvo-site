@@ -28,13 +28,13 @@
   </a>
   <nav>
     <ul class="nav-links" id="nav-links">
-      <li><a href="/#portfolio">Work</a></li>
+      <li><a href="/#portfolio" class="{{ 'active' if (page.url and page.url.startsWith('/portfolio')) else '' }}">Work</a></li>
       <li><a href="/#about">About</a></li>
-      <li><a class="active" href="/blog/">From the Booth</a></li>
-      <li><a href="/media/">Media</a></li>
+      <li><a href="/blog/" class="{{ 'active' if (page.url and page.url.startsWith('/blog')) else '' }}">From the Booth</a></li>
+      <li><a href="/press/" class="{{ 'active' if (page.url and page.url.startsWith('/press')) else '' }}">Press</a></li>
       <li><a href="/#coaching">Coaching</a></li>
       <li><a href="/#contact">Contact</a></li>
-      <li><a class="client-area" href="/client-area/">Client Area</a></li>
+      <li><a class="client-area {{ 'active' if (page.url and page.url.startsWith('/client-area')) else '' }}" href="/client-area/">Client Area</a></li>
     </ul>
     <button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
       <span class="nav-toggle-bars"><span></span></span>

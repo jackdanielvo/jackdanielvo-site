@@ -62,9 +62,9 @@ collections:
       - { name: hp_shape, label: "Homepage tile shape", widget: select, required: false, options: ["wide", "tall"] }
 
   - name: media
-    label: "Media — Interviews & Press"
-    label_singular: "Media item"
-    description: "Interviews, podcast appearances, and articles about Jack. These build the Media page."
+    label: "Press — Interviews & Media"
+    label_singular: "Press item"
+    description: "Interviews, podcast appearances, and articles about Jack. These build the Press page."
     folder: "src/media"
     create: true
     slug: "{{slug}}"
