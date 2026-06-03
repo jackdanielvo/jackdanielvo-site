@@ -504,33 +504,35 @@ section { padding: 96px 0; }
 .tile:focus-within .tile-hover-img { opacity: 0.78; transform: scale(1.04); }
 .tile.cream:hover .tile-hover-img,
 .tile.cream:focus-within .tile-hover-img { opacity: 0.88; }
-/* ——— Ambient self-hosted clip ———
-   A short, muted, looping clip sits in the same plane as the faint
-   thumbnail to give the tile motion/"life". It fades in only once it's
-   actually playing (.is-clipping), and the page falls back to the static
-   thumbnail when no clip file exists, motion is reduced, or data-saver is on.
-   The scrim/overlay/title all sit above it, so text stays legible. */
-.tile-clip {
+/* ——— Hover-to-play preview ———
+   On hover/focus, a muted YouTube preview of that card's video streams in the
+   tile background to add motion. Nothing to host — it uses the card's own video
+   id, so swapping a video needs no extra files. The wrapper fills the tile and
+   the iframe is sized to fully cover it (container units) so there are no black
+   bars on wide/tall/square tiles. Scrim/overlay/title sit above for legibility. */
+.tile-clipwrap {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transform: scale(1.02);
-  transition: opacity 600ms var(--ease-out-quart), transform 520ms var(--ease-out-quart);
+  overflow: hidden;
   z-index: 0;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 600ms var(--ease-out-quart);
+  container-type: size;
 }
-.tile.is-clipping .tile-clip { opacity: 0.46; }
-.tile.cream.is-clipping .tile-clip { opacity: 0.55; }
-.tile.is-clipping:hover .tile-clip,
-.tile.is-clipping:focus-within .tile-clip { opacity: 0.85; transform: scale(1.04); }
-.tile.cream.is-clipping:hover .tile-clip,
-.tile.cream.is-clipping:focus-within .tile-clip { opacity: 0.92; }
-/* When the clip is up, hide the static thumbnail so they don't double-expose. */
+.tile.is-clipping .tile-clipwrap { opacity: 1; }
+.tile-clipwrap iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: max(100cqw, calc(100cqh * 16 / 9));
+  height: max(100cqh, calc(100cqw * 9 / 16));
+  border: 0;
+}
+/* When the preview is up, hide the static thumbnail so they don't double-expose. */
 .tile.is-clipping .tile-hover-img { opacity: 0 !important; }
-/* Strengthen the scrim over a playing clip so the title stays readable on any
+/* Strengthen the scrim over a playing preview so the title stays readable on any
    footage (promos/trailers can be bright), and flip cream tiles to white text
    since the cream backing is no longer behind the words. */
 .tile.is-clipping .tile-scrim {
@@ -552,7 +554,7 @@ section { padding: 96px 0; }
   background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.45) 100%);
   z-index: 2;
 }
-.tile > *:not(.tile-hover-img):not(.tile-bg):not(.tile-scrim):not(.tile-overlay):not(.tile-play-badge) { position: relative; z-index: 3; }
+.tile > *:not(.tile-hover-img):not(.tile-clipwrap):not(.tile-bg):not(.tile-scrim):not(.tile-overlay):not(.tile-play-badge) { position: relative; z-index: 3; }
 
 .tile-eyebrow {
   display: inline-flex;
@@ -1609,11 +1611,9 @@ function renderTiles() {
     // sharper image on large tiles. Avoid hqdefault.jpg/sddefault.jpg —
     // those are 4:3 with black bars baked in around the video frame.
     const hoverImg = t.youtube ? `<div class="tile-hover-img" data-yt="${esc(t.youtube)}" style="background-image:url(https://img.youtube.com/vi/${esc(t.youtube)}/mqdefault.jpg)"></div>` : '';
-    // Ambient silent clip. `clip` may be an explicit filename in portfolio.json;
-    // otherwise we look for /assets/clips/<youtube-id>.mp4. The poster is the
-    // YouTube thumbnail so there's no blank frame before it plays.
-    const clipBase = t.youtube ? (t.clip ? esc(t.clip) : esc(t.youtube) + '.mp4') : '';
-    const clipEl = clipBase ? `<video class="tile-clip" data-clip="/assets/clips/${clipBase}" muted loop playsinline preload="none" poster="https://img.youtube.com/vi/${esc(t.youtube)}/mqdefault.jpg"></video>` : '';
+    // Hover-to-play preview container. Empty until hovered; the iframe is
+    // injected on demand (see setupTileHover) using the card's own video id.
+    const clipEl = t.youtube ? `<div class="tile-clipwrap" aria-hidden="true"></div>` : '';
     // Corner play badge on video tiles — signals "this is a video"
     // at a glance, in addition to the faint resting thumbnail.
     const playBadge = t.youtube ? `<span class="tile-play-badge" aria-hidden="true">&#9654;</span>` : '';
@@ -1666,42 +1666,52 @@ ${playBadge}
     probe.src = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
   });
 
-  setupTileClips(root);
+  setupTileHover(root);
 }
 
-/* ——— Ambient tile clips ———
-   Plays a muted, looping, self-hosted clip on each video tile, but only
-   while the tile is on screen (IntersectionObserver), so at most a couple
-   decode at once. Skips entirely for reduced-motion or data-saver users,
-   and if a clip file is missing the <video> removes itself so the static
-   thumbnail remains — nothing ever looks broken. */
-function setupTileClips(root) {
+/* ——— Hover-to-play previews ———
+   On hover/keyboard-focus, stream a muted, looping YouTube preview into the
+   tile (privacy-nocookie embed, no controls/branding). Only the hovered card
+   plays, so it stays light. A short delay avoids loading on a quick pass-by.
+   Skipped for reduced-motion users and touch devices (which open the lightbox
+   on tap as before). Uses each card's own video id, so updating a video needs
+   no extra files. */
+function setupTileHover(root) {
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const saveData = navigator.connection && navigator.connection.saveData;
-  if (reduce || saveData || !('IntersectionObserver' in window)) return;
+  const fine = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (reduce || !fine) return;
 
-  const vids = [...root.querySelectorAll('video.tile-clip[data-clip]')];
-  if (!vids.length) return;
+  root.querySelectorAll('.tile[data-video]').forEach((tile) => {
+    const id = tile.dataset.video;
+    const wrap = tile.querySelector('.tile-clipwrap');
+    if (!id || !wrap) return;
+    let timer = null;
 
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      const v = e.target;
-      if (e.isIntersecting) {
-        if (!v.src) v.src = v.dataset.clip;   // lazy-load on first reveal
-        const p = v.play();
-        if (p && p.catch) p.catch(() => {});
-      } else {
-        v.pause();
-      }
-    });
-  }, { threshold: 0.25 });
+    const start = () => {
+      if (wrap.querySelector('iframe') || timer) return;
+      timer = setTimeout(() => {
+        timer = null;
+        const f = document.createElement('iframe');
+        f.setAttribute('tabindex', '-1');
+        f.setAttribute('aria-hidden', 'true');
+        f.allow = 'autoplay; encrypted-media';
+        f.src = 'https://www.youtube-nocookie.com/embed/' + id +
+          '?autoplay=1&mute=1&controls=0&loop=1&playlist=' + id +
+          '&modestbranding=1&playsinline=1&rel=0&disablekb=1&fs=0&iv_load_policy=3';
+        f.addEventListener('load', () => tile.classList.add('is-clipping'));
+        wrap.appendChild(f);
+      }, 150);
+    };
+    const stop = () => {
+      if (timer) { clearTimeout(timer); timer = null; }
+      tile.classList.remove('is-clipping');
+      wrap.innerHTML = '';
+    };
 
-  vids.forEach((v) => {
-    const tile = v.closest('.tile');
-    v.addEventListener('playing', () => tile && tile.classList.add('is-clipping'));
-    // Missing/!broken clip → drop the video so the thumbnail shows through.
-    v.addEventListener('error', () => { io.unobserve(v); tile && tile.classList.remove('is-clipping'); v.remove(); });
-    io.observe(v);
+    tile.addEventListener('mouseenter', start);
+    tile.addEventListener('mouseleave', stop);
+    tile.addEventListener('focusin', start);
+    tile.addEventListener('focusout', stop);
   });
 }
 
