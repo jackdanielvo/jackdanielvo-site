@@ -1,0 +1,178 @@
+---
+layout: base.njk
+title: "Homepage Grid"
+permalink: /client-area/admin/homepage/
+eleventyExcludeFromCollections: true
+---
+<section class="hg">
+  <div class="hg-wrap">
+    <div id="hg-status" class="hg-msg">Loading…</div>
+
+    <div id="hg-login" hidden>
+      <h1>Homepage grid</h1>
+      <p class="muted">Please sign in to the admin first.</p>
+      <a class="hg-btn" href="/client-area/admin/">Go to admin sign-in →</a>
+    </div>
+
+    <div id="hg-app" hidden>
+      <div class="hg-head">
+        <div>
+          <h1>Homepage grid</h1>
+          <p class="muted">Drag a video from your library onto a tile to set or replace it. Drag tiles to reorder — <strong>Tile 1 is the largest</strong>. Each tile's color &amp; size are set automatically by position.</p>
+        </div>
+        <button id="hg-save" class="hg-btn" type="button">Save changes</button>
+      </div>
+
+      <div class="hg-slots" id="hg-slots"></div>
+      <div class="hg-slotadd"><button id="hg-add" class="hg-btn ghost" type="button">+ Add a tile</button></div>
+
+      <div class="hg-divider"><span>Your video library</span><span class="line"></span></div>
+      <input id="hg-search" class="hg-search" type="search" placeholder="Search videos by title…">
+      <div class="hg-palette" id="hg-palette"></div>
+
+      <div id="hg-savebar" class="hg-savebar" hidden><span id="hg-savemsg"></span></div>
+    </div>
+  </div>
+</section>
+
+<style>
+.hg { background:#FAF9F5; min-height:80vh; padding:36px 0 90px; }
+.hg-wrap { --ink:#363636; --violet:#3C0350; --line:rgba(54,54,54,0.14); --cream:#EDE6D3;
+  font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif; color:var(--ink); max-width:1040px; margin:0 auto; padding:0 24px; }
+.hg-msg { color:#8a8a86; font-size:13px; padding:24px 0; }
+.hg h1 { font-family:inherit; font-size:24px; font-weight:700; letter-spacing:-0.3px; margin:0 0 4px; }
+.hg .muted { color:#6e6a60; font-size:13px; line-height:1.5; max-width:640px; }
+.hg-head { display:flex; justify-content:space-between; align-items:flex-start; gap:18px; margin-bottom:20px; }
+.hg-btn { display:inline-block; background:var(--violet); color:#fff; border:0; border-radius:22px; padding:11px 22px; font-size:12px; font-weight:600; letter-spacing:0.8px; text-transform:uppercase; cursor:pointer; text-decoration:none; white-space:nowrap; }
+.hg-btn:hover { background:#5b1a73; }
+.hg-btn.ghost { background:#fff; color:var(--ink); border:1px solid var(--line); }
+.hg-btn.ghost:hover { background:var(--cream); }
+
+.hg-slots { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px; }
+.hg-slot { position:relative; background:#fff; border:1px solid var(--line); border-radius:12px; overflow:hidden; cursor:grab; }
+.hg-slot.drag-over { outline:3px solid var(--violet); outline-offset:-3px; }
+.hg-slot .thumb { position:relative; aspect-ratio:16/9; background:#1a1a1a center/cover no-repeat; }
+.hg-slot .pos { position:absolute; top:8px; left:8px; background:var(--violet); color:#fff; font-size:11px; font-weight:700; padding:3px 9px; border-radius:20px; letter-spacing:0.5px; }
+.hg-slot .pos.big { background:var(--violet); }
+.hg-slot .rm { position:absolute; top:8px; right:8px; width:24px; height:24px; border-radius:50%; border:0; background:rgba(0,0,0,0.55); color:#fff; cursor:pointer; font-size:14px; line-height:1; }
+.hg-slot .rm:hover { background:#b00; }
+.hg-slot .empty { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; background:repeating-linear-gradient(45deg,#3a3a3a,#3a3a3a 10px,#444 10px,#444 20px); }
+.hg-slot .body { padding:10px 12px 12px; display:flex; flex-direction:column; gap:6px; }
+.hg-slot input { width:100%; box-sizing:border-box; border:1px solid var(--line); border-radius:6px; padding:6px 8px; font-size:12px; font-family:inherit; color:var(--ink); background:#fff; }
+.hg-slot .lbl { font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:#9a968c; margin-bottom:-2px; }
+
+.hg-slotadd { margin:16px 0 8px; }
+.hg-divider { display:flex; align-items:center; gap:14px; margin:34px 0 16px; }
+.hg-divider span:first-child { font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink); }
+.hg-divider .line { flex:1; height:1px; background:var(--line); }
+.hg-search { width:100%; box-sizing:border-box; border:1px solid var(--line); border-radius:8px; padding:10px 12px; font-size:14px; font-family:inherit; background:#fff; color:var(--ink); margin-bottom:16px; }
+
+.hg-palette { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; }
+.hg-pv { background:#fff; border:1px solid var(--line); border-radius:10px; overflow:hidden; cursor:grab; }
+.hg-pv:hover { border-color:var(--violet); }
+.hg-pv .thumb { aspect-ratio:16/9; background:#1a1a1a center/cover no-repeat; }
+.hg-pv .t { padding:8px 10px; font-size:12px; line-height:1.25; color:var(--ink); }
+.hg-pv[hidden] { display:none; }
+
+.hg-savebar { position:sticky; bottom:0; margin-top:24px; background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px 18px; font-size:13px; }
+.hg-savebar.err { color:#b00; }
+.hg-savebar.ok { color:#2f8f4e; }
+</style>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var statusEl = $("hg-status"), loginEl = $("hg-login"), appEl = $("hg-app");
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" })[c]; }); };
+  var VIDEOS = [], BYSLUG = {}, SLOTS = [];
+
+  function thumbFor(slug) { var v = BYSLUG[slug]; return v ? v.thumbnail : ""; }
+  function titleFor(slug) { var v = BYSLUG[slug]; return v ? v.title : slug; }
+
+  function renderSlots() {
+    var root = $("hg-slots");
+    root.innerHTML = SLOTS.map(function (s, i) {
+      var th = thumbFor(s.video);
+      var thumb = th ? 'style="background-image:url(\'' + esc(th) + '\')"' : '';
+      var empty = s.video ? '' : '<span class="empty">Drop a video here</span>';
+      return '<div class="hg-slot" draggable="true" data-i="' + i + '">' +
+        '<div class="thumb" ' + thumb + '>' +
+          '<span class="pos' + (i === 0 ? ' big' : '') + '">Tile ' + (i + 1) + (i === 0 ? ' · largest' : '') + '</span>' +
+          '<button class="rm" data-rm="' + i + '" title="Remove">&times;</button>' + empty +
+        '</div>' +
+        '<div class="body">' +
+          '<span class="lbl">Title</span><input data-f="title" data-i="' + i + '" value="' + esc(s.title) + '" placeholder="' + esc(titleFor(s.video)) + '">' +
+          '<span class="lbl">Label</span><input data-f="eyebrow" data-i="' + i + '" value="' + esc(s.eyebrow) + '" placeholder="e.g. Promo · TNT">' +
+          '<span class="lbl">Subtitle</span><input data-f="meta" data-i="' + i + '" value="' + esc(s.meta) + '">' +
+        '</div></div>';
+    }).join("");
+    wireSlots();
+  }
+
+  function wireSlots() {
+    var root = $("hg-slots");
+    root.querySelectorAll('[data-rm]').forEach(function (b) {
+      b.addEventListener('click', function () { SLOTS.splice(+b.getAttribute('data-rm'), 1); renderSlots(); });
+    });
+    root.querySelectorAll('input[data-f]').forEach(function (inp) {
+      inp.addEventListener('input', function () { SLOTS[+inp.getAttribute('data-i')][inp.getAttribute('data-f')] = inp.value; });
+      inp.addEventListener('mousedown', function (e) { e.stopPropagation(); }); // don't start drag from inputs
+    });
+    root.querySelectorAll('.hg-slot').forEach(function (el) {
+      el.addEventListener('dragstart', function (e) { e.dataTransfer.setData('text/plain', JSON.stringify({ type: 'slot', i: +el.getAttribute('data-i') })); });
+      el.addEventListener('dragover', function (e) { e.preventDefault(); el.classList.add('drag-over'); });
+      el.addEventListener('dragleave', function () { el.classList.remove('drag-over'); });
+      el.addEventListener('drop', function (e) {
+        e.preventDefault(); el.classList.remove('drag-over');
+        var to = +el.getAttribute('data-i'); var d;
+        try { d = JSON.parse(e.dataTransfer.getData('text/plain')); } catch (x) { return; }
+        if (d.type === 'video') { SLOTS[to].video = d.slug; SLOTS[to].title = ''; }
+        else if (d.type === 'slot' && d.i !== to) { var m = SLOTS.splice(d.i, 1)[0]; SLOTS.splice(to, 0, m); }
+        renderSlots();
+      });
+    });
+  }
+
+  function renderPalette(filter) {
+    var q = (filter || "").toLowerCase();
+    $("hg-palette").innerHTML = VIDEOS.map(function (v) {
+      var hide = q && v.title.toLowerCase().indexOf(q) === -1 ? ' hidden' : '';
+      var th = v.thumbnail ? 'style="background-image:url(\'' + esc(v.thumbnail) + '\')"' : '';
+      return '<div class="hg-pv" draggable="true" data-slug="' + esc(v.slug) + '"' + (hide ? ' hidden' : '') + '>' +
+        '<div class="thumb" ' + th + '></div><div class="t">' + esc(v.title) + '</div></div>';
+    }).join("");
+    $("hg-palette").querySelectorAll('.hg-pv').forEach(function (el) {
+      el.addEventListener('dragstart', function (e) { e.dataTransfer.setData('text/plain', JSON.stringify({ type: 'video', slug: el.getAttribute('data-slug') })); });
+    });
+  }
+
+  async function save() {
+    var btn = $("hg-save"); btn.disabled = true; btn.textContent = "Saving…";
+    var bar = $("hg-savebar"); bar.hidden = false; bar.className = "hg-savebar"; $("hg-savemsg").textContent = "Saving…";
+    var tiles = SLOTS.filter(function (s) { return s.video; }).map(function (s) { return { video: s.video, title: s.title, eyebrow: s.eyebrow, meta: s.meta }; });
+    try {
+      var r = await fetch('/api/homepage-tiles', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ tiles: tiles }) });
+      var d = await r.json(); if (!r.ok) throw new Error(d.error || ('HTTP ' + r.status));
+      bar.className = "hg-savebar ok"; $("hg-savemsg").textContent = "Saved — " + d.count + " tiles. Your homepage updates in about a minute.";
+    } catch (e) { bar.className = "hg-savebar err"; $("hg-savemsg").textContent = "Couldn't save: " + e.message; }
+    btn.disabled = false; btn.textContent = "Save changes";
+  }
+
+  async function boot() {
+    // admin gate
+    var me = await fetch('/api/admin/me', { headers: { accept: 'application/json' } }).then(function (r) { return r.status === 200 ? r.json() : null; }).catch(function () { return null; });
+    if (!me) { statusEl.hidden = true; loginEl.hidden = false; return; }
+    var vj = await fetch('/videos.json').then(function (r) { return r.json(); }).catch(function () { return { videos: [] }; });
+    VIDEOS = (vj.videos || []).slice().sort(function (a, b) { return (a.order || 999) - (b.order || 999); });
+    VIDEOS.forEach(function (v) { BYSLUG[v.slug] = v; });
+    var hp = await fetch('/api/homepage-tiles').then(function (r) { return r.json(); }).catch(function () { return { tiles: [] }; });
+    SLOTS = (hp.tiles || []).map(function (t) { return { video: t.video || "", title: (t.title || []).join("\n"), eyebrow: t.eyebrow || "", meta: t.meta || "" }; });
+    statusEl.hidden = true; appEl.hidden = false;
+    renderSlots(); renderPalette("");
+    $("hg-add").addEventListener('click', function () { SLOTS.push({ video: "", title: "", eyebrow: "", meta: "" }); renderSlots(); });
+    $("hg-search").addEventListener('input', function (e) { renderPalette(e.target.value); });
+    $("hg-save").addEventListener('click', save);
+  }
+  boot();
+})();
+</script>

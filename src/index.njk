@@ -1764,18 +1764,24 @@ document.querySelectorAll('.js-email-text').forEach(el => {
   if (addr) el.textContent = addr;
 });
 
-/* Try to load portfolio.json — if found, re-render with fresh data.
-   Silent fallback to inline PORTFOLIO when fetch fails (e.g. file://). */
+/* Load the live Work tiles. Order of preference:
+   1) /api/homepage-tiles — the arrangement saved in the visual editor (or the
+      build-time default the function falls back to).
+   2) /portfolio.json — the build-time default, if the function isn't available.
+   3) the inline PORTFOLIO fallback (e.g. opening the file directly).            */
 (async () => {
-  try {
-    const res = await fetch('portfolio.json', { cache: 'no-store' });
-    if (!res.ok) return;
-    const data = await res.json();
-    if (Array.isArray(data?.tiles) && data.tiles.length) {
-      PORTFOLIO = data.tiles;
-      renderTiles();
-    }
-  } catch (e) { /* keep fallback */ }
+  for (const url of ['/api/homepage-tiles', '/portfolio.json']) {
+    try {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) continue;
+      const data = await res.json();
+      if (Array.isArray(data?.tiles) && data.tiles.length) {
+        PORTFOLIO = data.tiles;
+        renderTiles();
+        return;
+      }
+    } catch (e) { /* try next */ }
+  }
 })();
 
 /* Modal close */

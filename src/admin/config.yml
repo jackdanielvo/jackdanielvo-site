@@ -35,25 +35,8 @@ collections:
       - { name: video, label: "Video file (optional)", widget: file, required: false, choose_url: true, hint: "Upload or link a video clip (e.g. .mp4/.mov)." }
       - { name: gallery, label: "Photo gallery (optional)", widget: image, required: false, multiple: true, choose_url: true, hint: "Drop or select multiple photos at once — they appear as a grid below the post." }
 
-  # ——— Homepage Work grid: pick which videos appear, and in what order ———
-  - name: homepage
-    label: "Homepage"
-    files:
-      - name: work_grid
-        label: "Homepage video grid"
-        file: "src/_data/homepage.json"
-        description: "The video tiles on the front page, in order. Pick a video for each tile and use the ↑ / ↓ arrows on each tile to reorder — the first tile is largest, and each tile's color/size is set automatically by its position. To swap a tile, just change its video. Title, label and subtitle are optional."
-        fields:
-          - name: tiles
-            label: "Tiles (top tile is largest; use the ↑ / ↓ arrows to reorder)"
-            label_singular: "Tile"
-            widget: list
-            summary: "{{fields.title}}  —  {{fields.video}}"
-            fields:
-              - { name: video, label: "Video", widget: relation, collection: videos, search_fields: ["title"], value_field: "{{slug}}", display_fields: ["title"], hint: "Search your videos by title." }
-              - { name: title, label: "Tile title (optional)", widget: text, required: false, hint: "Short and punchy. Two lines OK. Leave blank to use the video's title." }
-              - { name: eyebrow, label: "Small label (optional)", widget: string, required: false, hint: "e.g. Promo · TNT" }
-              - { name: meta, label: "Subtitle (optional)", widget: string, required: false }
+  # The homepage Work grid is managed visually at /client-area/admin/homepage/
+  # (drag videos onto tiles). src/_data/homepage.json is just the default seed.
 
   - name: videos
     label: "Work — Videos"

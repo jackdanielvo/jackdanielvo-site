@@ -34,6 +34,7 @@ module.exports = class {
         if (!v) return null; // chosen video no longer exists — skip
         const slot = SLOTS[i % SLOTS.length];
         const tile = {
+          video: v.fileSlug,
           youtube: ytid(v.data.youtube || ""),
           title: String(t.title || v.data.title || "").split("\n"),
           eyebrow: t.eyebrow || (v.data.categories && v.data.categories[0]) || "",
