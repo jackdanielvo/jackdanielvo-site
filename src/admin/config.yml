@@ -50,7 +50,7 @@ collections:
       - { name: youtube, label: "YouTube link or ID", widget: string, required: false, hint: "Paste the YouTube link or 11-character ID. Leave blank if this is a Vimeo video." }
       - { name: vimeo, label: "Vimeo ID (optional)", widget: string, required: false, hint: "Just the number, e.g. 1128622171. Only needed for Vimeo videos." }
       - { name: thumbnail, label: "Thumbnail (optional)", widget: image, required: false, choose_url: true, hint: "Optional. YouTube videos use their own thumbnail automatically; set this for Vimeo or to override." }
-      - { name: categories, label: "Categories", widget: select, multiple: true, min: 1, options: ["Commercial", "Narration", "Promo", "Samples", "Special", "Trailer"] }
+      - { name: categories, label: "Categories", widget: select, multiple: true, min: 1, options: ["Commercial", "Narration", "Promo", "Special", "Trailer"] }
       - { name: order, label: "Sort order (lower shows first)", widget: number, default: 100, value_type: int, hint: "Controls position on the All Videos page. Newer work uses a lower number." }
       - { name: featured, label: "Show on homepage grid", widget: boolean, default: false, hint: "Turn on to feature this video as a tile on the front page." }
       - { name: hp_order, label: "Homepage position", widget: number, required: false, value_type: int, hint: "1 = first tile. Only used when featured." }

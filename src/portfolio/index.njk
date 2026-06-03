@@ -5,7 +5,7 @@ permalink: /portfolio/
 eleventyExcludeFromCollections: true
 ---
 <section class="vwork">
-  <div class="wrap">
+  <div class="wrap-wide">
     <div class="sec-head"><span class="eyebrow">Work</span><span class="rule"></span></div>
     <h1 class="vwork-h1">Selected work.</h1>
     <p class="vwork-lede">A running reel of promos, trailers, commercials, and narration. Tap any one to play.</p>
@@ -15,7 +15,6 @@ eleventyExcludeFromCollections: true
       <button class="vf" data-f="commercial" type="button">Commercial</button>
       <button class="vf" data-f="narration" type="button">Narration</button>
       <button class="vf" data-f="promo" type="button">Promo</button>
-      <button class="vf" data-f="samples" type="button">Samples</button>
       <button class="vf" data-f="special" type="button">Special</button>
       <button class="vf" data-f="trailer" type="button">Trailer</button>
     </div>
@@ -61,7 +60,7 @@ eleventyExcludeFromCollections: true
 .vf:hover { background:#c4c4c4; }
 .vf.is-on { background:var(--tile-purple); color:#fff; }
 
-.vgrid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:18px; }
+.vgrid { display:grid; grid-template-columns:repeat(auto-fill, minmax(320px,1fr)); gap:20px; }
 .vcard { position:relative; display:block; border:0; padding:0; margin:0; cursor:pointer; background:var(--color-ink); border-radius:var(--radius-card,14px); overflow:hidden; aspect-ratio:16/10; text-align:left; font-family:inherit; }
 .vthumb { position:absolute; inset:0; background-size:cover; background-position:center; opacity:0.78; transition:opacity 300ms var(--ease-out-quart), transform 600ms var(--ease-out-quart); }
 .vcard:hover .vthumb, .vcard:focus-visible .vthumb { opacity:0.95; transform:scale(1.04); }

@@ -1,7 +1,7 @@
 ---
 title: "Hyundai and John Krasinski – Epic Groceries"
 youtube: "xMF5cy9mif0"
-categories: ["Commercial", "Samples"]
+categories: ["Commercial"]
 order: 6
 featured: true
 hp_order: 3

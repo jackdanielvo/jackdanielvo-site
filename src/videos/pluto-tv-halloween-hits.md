@@ -1,7 +1,7 @@
 ---
 title: "Pluto TV – Halloween Hits"
 youtube: "boSpnSzFTrE"
-categories: ["Promo", "Samples"]
+categories: ["Promo"]
 order: 9
 featured: true
 hp_order: 9

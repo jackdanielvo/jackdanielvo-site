@@ -1,7 +1,7 @@
 ---
 title: "Pluribus"
 youtube: "8H1SwTjS0J8"
-categories: ["Promo", "Samples"]
+categories: ["Promo"]
 order: 8
 featured: true
 hp_order: 4

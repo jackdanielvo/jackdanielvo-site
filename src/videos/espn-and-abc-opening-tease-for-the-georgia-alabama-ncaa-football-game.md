@@ -1,7 +1,7 @@
 ---
 title: "ESPN and ABC opener for the Georgia-Alabama NCAA football game"
 youtube: "pL--wWygzBE"
-categories: ["Promo", "Samples"]
+categories: ["Promo"]
 order: 20
 featured: true
 hp_order: 6

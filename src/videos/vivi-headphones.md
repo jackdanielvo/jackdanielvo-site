@@ -1,7 +1,7 @@
 ---
 title: "Vivi headphones"
 youtube: "L5QokvTq2HQ"
-categories: ["Narration", "Samples"]
+categories: ["Narration"]
 order: 3
 featured: true
 hp_order: 2

@@ -1,7 +1,7 @@
 ---
 title: "NHL Stanley Cup Playoffs on TNT"
 youtube: "MGMZHuDN-y4"
-categories: ["Promo", "Samples"]
+categories: ["Promo"]
 order: 4
 featured: true
 hp_order: 1
