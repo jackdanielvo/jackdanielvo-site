@@ -39,6 +39,11 @@ module.exports = function (eleventyConfig) {
     api.getFilteredByTag("posts").sort((a, b) => b.date - a.date)
   );
 
+  // Media collection (interviews, podcasts, press) — newest first.
+  eleventyConfig.addCollection("media", (api) =>
+    api.getFilteredByTag("media").sort((a, b) => b.date - a.date)
+  );
+
   // Videos collection (powers the All Videos page + homepage featured tiles).
   // Sorted by the editable `order` field (lower = first), then title.
   eleventyConfig.addCollection("video", (api) =>

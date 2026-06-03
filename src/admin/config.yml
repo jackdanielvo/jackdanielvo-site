@@ -60,3 +60,23 @@ collections:
       - { name: hp_color, label: "Homepage tile color", widget: select, required: false, options: ["ink", "cream", "blue", "green", "purple"] }
       - { name: hp_span, label: "Homepage tile width (4–12)", widget: number, required: false, value_type: int, hint: "Grid columns the tile spans. 4 = small, 7 = large." }
       - { name: hp_shape, label: "Homepage tile shape", widget: select, required: false, options: ["wide", "tall"] }
+
+  - name: media
+    label: "Media — Interviews & Press"
+    label_singular: "Media item"
+    description: "Interviews, podcast appearances, and articles about Jack. These build the Media page."
+    folder: "src/media"
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: yaml-frontmatter
+    sortable_fields: [date, title]
+    fields:
+      - { name: title, label: "Title", widget: string }
+      - { name: type, label: "Type", widget: select, options: ["Interview", "Podcast", "Article", "Feature"] }
+      - { name: outlet, label: "Outlet / source", widget: string, hint: "e.g. Voyage LA Magazine, Making WAVs VO Podcast" }
+      - { name: date, label: "Date", widget: datetime, date_format: "YYYY-MM-DD", time_format: false, picker_utc: true }
+      - { name: url, label: "Link (article / listen)", widget: string, required: false, hint: "External link. Use for articles and podcasts. Leave blank for video-only interviews." }
+      - { name: youtube, label: "YouTube link or ID (optional)", widget: string, required: false, hint: "For video interviews — plays in a popup on the page." }
+      - { name: thumbnail, label: "Thumbnail (optional)", widget: image, required: false, choose_url: true, hint: "YouTube items use their own thumbnail. Set this for articles/podcasts." }
+      - { name: excerpt, label: "Short description", widget: text, required: false }

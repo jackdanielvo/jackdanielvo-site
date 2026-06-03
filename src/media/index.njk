@@ -1,0 +1,94 @@
+---
+layout: base.njk
+title: "Media"
+permalink: /media/
+eleventyExcludeFromCollections: true
+---
+<section class="vwork">
+  <div class="wrap-wide">
+    <div class="sec-head"><span class="eyebrow">Media</span><span class="rule"></span></div>
+    <h1 class="vwork-h1">In the press.</h1>
+    <p class="vwork-lede">Interviews, podcast conversations, and features. Video chats play here; articles open in a new tab.</p>
+
+    <div class="mgrid">
+      {% for m in collections.media %}
+        {%- if m.data.youtube -%}{% set yid = m.data.youtube | ytid %}{%- else -%}{% set yid = "" %}{%- endif -%}
+        {%- if m.data.thumbnail -%}{% set thumb = m.data.thumbnail %}{%- elif yid -%}{% set thumb = "https://img.youtube.com/vi/" + yid + "/hqdefault.jpg" %}{%- else -%}{% set thumb = "" %}{%- endif -%}
+        {%- set tag = "a" -%}
+        {%- if yid -%}
+          <button class="mcard" type="button" data-yt="{{ yid }}" data-title="{{ m.data.title }}">
+        {%- else -%}
+          <a class="mcard" href="{{ m.data.url }}" target="_blank" rel="noopener">
+        {%- endif -%}
+          <span class="mthumb{% if not thumb %} mthumb-empty{% endif %}"{% if thumb %} style="background-image:url('{{ thumb }}')"{% endif %}>
+            {%- if not thumb %}<span class="mthumb-mark">{{ m.data.outlet | truncate(2, true, "") | upper }}</span>{% endif -%}
+            {%- if yid %}<span class="mplay" aria-hidden="true">&#9654;</span>{% else %}<span class="mopen" aria-hidden="true">&#8599;</span>{% endif -%}
+          </span>
+          <span class="mbody">
+            <span class="mtype">{{ m.data.type }} · {{ m.data.outlet }}</span>
+            <span class="mtitle">{{ m.data.title }}</span>
+            {% if m.data.excerpt %}<span class="mexcerpt">{{ m.data.excerpt }}</span>{% endif %}
+            <span class="mdate">{{ m.date | readableDate }}</span>
+          </span>
+        {%- if yid -%}</button>{%- else -%}</a>{%- endif -%}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div id="vlb" class="vlb" hidden>
+  <div class="vlb-bg" data-close></div>
+  <div class="vlb-win">
+    <button type="button" class="vlb-x" data-close aria-label="Close">&times;</button>
+    <div class="vlb-frame"><iframe id="vlb-iframe" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
+    <div class="vlb-title" id="vlb-title"></div>
+  </div>
+</div>
+
+<style>
+.vwork { padding: 48px 0 96px; }
+.vwork-h1 { font-family: var(--font-family-headline); font-size: clamp(44px,7vw,104px); line-height:0.86; letter-spacing:-0.03em; text-transform:uppercase; color:var(--color-ink); margin:6px 0 14px; }
+.vwork-lede { font: var(--font-body); font-size:17px; line-height:1.6; color:#555; max-width:560px; margin:0 0 30px; }
+
+.mgrid { display:grid; grid-template-columns:repeat(auto-fill, minmax(340px,1fr)); gap:22px; }
+.mcard { display:grid; grid-template-columns:150px 1fr; gap:16px; align-items:stretch; text-align:left; text-decoration:none; color:var(--color-ink); background:#fff; border:1px solid var(--color-grey-ghost); border-radius:var(--radius-card,14px); overflow:hidden; padding:0; cursor:pointer; font-family:inherit; transition:border-color 200ms var(--ease-out-quart), transform 300ms var(--ease-out-quart), box-shadow 300ms var(--ease-out-quart); }
+.mcard:hover { border-color:var(--tile-purple); transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.08); }
+.mthumb { position:relative; background:var(--color-ink); background-size:cover; background-position:center; min-height:118px; }
+.mthumb-empty { background:linear-gradient(135deg, var(--tile-purple), #1a0124); display:flex; align-items:center; justify-content:center; }
+.mthumb-mark { font-family:var(--font-family-headline); font-size:30px; font-weight:900; letter-spacing:-0.02em; color:rgba(255,255,255,0.92); }
+.mplay, .mopen { position:absolute; bottom:10px; right:10px; width:30px; height:30px; border-radius:50%; background:rgba(255,255,255,0.92); color:var(--color-ink); display:flex; align-items:center; justify-content:center; font-size:12px; }
+.mplay { padding-left:2px; }
+.mbody { display:flex; flex-direction:column; gap:6px; padding:16px 18px 16px 0; }
+.mtype { font-family:var(--font-family-headline); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--color-amber,#B88A3E); }
+.mtitle { font-family:var(--font-family-headline); font-size:18px; line-height:1.08; letter-spacing:-0.01em; text-transform:uppercase; color:var(--color-ink); }
+.mexcerpt { font:var(--font-body); font-size:13px; line-height:1.5; color:#666; }
+.mdate { margin-top:auto; font-family:var(--font-family-headline); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:#999; }
+
+.vlb { position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; }
+.vlb[hidden] { display:none; }
+.vlb-bg { position:absolute; inset:0; background:rgba(8,6,12,0.92); cursor:pointer; }
+.vlb-win { position:relative; width:92vw; max-width:1080px; }
+.vlb-frame { position:relative; aspect-ratio:16/9; background:#000; border-radius:10px; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,0.6); }
+.vlb-frame iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+.vlb-title { margin-top:14px; text-align:center; font-family:var(--font-family-headline); font-size:13px; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.85); }
+.vlb-x { position:absolute; top:-44px; right:0; background:transparent; border:0; color:rgba(255,255,255,0.85); font-size:34px; line-height:1; cursor:pointer; width:40px; height:40px; }
+.vlb-x:hover { color:#fff; }
+
+@media (max-width:560px){ .mgrid { grid-template-columns:1fr; } }
+</style>
+
+<script>
+(function () {
+  var lb = document.getElementById('vlb'), frame = document.getElementById('vlb-iframe'), lbTitle = document.getElementById('vlb-title');
+  function open(src, title) { frame.src = src; lbTitle.textContent = title || ''; lb.hidden = false; document.body.style.overflow = 'hidden'; }
+  function close() { frame.src = ''; lb.hidden = true; document.body.style.overflow = ''; }
+  document.querySelectorAll('.mcard[data-yt]').forEach(function (c) {
+    c.addEventListener('click', function () {
+      open('https://www.youtube-nocookie.com/embed/' + c.getAttribute('data-yt') + '?autoplay=1&rel=0', c.getAttribute('data-title'));
+    });
+  });
+  lb.addEventListener('click', function (e) { if (e.target.hasAttribute('data-close')) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !lb.hidden) close(); });
+})();
+</script>
