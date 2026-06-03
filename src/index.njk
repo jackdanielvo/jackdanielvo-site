@@ -504,6 +504,42 @@ section { padding: 96px 0; }
 .tile:focus-within .tile-hover-img { opacity: 0.78; transform: scale(1.04); }
 .tile.cream:hover .tile-hover-img,
 .tile.cream:focus-within .tile-hover-img { opacity: 0.88; }
+/* ——— Ambient self-hosted clip ———
+   A short, muted, looping clip sits in the same plane as the faint
+   thumbnail to give the tile motion/"life". It fades in only once it's
+   actually playing (.is-clipping), and the page falls back to the static
+   thumbnail when no clip file exists, motion is reduced, or data-saver is on.
+   The scrim/overlay/title all sit above it, so text stays legible. */
+.tile-clip {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 600ms var(--ease-out-quart), transform 520ms var(--ease-out-quart);
+  z-index: 0;
+  pointer-events: none;
+}
+.tile.is-clipping .tile-clip { opacity: 0.46; }
+.tile.cream.is-clipping .tile-clip { opacity: 0.55; }
+.tile.is-clipping:hover .tile-clip,
+.tile.is-clipping:focus-within .tile-clip { opacity: 0.85; transform: scale(1.04); }
+.tile.cream.is-clipping:hover .tile-clip,
+.tile.cream.is-clipping:focus-within .tile-clip { opacity: 0.92; }
+/* When the clip is up, hide the static thumbnail so they don't double-expose. */
+.tile.is-clipping .tile-hover-img { opacity: 0 !important; }
+/* Strengthen the scrim over a playing clip so the title stays readable on any
+   footage (promos/trailers can be bright), and flip cream tiles to white text
+   since the cream backing is no longer behind the words. */
+.tile.is-clipping .tile-scrim {
+  background: linear-gradient(180deg, rgba(0,0,0,0.14) 0%, rgba(0,0,0,0.30) 45%, rgba(0,0,0,0.62) 100%);
+}
+.tile.cream.is-clipping .tile-eyebrow,
+.tile.cream.is-clipping .tile-title { color: var(--color-white); }
+.tile.cream.is-clipping .tile-meta { color: rgba(255,255,255,0.85); }
+.tile.cream.is-clipping .tile-eyebrow { background: rgba(0,0,0,0.35); }
 .tile-overlay {
   position: absolute;
   inset: 0;
@@ -1573,6 +1609,11 @@ function renderTiles() {
     // sharper image on large tiles. Avoid hqdefault.jpg/sddefault.jpg —
     // those are 4:3 with black bars baked in around the video frame.
     const hoverImg = t.youtube ? `<div class="tile-hover-img" data-yt="${esc(t.youtube)}" style="background-image:url(https://img.youtube.com/vi/${esc(t.youtube)}/mqdefault.jpg)"></div>` : '';
+    // Ambient silent clip. `clip` may be an explicit filename in portfolio.json;
+    // otherwise we look for /assets/clips/<youtube-id>.mp4. The poster is the
+    // YouTube thumbnail so there's no blank frame before it plays.
+    const clipBase = t.youtube ? (t.clip ? esc(t.clip) : esc(t.youtube) + '.mp4') : '';
+    const clipEl = clipBase ? `<video class="tile-clip" data-clip="/assets/clips/${clipBase}" muted loop playsinline preload="none" poster="https://img.youtube.com/vi/${esc(t.youtube)}/mqdefault.jpg"></video>` : '';
     // Corner play badge on video tiles — signals "this is a video"
     // at a glance, in addition to the faint resting thumbnail.
     const playBadge = t.youtube ? `<span class="tile-play-badge" aria-hidden="true">&#9654;</span>` : '';
@@ -1589,6 +1630,7 @@ function renderTiles() {
     const arrow = isExternal ? '↗' : '';
     return `<a href="${href}"${tgt} class="${cls}"${data}>
 ${hoverImg}
+${clipEl}
 ${bg}
 ${playBadge}
 <span class="tile-eyebrow">${esc(t.eyebrow)}</span>
@@ -1622,6 +1664,44 @@ ${playBadge}
       }
     };
     probe.src = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+  });
+
+  setupTileClips(root);
+}
+
+/* ——— Ambient tile clips ———
+   Plays a muted, looping, self-hosted clip on each video tile, but only
+   while the tile is on screen (IntersectionObserver), so at most a couple
+   decode at once. Skips entirely for reduced-motion or data-saver users,
+   and if a clip file is missing the <video> removes itself so the static
+   thumbnail remains — nothing ever looks broken. */
+function setupTileClips(root) {
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const saveData = navigator.connection && navigator.connection.saveData;
+  if (reduce || saveData || !('IntersectionObserver' in window)) return;
+
+  const vids = [...root.querySelectorAll('video.tile-clip[data-clip]')];
+  if (!vids.length) return;
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      const v = e.target;
+      if (e.isIntersecting) {
+        if (!v.src) v.src = v.dataset.clip;   // lazy-load on first reveal
+        const p = v.play();
+        if (p && p.catch) p.catch(() => {});
+      } else {
+        v.pause();
+      }
+    });
+  }, { threshold: 0.25 });
+
+  vids.forEach((v) => {
+    const tile = v.closest('.tile');
+    v.addEventListener('playing', () => tile && tile.classList.add('is-clipping'));
+    // Missing/!broken clip → drop the video so the thumbnail shows through.
+    v.addEventListener('error', () => { io.unobserve(v); tile && tile.classList.remove('is-clipping'); v.remove(); });
+    io.observe(v);
   });
 }
 
