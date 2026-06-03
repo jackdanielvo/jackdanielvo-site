@@ -504,12 +504,13 @@ section { padding: 96px 0; }
 .tile:focus-within .tile-hover-img { opacity: 0.78; transform: scale(1.04); }
 .tile.cream:hover .tile-hover-img,
 .tile.cream:focus-within .tile-hover-img { opacity: 0.88; }
-/* ——— Always-on ambient clip (self-hosted) ———
-   A muted, looping clip simply replaces the card's faint static thumbnail with a
-   moving one — at the exact same opacity and with the same dark gradient — so the
+/* ——— Always-on ambient preview (streamed) ———
+   A muted YouTube preview of each card's video plays in place of the faint static
+   thumbnail — at the exact same opacity and with the same dark gradient — so the
    tile keeps its current look (the solid color showing through is the "veil"),
-   just animated. Only on-screen cards play (see the JS). Falls back to the static
-   thumbnail if a clip file is missing, motion is reduced, or data-saver is on. */
+   just animated. Only on-screen cards play (see the JS). Nothing to host: it uses
+   each card's own video id. Falls back to the static thumbnail when motion is
+   reduced, on data-saver, or on small/touch screens. */
 .tile-clipwrap {
   position: absolute;
   inset: 0;
@@ -519,13 +520,17 @@ section { padding: 96px 0; }
   opacity: 0;                 /* hidden until the clip is actually playing */
   transform: scale(1.02);
   transition: opacity 320ms var(--ease-out-quart), transform 520ms var(--ease-out-quart);
+  container-type: size;       /* lets the iframe be sized to fully cover the tile */
 }
-.tile-clipwrap .tile-clip {
+/* Size the 16:9 iframe to cover any tile shape (wide/tall/square) — no black bars. */
+.tile-clipwrap iframe {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: max(100cqw, calc(100cqh * 16 / 9));
+  height: max(100cqh, calc(100cqw * 9 / 16));
+  border: 0;
 }
 /* Same dark gradient the static thumbnail carries, so the treatment is identical. */
 .tile-clipwrap::after {
@@ -1614,14 +1619,10 @@ function renderTiles() {
     // sharper image on large tiles. Avoid hqdefault.jpg/sddefault.jpg —
     // those are 4:3 with black bars baked in around the video frame.
     const hoverImg = t.youtube ? `<div class="tile-hover-img" data-yt="${esc(t.youtube)}" style="background-image:url(https://img.youtube.com/vi/${esc(t.youtube)}/mqdefault.jpg)"></div>` : '';
-    // Always-on ambient clip. Looks for a self-hosted file at
-    // /assets/clips/<youtube-id>.mp4 (or t.clip). The poster is the YouTube
-    // thumbnail so there's no blank frame. If the file is missing the <video>
-    // removes itself and the solid colored tile shows as before.
-    const clipBase = t.youtube ? (t.clip ? esc(t.clip) : esc(t.youtube) + '.mp4') : '';
-    const clipEl = clipBase
-      ? `<div class="tile-clipwrap" aria-hidden="true"><video class="tile-clip" data-clip="/assets/clips/${clipBase}" muted loop playsinline preload="none" poster="https://img.youtube.com/vi/${esc(t.youtube)}/mqdefault.jpg"></video></div>`
-      : '';
+    // Always-on streamed preview container. Empty until the card scrolls into
+    // view; the muted YouTube iframe is injected on demand (see setupTileClips)
+    // using the card's own video id.
+    const clipEl = t.youtube ? `<div class="tile-clipwrap" aria-hidden="true"></div>` : '';
     // Corner play badge on video tiles — signals "this is a video"
     // at a glance, in addition to the faint resting thumbnail.
     const playBadge = t.youtube ? `<span class="tile-play-badge" aria-hidden="true">&#9654;</span>` : '';
@@ -1677,43 +1678,47 @@ ${playBadge}
   setupTileClips(root);
 }
 
-/* ——— Always-on ambient clips (self-hosted) ———
-   Each card plays a muted, looping clip of its own video so the grid is always
-   in motion, with the card's color kept as a veil over the footage. Only cards
-   currently on screen play — an IntersectionObserver starts a clip when its card
-   scrolls into view and pauses it when it leaves, so just the handful you can
-   see decode at once. If a clip file is missing the <video> removes itself and
-   the solid colored tile shows as before. Skipped for reduced-motion /
-   data-saver visitors. */
+/* ——— Always-on streamed previews ———
+   Each on-screen card streams a muted, looping YouTube preview of its own video
+   so the grid is constantly in motion, sitting inside the colored veil (the
+   wrapper's low opacity lets the tile color show through). An IntersectionObserver
+   injects the embed when a card scrolls into view and removes it when it leaves,
+   so just the handful you can see run at once. No files to host; updating a video
+   needs no extra steps. Skipped for reduced-motion / data-saver visitors and on
+   small/touch screens (where many embeds are too heavy) — those keep the still
+   thumbnails and tap-to-open. */
 function setupTileClips(root) {
   const mm = window.matchMedia;
   const reduce = mm && mm('(prefers-reduced-motion: reduce)').matches;
   const saveData = navigator.connection && navigator.connection.saveData;
-  if (reduce || saveData || !('IntersectionObserver' in window)) return;
+  const bigEnough = mm && mm('(min-width: 760px) and (pointer: fine)').matches;
+  if (reduce || saveData || !bigEnough || !('IntersectionObserver' in window)) return;
 
-  const vids = [...root.querySelectorAll('video.tile-clip[data-clip]')];
-  if (!vids.length) return;
+  const load = (tile, wrap, id) => {
+    if (wrap.querySelector('iframe')) return;
+    const f = document.createElement('iframe');
+    f.setAttribute('tabindex', '-1');
+    f.setAttribute('aria-hidden', 'true');
+    f.allow = 'autoplay; encrypted-media';
+    f.src = 'https://www.youtube-nocookie.com/embed/' + id +
+      '?autoplay=1&mute=1&controls=0&loop=1&playlist=' + id +
+      '&modestbranding=1&playsinline=1&rel=0&disablekb=1&fs=0&iv_load_policy=3';
+    f.addEventListener('load', () => tile.classList.add('is-clipping'));
+    wrap.appendChild(f);
+  };
+  const unload = (tile, wrap) => { tile.classList.remove('is-clipping'); wrap.innerHTML = ''; };
 
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
-      const v = e.target;
-      if (e.isIntersecting) {
-        if (!v.src) v.src = v.dataset.clip;   // lazy-load on first reveal
-        const p = v.play();
-        if (p && p.catch) p.catch(() => {});
-      } else {
-        v.pause();
-      }
+      const tile = e.target;
+      const wrap = tile.querySelector('.tile-clipwrap');
+      if (!wrap) return;
+      if (e.isIntersecting) load(tile, wrap, tile.dataset.video);
+      else unload(tile, wrap);
     });
-  }, { threshold: 0.3 });
+  }, { threshold: 0.35 });
 
-  vids.forEach((v) => {
-    const tile = v.closest('.tile');
-    v.addEventListener('playing', () => tile && tile.classList.add('is-clipping'));
-    // Missing/broken clip → drop the <video> so the solid colored tile shows.
-    v.addEventListener('error', () => { io.unobserve(v); tile && tile.classList.remove('is-clipping'); v.remove(); });
-    io.observe(v);
-  });
+  root.querySelectorAll('.tile[data-video]').forEach((tile) => io.observe(tile));
 }
 
 /* Render blog cards. img may be null → render typographic color placeholder. */
