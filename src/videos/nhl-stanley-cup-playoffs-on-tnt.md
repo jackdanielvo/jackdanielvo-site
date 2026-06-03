@@ -4,12 +4,4 @@ youtube: "MGMZHuDN-y4"
 thumbnail: "https://img.youtube.com/vi/MGMZHuDN-y4/hqdefault.jpg"
 categories: ["Promo"]
 order: 4
-featured: true
-hp_order: 1
-hp_title: "NHL\non TNT"
-hp_eyebrow: "Promo · TNT"
-hp_meta: "Stanley Cup"
-hp_color: ink
-hp_span: 7
-hp_shape: wide
 ---

@@ -4,11 +4,4 @@ youtube: "0R5itL20wK4"
 thumbnail: "https://img.youtube.com/vi/0R5itL20wK4/hqdefault.jpg"
 categories: ["Promo"]
 order: 7
-featured: true
-hp_order: 8
-hp_title: "Australian\nOpen"
-hp_eyebrow: "Promo · ESPN"
-hp_meta: "Men's Finals"
-hp_color: green
-hp_span: 4
 ---

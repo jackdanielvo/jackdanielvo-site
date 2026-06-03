@@ -36,6 +36,27 @@
     .preview.icon { width: 96px !important; height: 56px !important; border-radius: 8px !important; overflow: hidden !important; }
     .preview.icon img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
 
+    /* Selection checkboxes: clear empty box (unchecked) ↔ accent box with a
+       white checkmark (checked), instead of an ambiguous dark square. */
+    .sui.button[role="checkbox"] {
+      position: relative !important;
+      background: #ffffff !important;
+      border: 1.5px solid rgba(54,54,54,0.45) !important;
+      border-radius: 5px !important;
+      box-shadow: none !important;
+    }
+    .sui.button[role="checkbox"][aria-checked="true"] {
+      background: var(--sui-primary-accent-color) !important;
+      border-color: var(--sui-primary-accent-color) !important;
+    }
+    .sui.button[role="checkbox"][aria-checked="true"]::after {
+      content: "" !important;
+      position: absolute !important;
+      left: 6px; top: 2px; width: 5px; height: 10px;
+      border: solid #ffffff; border-width: 0 2px 2px 0;
+      transform: rotate(45deg); box-sizing: border-box;
+    }
+
     /* Per-collection accent + faint page tint. */
     body[data-coll="videos"] {
       --sui-primary-accent-color: #3C0350 !important;

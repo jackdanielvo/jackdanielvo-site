@@ -35,10 +35,30 @@ collections:
       - { name: video, label: "Video file (optional)", widget: file, required: false, choose_url: true, hint: "Upload or link a video clip (e.g. .mp4/.mov)." }
       - { name: gallery, label: "Photo gallery (optional)", widget: image, required: false, multiple: true, choose_url: true, hint: "Drop or select multiple photos at once — they appear as a grid below the post." }
 
+  # ——— Homepage Work grid: pick which videos appear, and in what order ———
+  - name: homepage
+    label: "Homepage"
+    files:
+      - name: work_grid
+        label: "Homepage video grid"
+        file: "src/_data/homepage.json"
+        description: "The video tiles on the front page, in order. Pick a video for each tile and drag the ⠿ handle to reorder — the first tile is largest, and each tile's color/size is set automatically by its position. To swap a tile, just change its video. Title, label and subtitle are optional."
+        fields:
+          - name: tiles
+            label: "Tiles (top tile is largest; drag to reorder)"
+            label_singular: "Tile"
+            widget: list
+            summary: "{{fields.title}}  —  {{fields.video}}"
+            fields:
+              - { name: video, label: "Video", widget: relation, collection: videos, search_fields: ["title"], value_field: "{{slug}}", display_fields: ["title"], hint: "Search your videos by title." }
+              - { name: title, label: "Tile title (optional)", widget: text, required: false, hint: "Short and punchy. Two lines OK. Leave blank to use the video's title." }
+              - { name: eyebrow, label: "Small label (optional)", widget: string, required: false, hint: "e.g. Promo · TNT" }
+              - { name: meta, label: "Subtitle (optional)", widget: string, required: false }
+
   - name: videos
     label: "Work — Videos"
     label_singular: "Video"
-    description: "Your video credits. These build the All Videos page. Turn on 'Show on homepage' to put one in the front-page grid."
+    description: "Your full video library. These build the All Videos page. To choose which appear on the front-page grid, use the 'Homepage' screen."
     folder: "src/videos"
     create: true
     slug: "{{slug}}"
@@ -52,14 +72,6 @@ collections:
       - { name: thumbnail, label: "Thumbnail (optional)", widget: image, required: false, choose_url: true, hint: "Optional. YouTube videos use their own thumbnail automatically; set this for Vimeo or to override." }
       - { name: categories, label: "Categories", widget: select, multiple: true, min: 1, options: ["Commercial", "Narration", "Promo", "Special", "Trailer"] }
       - { name: order, label: "Sort order (lower shows first)", widget: number, default: 100, value_type: int, hint: "Controls position on the All Videos page. Newer work uses a lower number." }
-      - { name: featured, label: "Show on homepage grid", widget: boolean, default: false, hint: "Turn on to feature this video as a tile on the front page." }
-      - { name: hp_order, label: "Homepage position", widget: number, required: false, value_type: int, hint: "1 = first tile. Only used when featured." }
-      - { name: hp_title, label: "Homepage tile title", widget: text, required: false, hint: "Short title for the tile. Put the second line on its own line." }
-      - { name: hp_eyebrow, label: "Homepage tile eyebrow", widget: string, required: false, hint: "Small label, e.g. Promo · TNT" }
-      - { name: hp_meta, label: "Homepage tile subtitle", widget: string, required: false }
-      - { name: hp_color, label: "Homepage tile color", widget: select, required: false, options: ["ink", "cream", "blue", "green", "purple"] }
-      - { name: hp_span, label: "Homepage tile width (4–12)", widget: number, required: false, value_type: int, hint: "Grid columns the tile spans. 4 = small, 7 = large." }
-      - { name: hp_shape, label: "Homepage tile shape", widget: select, required: false, options: ["wide", "tall"] }
 
   - name: media
     label: "Press — Interviews & Media"

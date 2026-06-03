@@ -1,0 +1,15 @@
+{
+  "_comment": "The Work tiles on the front page, in order. Edit in the editor under 'Homepage'. Pick a video for each tile and drag to reorder; the tile's color, size and shape are set automatically by its position. Title/label/subtitle are optional — leave blank to use the video's own info.",
+  "tiles": [
+    { "video": "nhl-stanley-cup-playoffs-on-tnt", "title": "NHL\non TNT", "eyebrow": "Promo · TNT", "meta": "Stanley Cup" },
+    { "video": "vivi-headphones", "title": "Vivi\nHeadphones", "eyebrow": "Commercial · Launch", "meta": "Vivi Product Launch" },
+    { "video": "hyundai-and-john-krasinski-epic-groceries", "title": "Epic\nGroceries", "eyebrow": "Commercial · Hyundai", "meta": "w/ John Krasinski" },
+    { "video": "pluribus", "title": "Pluribus", "eyebrow": "Promo · Apple TV+", "meta": "Limited Series" },
+    { "video": "the-first-omen-retro-trailer", "title": "The First\nOmen", "eyebrow": "Trailer · 20th Century", "meta": "Retro Trailer" },
+    { "video": "espn-and-abc-opening-tease-for-the-georgia-alabama-ncaa-football-game", "title": "Georgia\nvs Alabama", "eyebrow": "Promo · ESPN / ABC", "meta": "College Football" },
+    { "video": "cbs-the-nfl-2026", "title": "CBS\nThe NFL", "eyebrow": "Promo · CBS", "meta": "The NFL 2026" },
+    { "video": "espn-australian-open-mens-finals", "title": "Australian\nOpen", "eyebrow": "Promo · ESPN", "meta": "Men's Finals" },
+    { "video": "pluto-tv-halloween-hits", "title": "Pluto TV\nHalloween", "eyebrow": "Promo · Pluto TV", "meta": "Halloween Hits" },
+    { "video": "ford-v-ferrari-trailer", "title": "Ford v\nFerrari", "eyebrow": "Trailer · 20th Century Fox", "meta": "Ford v Ferrari" }
+  ]
+}
