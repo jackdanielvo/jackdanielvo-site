@@ -17,16 +17,29 @@ eleventyExcludeFromCollections: true
     <div id="hg-app" hidden>
       <div class="hg-head">
         <div>
+          <p class="hg-back"><a href="/admin/">← Admin</a></p>
           <h1>Homepage grid</h1>
-          <p class="muted">Drag a video from your library onto a tile to set or replace it. Drag tiles to reorder — <strong>Tile 1 is the largest</strong>. Each tile's color &amp; size are set automatically by position.</p>
+          <p class="muted">This mirrors your front page exactly. <strong>Drag a video from the library onto a tile to replace it</strong>, drag tiles to reorder, or click a tile to edit its text. Tile&nbsp;1 is the largest; colors &amp; sizes are automatic.</p>
         </div>
         <button id="hg-save" class="hg-btn" type="button">Save changes</button>
       </div>
 
-      <div class="hg-slots" id="hg-slots"></div>
-      <div class="hg-slotadd"><button id="hg-add" class="hg-btn ghost" type="button">+ Add a tile</button></div>
+      <div class="hg-mosaic" id="hg-mosaic"></div>
+      <div class="hg-mosaic-cta"><button id="hg-add" class="hg-btn ghost" type="button">+ Add a tile</button></div>
 
-      <div class="hg-divider"><span>Your video library</span><span class="line"></span></div>
+      <!-- per-tile edit panel -->
+      <div id="hg-edit" class="hg-edit" hidden>
+        <div class="hg-edit-head"><strong id="hg-edit-title">Edit tile</strong><button id="hg-edit-close" class="hg-x" type="button">&times;</button></div>
+        <label class="hg-lbl">Title <span class="muted">(optional — defaults to the video's title)</span></label>
+        <textarea id="hg-f-title" rows="2" placeholder="Short &amp; punchy. Two lines OK."></textarea>
+        <label class="hg-lbl">Small label <span class="muted">(optional, e.g. Promo · TNT)</span></label>
+        <input id="hg-f-eyebrow" type="text">
+        <label class="hg-lbl">Subtitle <span class="muted">(optional)</span></label>
+        <input id="hg-f-meta" type="text">
+        <button id="hg-f-remove" class="hg-btn ghost danger" type="button">Remove this tile</button>
+      </div>
+
+      <div class="hg-divider"><span>Your video library — drag onto a tile</span><span class="line"></span></div>
       <input id="hg-search" class="hg-search" type="search" placeholder="Search videos by title…">
       <div class="hg-palette" id="hg-palette"></div>
 
@@ -36,47 +49,60 @@ eleventyExcludeFromCollections: true
 </section>
 
 <style>
-.hg { background:#FAF9F5; min-height:80vh; padding:36px 0 90px; }
+.hg { background:#FAF9F5; min-height:80vh; padding:36px 0 96px; }
 .hg-wrap { --ink:#363636; --violet:#3C0350; --line:rgba(54,54,54,0.14); --cream:#EDE6D3;
-  font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif; color:var(--ink); max-width:1040px; margin:0 auto; padding:0 24px; }
+  --c-ink:#363636; --c-cream:#EDE6D3; --c-blue:#0779FF; --c-green:#37AF5D; --c-purple:#3C0350;
+  font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif; color:var(--ink); max-width:1080px; margin:0 auto; padding:0 24px; }
 .hg-msg { color:#8a8a86; font-size:13px; padding:24px 0; }
 .hg h1 { font-family:inherit; font-size:24px; font-weight:700; letter-spacing:-0.3px; margin:0 0 4px; }
-.hg .muted { color:#6e6a60; font-size:13px; line-height:1.5; max-width:640px; }
-.hg-head { display:flex; justify-content:space-between; align-items:flex-start; gap:18px; margin-bottom:20px; }
+.hg .muted { color:#6e6a60; font-size:13px; line-height:1.5; max-width:680px; }
+.hg-back a { font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:var(--violet); text-decoration:none; }
+.hg-head { display:flex; justify-content:space-between; align-items:flex-start; gap:18px; margin-bottom:22px; }
 .hg-btn { display:inline-block; background:var(--violet); color:#fff; border:0; border-radius:22px; padding:11px 22px; font-size:12px; font-weight:600; letter-spacing:0.8px; text-transform:uppercase; cursor:pointer; text-decoration:none; white-space:nowrap; }
 .hg-btn:hover { background:#5b1a73; }
 .hg-btn.ghost { background:#fff; color:var(--ink); border:1px solid var(--line); }
-.hg-btn.ghost:hover { background:var(--cream); }
+.hg-btn.ghost.danger { color:#b00; border-color:rgba(176,0,0,0.3); }
 
-.hg-slots { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px; }
-.hg-slot { position:relative; background:#fff; border:1px solid var(--line); border-radius:12px; overflow:hidden; cursor:grab; }
-.hg-slot.drag-over { outline:3px solid var(--violet); outline-offset:-3px; }
-.hg-slot .thumb { position:relative; aspect-ratio:16/9; background:#1a1a1a center/cover no-repeat; }
-.hg-slot .pos { position:absolute; top:8px; left:8px; background:var(--violet); color:#fff; font-size:11px; font-weight:700; padding:3px 9px; border-radius:20px; letter-spacing:0.5px; }
-.hg-slot .pos.big { background:var(--violet); }
-.hg-slot .rm { position:absolute; top:8px; right:8px; width:24px; height:24px; border-radius:50%; border:0; background:rgba(0,0,0,0.55); color:#fff; cursor:pointer; font-size:14px; line-height:1; }
-.hg-slot .rm:hover { background:#b00; }
-.hg-slot .empty { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; background:repeating-linear-gradient(45deg,#3a3a3a,#3a3a3a 10px,#444 10px,#444 20px); }
-.hg-slot .body { padding:10px 12px 12px; display:flex; flex-direction:column; gap:6px; }
-.hg-slot input { width:100%; box-sizing:border-box; border:1px solid var(--line); border-radius:6px; padding:6px 8px; font-size:12px; font-family:inherit; color:var(--ink); background:#fff; }
-.hg-slot .lbl { font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:#9a968c; margin-bottom:-2px; }
+/* Mosaic mirrors the homepage: 12-col grid, span/shape per tile position. */
+.hg-mosaic { display:grid; grid-template-columns:repeat(12,1fr); gap:12px; }
+.hg-tile { position:relative; grid-column:span 4; border-radius:12px; overflow:hidden; cursor:grab; background:var(--ink) center/cover no-repeat; border:2px solid transparent; aspect-ratio:4/3; }
+.hg-tile.span-7{grid-column:span 7;} .hg-tile.span-6{grid-column:span 6;} .hg-tile.span-5{grid-column:span 5;} .hg-tile.span-4{grid-column:span 4;}
+.hg-tile.wide{ aspect-ratio:16/9; } .hg-tile.tall{ aspect-ratio:4/5; }
+.hg-tile.col-ink{background-color:var(--c-ink);} .hg-tile.col-cream{background-color:var(--c-cream);} .hg-tile.col-blue{background-color:var(--c-blue);} .hg-tile.col-green{background-color:var(--c-green);} .hg-tile.col-purple{background-color:var(--c-purple);}
+.hg-tile::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,0.05) 40%,rgba(0,0,0,0.55)); }
+.hg-tile.sel{ border-color:#fff; box-shadow:0 0 0 3px var(--violet); }
+.hg-tile.drag-over{ border-color:#fff; box-shadow:0 0 0 3px var(--violet); }
+.hg-tile .num{ position:absolute; top:8px; left:8px; z-index:2; width:26px; height:26px; border-radius:50%; background:#fff; color:var(--violet); font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center; }
+.hg-tile .rm{ position:absolute; top:8px; right:8px; z-index:2; width:24px; height:24px; border-radius:50%; border:0; background:rgba(0,0,0,0.55); color:#fff; cursor:pointer; font-size:14px; line-height:1; }
+.hg-tile .rm:hover{ background:#b00; }
+.hg-tile .cap{ position:absolute; left:0; right:0; bottom:0; z-index:2; padding:10px 12px; color:#fff; }
+.hg-tile .cap .ti{ font-family:var(--font-family-headline,inherit); font-size:14px; line-height:1.05; text-transform:uppercase; font-weight:700; }
+.hg-tile .cap .ey{ font-size:9px; letter-spacing:0.1em; text-transform:uppercase; opacity:0.85; }
+.hg-tile .empty{ position:absolute; inset:0; z-index:2; display:flex; align-items:center; justify-content:center; color:#fff; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; }
 
-.hg-slotadd { margin:16px 0 8px; }
-.hg-divider { display:flex; align-items:center; gap:14px; margin:34px 0 16px; }
-.hg-divider span:first-child { font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink); }
+.hg-mosaic-cta { margin:16px 0 6px; }
+
+.hg-edit { background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin:14px 0 4px; max-width:520px; }
+.hg-edit-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.hg-x { background:none; border:0; font-size:20px; cursor:pointer; color:#8a8a86; }
+.hg-lbl { display:block; font-size:11px; font-weight:600; color:var(--ink); margin:10px 0 4px; }
+.hg-edit textarea, .hg-edit input { width:100%; box-sizing:border-box; border:1px solid var(--line); border-radius:7px; padding:8px 10px; font-size:14px; font-family:inherit; color:var(--ink); background:#fff; }
+.hg-f-remove, #hg-f-remove { margin-top:14px; }
+
+.hg-divider { display:flex; align-items:center; gap:14px; margin:30px 0 14px; }
+.hg-divider span:first-child { font-size:13px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; }
 .hg-divider .line { flex:1; height:1px; background:var(--line); }
 .hg-search { width:100%; box-sizing:border-box; border:1px solid var(--line); border-radius:8px; padding:10px 12px; font-size:14px; font-family:inherit; background:#fff; color:var(--ink); margin-bottom:16px; }
-
 .hg-palette { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; }
 .hg-pv { background:#fff; border:1px solid var(--line); border-radius:10px; overflow:hidden; cursor:grab; }
 .hg-pv:hover { border-color:var(--violet); }
 .hg-pv .thumb { aspect-ratio:16/9; background:#1a1a1a center/cover no-repeat; }
-.hg-pv .t { padding:8px 10px; font-size:12px; line-height:1.25; color:var(--ink); }
+.hg-pv .t { padding:8px 10px; font-size:12px; line-height:1.25; }
 .hg-pv[hidden] { display:none; }
 
 .hg-savebar { position:sticky; bottom:0; margin-top:24px; background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px 18px; font-size:13px; }
-.hg-savebar.err { color:#b00; }
-.hg-savebar.ok { color:#2f8f4e; }
+.hg-savebar.err { color:#b00; } .hg-savebar.ok { color:#2f8f4e; }
+@media (max-width:720px){ .hg-tile, .hg-tile.span-7,.hg-tile.span-6,.hg-tile.span-5,.hg-tile.span-4{ grid-column:span 6; } }
 </style>
 
 <script>
@@ -84,72 +110,81 @@ eleventyExcludeFromCollections: true
   var $ = function (id) { return document.getElementById(id); };
   var statusEl = $("hg-status"), loginEl = $("hg-login"), appEl = $("hg-app");
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" })[c]; }); };
-  var VIDEOS = [], BYSLUG = {}, SLOTS = [];
+  // Slot template — must match the homepage / homepage-tiles function.
+  var SLOTS = [
+    {color:"ink",span:7,shape:"wide"},{color:"cream",span:5,shape:"wide"},
+    {color:"blue",span:4,shape:"tall"},{color:"purple",span:4,shape:"tall"},{color:"green",span:4,shape:"tall"},
+    {color:"cream",span:6,shape:"wide"},{color:"ink",span:6,shape:"wide"},
+    {color:"green",span:4,shape:""},{color:"purple",span:4,shape:""},{color:"blue",span:4,shape:""}
+  ];
+  var VIDEOS = [], BYSLUG = {}, SLOTSV = [], sel = -1;
+  var slot = function (i) { return SLOTS[i % SLOTS.length]; };
+  var thumbFor = function (sl) { var v = BYSLUG[sl]; return v ? v.thumbnail : ""; };
+  var titleFor = function (sl) { var v = BYSLUG[sl]; return v ? v.title : sl; };
 
-  function thumbFor(slug) { var v = BYSLUG[slug]; return v ? v.thumbnail : ""; }
-  function titleFor(slug) { var v = BYSLUG[slug]; return v ? v.title : slug; }
-
-  function renderSlots() {
-    var root = $("hg-slots");
-    root.innerHTML = SLOTS.map(function (s, i) {
-      var th = thumbFor(s.video);
-      var thumb = th ? 'style="background-image:url(\'' + esc(th) + '\')"' : '';
-      var empty = s.video ? '' : '<span class="empty">Drop a video here</span>';
-      return '<div class="hg-slot" draggable="true" data-i="' + i + '">' +
-        '<div class="thumb" ' + thumb + '>' +
-          '<span class="pos' + (i === 0 ? ' big' : '') + '">Tile ' + (i + 1) + (i === 0 ? ' · largest' : '') + '</span>' +
-          '<button class="rm" data-rm="' + i + '" title="Remove">&times;</button>' + empty +
-        '</div>' +
-        '<div class="body">' +
-          '<span class="lbl">Title</span><input data-f="title" data-i="' + i + '" value="' + esc(s.title) + '" placeholder="' + esc(titleFor(s.video)) + '">' +
-          '<span class="lbl">Label</span><input data-f="eyebrow" data-i="' + i + '" value="' + esc(s.eyebrow) + '" placeholder="e.g. Promo · TNT">' +
-          '<span class="lbl">Subtitle</span><input data-f="meta" data-i="' + i + '" value="' + esc(s.meta) + '">' +
-        '</div></div>';
+  function renderMosaic() {
+    $("hg-mosaic").innerHTML = SLOTSV.map(function (s, i) {
+      var sl = slot(i), th = thumbFor(s.video);
+      var cls = "hg-tile col-" + sl.color + " span-" + sl.span + (sl.shape ? " " + sl.shape : "") + (i === sel ? " sel" : "");
+      var bg = th ? 'style="background-image:url(\'' + esc(th) + '\')"' : '';
+      var ti = (s.title || titleFor(s.video) || "").split("\n").map(esc).join("<br>");
+      var cap = s.video ? '<div class="cap"><div class="ey">' + esc(s.eyebrow || "") + '</div><div class="ti">' + ti + '</div></div>' : '<div class="empty">Drop a video here</div>';
+      return '<div class="' + cls + '" draggable="true" data-i="' + i + '" ' + bg + '>' +
+        '<span class="num">' + (i + 1) + '</span><button class="rm" data-rm="' + i + '">&times;</button>' + cap + '</div>';
     }).join("");
-    wireSlots();
+    wireMosaic();
   }
 
-  function wireSlots() {
-    var root = $("hg-slots");
+  function wireMosaic() {
+    var root = $("hg-mosaic");
     root.querySelectorAll('[data-rm]').forEach(function (b) {
-      b.addEventListener('click', function () { SLOTS.splice(+b.getAttribute('data-rm'), 1); renderSlots(); });
+      b.addEventListener('click', function (e) { e.stopPropagation(); SLOTSV.splice(+b.getAttribute('data-rm'), 1); sel = -1; closeEdit(); renderMosaic(); });
     });
-    root.querySelectorAll('input[data-f]').forEach(function (inp) {
-      inp.addEventListener('input', function () { SLOTS[+inp.getAttribute('data-i')][inp.getAttribute('data-f')] = inp.value; });
-      inp.addEventListener('mousedown', function (e) { e.stopPropagation(); }); // don't start drag from inputs
-    });
-    root.querySelectorAll('.hg-slot').forEach(function (el) {
-      el.addEventListener('dragstart', function (e) { e.dataTransfer.setData('text/plain', JSON.stringify({ type: 'slot', i: +el.getAttribute('data-i') })); });
+    root.querySelectorAll('.hg-tile').forEach(function (el) {
+      var i = +el.getAttribute('data-i');
+      el.addEventListener('click', function () { openEdit(i); });
+      el.addEventListener('dragstart', function (e) { e.dataTransfer.setData('text/plain', JSON.stringify({ type: 'slot', i: i })); });
       el.addEventListener('dragover', function (e) { e.preventDefault(); el.classList.add('drag-over'); });
       el.addEventListener('dragleave', function () { el.classList.remove('drag-over'); });
       el.addEventListener('drop', function (e) {
         e.preventDefault(); el.classList.remove('drag-over');
-        var to = +el.getAttribute('data-i'); var d;
-        try { d = JSON.parse(e.dataTransfer.getData('text/plain')); } catch (x) { return; }
-        if (d.type === 'video') { SLOTS[to].video = d.slug; SLOTS[to].title = ''; }
-        else if (d.type === 'slot' && d.i !== to) { var m = SLOTS.splice(d.i, 1)[0]; SLOTS.splice(to, 0, m); }
-        renderSlots();
+        var to = i, d; try { d = JSON.parse(e.dataTransfer.getData('text/plain')); } catch (x) { return; }
+        if (d.type === 'video') { SLOTSV[to].video = d.slug; SLOTSV[to].title = ""; }
+        else if (d.type === 'slot' && d.i !== to) { var m = SLOTSV.splice(d.i, 1)[0]; SLOTSV.splice(to, 0, m); sel = -1; closeEdit(); }
+        renderMosaic();
       });
     });
   }
 
+  function openEdit(i) {
+    sel = i; renderMosaic();
+    var s = SLOTSV[i];
+    $("hg-edit").hidden = false;
+    $("hg-edit-title").textContent = "Edit tile " + (i + 1) + (s.video ? " — " + titleFor(s.video) : "");
+    $("hg-f-title").value = s.title || ""; $("hg-f-title").placeholder = titleFor(s.video) || "Short & punchy";
+    $("hg-f-eyebrow").value = s.eyebrow || ""; $("hg-f-meta").value = s.meta || "";
+    $("hg-edit").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+  function closeEdit() { $("hg-edit").hidden = true; sel = -1; }
+
   function renderPalette(filter) {
     var q = (filter || "").toLowerCase();
     $("hg-palette").innerHTML = VIDEOS.map(function (v) {
-      var hide = q && v.title.toLowerCase().indexOf(q) === -1 ? ' hidden' : '';
+      var hide = q && v.title.toLowerCase().indexOf(q) === -1;
       var th = v.thumbnail ? 'style="background-image:url(\'' + esc(v.thumbnail) + '\')"' : '';
       return '<div class="hg-pv" draggable="true" data-slug="' + esc(v.slug) + '"' + (hide ? ' hidden' : '') + '>' +
         '<div class="thumb" ' + th + '></div><div class="t">' + esc(v.title) + '</div></div>';
     }).join("");
     $("hg-palette").querySelectorAll('.hg-pv').forEach(function (el) {
       el.addEventListener('dragstart', function (e) { e.dataTransfer.setData('text/plain', JSON.stringify({ type: 'video', slug: el.getAttribute('data-slug') })); });
+      el.addEventListener('click', function () { if (sel >= 0) { SLOTSV[sel].video = el.getAttribute('data-slug'); SLOTSV[sel].title = ""; openEdit(sel); } });
     });
   }
 
   async function save() {
     var btn = $("hg-save"); btn.disabled = true; btn.textContent = "Saving…";
     var bar = $("hg-savebar"); bar.hidden = false; bar.className = "hg-savebar"; $("hg-savemsg").textContent = "Saving…";
-    var tiles = SLOTS.filter(function (s) { return s.video; }).map(function (s) { return { video: s.video, title: s.title, eyebrow: s.eyebrow, meta: s.meta }; });
+    var tiles = SLOTSV.filter(function (s) { return s.video; }).map(function (s) { return { video: s.video, title: s.title, eyebrow: s.eyebrow, meta: s.meta }; });
     try {
       var r = await fetch('/api/homepage-tiles', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ tiles: tiles }) });
       var d = await r.json(); if (!r.ok) throw new Error(d.error || ('HTTP ' + r.status));
@@ -159,19 +194,23 @@ eleventyExcludeFromCollections: true
   }
 
   async function boot() {
-    // admin gate
     var me = await fetch('/api/admin/me', { headers: { accept: 'application/json' } }).then(function (r) { return r.status === 200 ? r.json() : null; }).catch(function () { return null; });
     if (!me) { statusEl.hidden = true; loginEl.hidden = false; return; }
     var vj = await fetch('/videos.json').then(function (r) { return r.json(); }).catch(function () { return { videos: [] }; });
     VIDEOS = (vj.videos || []).slice().sort(function (a, b) { return (a.order || 999) - (b.order || 999); });
     VIDEOS.forEach(function (v) { BYSLUG[v.slug] = v; });
     var hp = await fetch('/api/homepage-tiles').then(function (r) { return r.json(); }).catch(function () { return { tiles: [] }; });
-    SLOTS = (hp.tiles || []).map(function (t) { return { video: t.video || "", title: (t.title || []).join("\n"), eyebrow: t.eyebrow || "", meta: t.meta || "" }; });
+    SLOTSV = (hp.tiles || []).map(function (t) { return { video: t.video || "", title: (t.title || []).join("\n"), eyebrow: t.eyebrow || "", meta: t.meta || "" }; });
     statusEl.hidden = true; appEl.hidden = false;
-    renderSlots(); renderPalette("");
-    $("hg-add").addEventListener('click', function () { SLOTS.push({ video: "", title: "", eyebrow: "", meta: "" }); renderSlots(); });
+    renderMosaic(); renderPalette("");
+    $("hg-add").addEventListener('click', function () { SLOTSV.push({ video: "", title: "", eyebrow: "", meta: "" }); renderMosaic(); openEdit(SLOTSV.length - 1); });
     $("hg-search").addEventListener('input', function (e) { renderPalette(e.target.value); });
     $("hg-save").addEventListener('click', save);
+    $("hg-edit-close").addEventListener('click', closeEdit);
+    $("hg-f-title").addEventListener('input', function (e) { if (sel >= 0) { SLOTSV[sel].title = e.target.value; renderMosaic(); } });
+    $("hg-f-eyebrow").addEventListener('input', function (e) { if (sel >= 0) { SLOTSV[sel].eyebrow = e.target.value; renderMosaic(); } });
+    $("hg-f-meta").addEventListener('input', function (e) { if (sel >= 0) { SLOTSV[sel].meta = e.target.value; } });
+    $("hg-f-remove").addEventListener('click', function () { if (sel >= 0) { SLOTSV.splice(sel, 1); closeEdit(); renderMosaic(); } });
   }
   boot();
 })();

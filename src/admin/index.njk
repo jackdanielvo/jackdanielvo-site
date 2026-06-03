@@ -1,0 +1,75 @@
+---
+permalink: /admin/
+eleventyExcludeFromCollections: true
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="light">
+<title>Admin · Jack Daniel VO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+  :root{ --ink:#363636; --violet:#3C0350; --gold:#B88A3E; --green:#37AF5D; --cream:#EDE6D3; --line:rgba(54,54,54,0.14); --bg:#FAF9F5; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:'Inter',-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif; -webkit-font-smoothing:antialiased; }
+  .wrap{ max-width:880px; margin:0 auto; padding:56px 24px 80px; }
+  .mark{ display:inline-flex; align-items:center; gap:12px; text-decoration:none; color:var(--ink); margin-bottom:36px; }
+  .mark .logo{ width:40px; height:40px; background:var(--violet); border-radius:8px; color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; font-weight:800; font-size:11px; line-height:1; }
+  .mark .name{ font-weight:800; letter-spacing:0.04em; text-transform:uppercase; font-size:16px; }
+  .mark .name span{ color:#9a968c; }
+  h1{ font-size:30px; font-weight:700; letter-spacing:-0.4px; margin:0 0 6px; }
+  .sub{ color:#6e6a60; font-size:14px; margin:0 0 30px; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:16px; }
+  .card{ display:block; text-decoration:none; color:var(--ink); background:#fff; border:1px solid var(--line); border-radius:14px; padding:22px; transition:transform .15s, box-shadow .15s, border-color .15s; border-left:5px solid var(--violet); }
+  .card:hover{ transform:translateY(-2px); box-shadow:0 10px 28px rgba(0,0,0,0.08); }
+  .card.c-violet{ border-left-color:var(--violet); } .card.c-gold{ border-left-color:var(--gold); } .card.c-green{ border-left-color:var(--green); } .card.c-ink{ border-left-color:var(--ink); }
+  .card h2{ font-size:17px; margin:0 0 6px; letter-spacing:-0.2px; }
+  .card p{ font-size:13px; line-height:1.5; color:#6e6a60; margin:0; }
+  .card .arrow{ margin-top:14px; font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--violet); }
+  .ext{ font-size:10px; color:#9a968c; }
+  .note{ margin-top:30px; font-size:12px; color:#9a968c; line-height:1.6; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="mark" href="/"><span class="logo"><span>JD</span><span>VO</span></span><span class="name">Jack Daniel <span>VO</span></span></a>
+    <h1>Admin</h1>
+    <p class="sub">Everything you manage, in one place.</p>
+
+    <div class="grid">
+      <a class="card c-violet" href="/studio/">
+        <h2>Content</h2>
+        <p>Write blog posts, and edit your videos &amp; press entries. (Signs in with GitHub.)</p>
+        <div class="arrow">Open editor →</div>
+      </a>
+      <a class="card c-ink" href="/client-area/admin/homepage/">
+        <h2>Homepage grid</h2>
+        <p>Arrange the video tiles on the front page — drag videos onto tiles, reorder, and save.</p>
+        <div class="arrow">Edit homepage →</div>
+      </a>
+      <a class="card c-gold" href="/client-area/admin/">
+        <h2>Client deliveries</h2>
+        <p>Send audio files to clients via private magic-link pages, and see what's been picked up.</p>
+        <div class="arrow">Open deliveries →</div>
+      </a>
+      <a class="card c-green" href="https://app.cal.com/" target="_blank" rel="noopener">
+        <h2>Booking calendar <span class="ext">↗ Cal.com</span></h2>
+        <p>Manage your coaching availability, sessions, and payments.</p>
+        <div class="arrow">Open Cal.com →</div>
+      </a>
+      <a class="card c-ink" href="/" >
+        <h2>View website</h2>
+        <p>Open the live site in a new look.</p>
+        <div class="arrow">Go to site →</div>
+      </a>
+    </div>
+
+    <p class="note">Content uses a GitHub sign-in; the Homepage grid and Client deliveries use your email magic-link sign-in. Booking is managed in Cal.com.</p>
+  </div>
+</body>
+</html>
