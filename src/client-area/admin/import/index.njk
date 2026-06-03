@@ -1,0 +1,136 @@
+---
+layout: base.njk
+title: "Import legacy portal data"
+permalink: /client-area/admin/import/
+eleventyExcludeFromCollections: true
+---
+<section class="jdvo-admin">
+  <div class="jdvo-wrap">
+
+    <div id="i-status" class="jdvo-loading">Loading…</div>
+
+    <!-- Login gate -->
+    <div id="i-login" hidden>
+      <div class="jdvo-card">
+        <div class="jdvo-card-label">Admin only</div>
+        <h1>Admin sign-in required</h1>
+        <p class="muted">Please <a href="/client-area/admin/">sign in to the portal admin</a> first, then return to this page.</p>
+      </div>
+    </div>
+
+    <!-- App -->
+    <div id="i-app" hidden>
+      <div class="jdvo-topbar">
+        <span class="muted">Signed in as <strong id="i-who"></strong></span>
+        <span><a href="/client-area/admin/" class="jdvo-signout">← Back to admin</a></span>
+      </div>
+
+      <div class="jdvo-card">
+        <div class="jdvo-card-label">One-time migration</div>
+        <h1>Import legacy client history</h1>
+        <p class="muted">Brings your old WordPress client portal — clients, deliveries, files, recipients, and the open/download history — into this system. No emails are sent, and original dates are preserved. Safe to run more than once (it overwrites, never duplicates).</p>
+
+        <div class="jdvo-field">
+          <label for="i-json">1 · Migration data file <span class="muted">(migration.json from Jack)</span></label>
+          <input type="file" id="i-json" accept="application/json,.json">
+        </div>
+
+        <div class="jdvo-field">
+          <label for="i-audio">2 · Delivery audio files</label>
+          <input type="file" id="i-audio" webkitdirectory directory multiple>
+          <p class="jdvo-hint">Unzip your old <code>uploads.zip</code> and select the <code>jdvo-deliveries</code> folder here — the browser will pull in every audio file inside its subfolders automatically. (Your browser may ask you to confirm uploading multiple files; that's expected.)</p>
+        </div>
+
+        <button class="jdvo-btn-primary" id="i-run" disabled>Run import →</button>
+      </div>
+
+      <div id="i-log" class="jdvo-progress"></div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .jdvo-field { margin:16px 0; }
+  .jdvo-field label { display:block; font-weight:600; font-size:13px; margin-bottom:6px; }
+  .jdvo-field input[type=file] { display:block; width:100%; padding:10px; border:1px dashed var(--jdvo-line,#cfcfcf); border-radius:8px; background:#fafafa; font-size:13px; }
+  .jdvo-hint { font-size:12px; color:var(--jdvo-muted,#8a8a86); margin:6px 0 0; }
+  .jdvo-progress { margin-top:16px; font-size:13px; line-height:1.7; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  .jdvo-progress div { padding:1px 0; }
+  .jdvo-progress .ok { color:#377d4f; }
+  .jdvo-progress .err { color:#b00; }
+  .jdvo-progress .head { font-weight:700; margin-top:8px; }
+</style>
+
+<script>
+(function () {
+  var $ = function (id){ return document.getElementById(id); };
+  var statusEl=$("i-status"), loginEl=$("i-login"), appEl=$("i-app");
+  var esc = function(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[c];}); };
+  var migration=null, audioByName={};
+
+  function log(msg, cls){ var d=document.createElement("div"); if(cls) d.className=cls; d.innerHTML=msg; $("i-log").appendChild(d); }
+
+  function maybeEnable(){ $("i-run").disabled = !(migration && Object.keys(audioByName).length); }
+
+  $("i-json").addEventListener("change", function(e){
+    var f=e.target.files[0]; if(!f) return;
+    var rd=new FileReader();
+    rd.onload=function(){ try{ migration=JSON.parse(rd.result); log("✓ Loaded migration data: "+migration.clients.length+" clients, "+migration.deliveries.length+" deliveries, "+migration.events.length+" events","ok"); }catch(err){ migration=null; log("✗ Could not read migration.json: "+esc(err.message),"err"); } maybeEnable(); };
+    rd.readAsText(f);
+  });
+
+  $("i-audio").addEventListener("change", function(e){
+    audioByName={};
+    Array.prototype.forEach.call(e.target.files, function(f){ audioByName[f.name]=f; });
+    log("✓ Selected "+e.target.files.length+" audio file(s)","ok");
+    maybeEnable();
+  });
+
+  async function jpost(url, body){
+    var r=await fetch(url,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)});
+    var d=await r.json().catch(function(){return {};});
+    if(!r.ok) throw new Error(d.error||("HTTP "+r.status));
+    return d;
+  }
+
+  async function run(){
+    $("i-run").disabled=true; $("i-run").textContent="Importing…";
+    try {
+      // Phase 1 — records
+      log("Writing clients, deliveries & events…","head");
+      var res=await jpost("/api/admin/import",{ clients:migration.clients, deliveries:migration.deliveries, events:migration.events });
+      log("✓ Records imported: "+res.clients+" clients, "+res.deliveries+" deliveries, "+res.events+" events","ok");
+
+      // Phase 2 — files
+      log("Uploading delivery files to storage…","head");
+      var ok=0, miss=0, fail=0;
+      for (var di=0; di<migration.deliveries.length; di++){
+        var d=migration.deliveries[di];
+        for (var fi=0; fi<(d.files||[]).length; fi++){
+          var f=d.files[fi];
+          var local=audioByName[f.stored_name];
+          if(!local){ log("⚠ Missing audio for “"+esc(f.display_name)+"” ("+esc(f.stored_name)+") — skipped","err"); miss++; continue; }
+          try {
+            var mime=f.mime_type||local.type||"application/octet-stream";
+            var up=await jpost("/api/admin/upload-url",{ delivery_id:d.id, filename:f.display_name, content_type:mime });
+            var put=await fetch(up.url,{ method:"PUT", headers:{"content-type":mime}, body:local });
+            if(!put.ok) throw new Error("upload HTTP "+put.status);
+            await jpost("/api/admin/attach-file",{ delivery_id:d.id, r2_key:up.key, display_name:f.display_name, label:f.label, size_bytes:f.size_bytes, mime_type:mime, duration_sec:f.duration_sec, sample_rate:f.sample_rate, bit_depth:f.bit_depth });
+            log("&nbsp;&nbsp;✓ "+esc(f.display_name)+" → delivery "+esc(d.title),"ok");
+            ok++;
+          } catch(err){ log("&nbsp;&nbsp;✗ "+esc(f.display_name)+": "+esc(err.message),"err"); fail++; }
+        }
+      }
+      log("<strong>Done.</strong> Files: "+ok+" uploaded"+(miss?", "+miss+" missing":"")+(fail?", "+fail+" failed":"")+".","head");
+      if(!miss && !fail) log("✓ Migration complete. Open the client area as one of your clients to verify their history.","ok");
+    } catch(err){ log("✗ Import failed: "+esc(err.message),"err"); }
+    $("i-run").disabled=false; $("i-run").textContent="Run import →";
+  }
+  $("i-run").addEventListener("click", run);
+
+  fetch("/api/admin/me",{headers:{accept:"application/json"}})
+    .then(function(r){ if(r.status===200) return r.json().then(function(d){ statusEl.hidden=true; loginEl.hidden=true; appEl.hidden=false; $("i-who").textContent=d.email; }); statusEl.hidden=true; loginEl.hidden=false; })
+    .catch(function(){ statusEl.hidden=true; loginEl.hidden=false; });
+})();
+</script>
