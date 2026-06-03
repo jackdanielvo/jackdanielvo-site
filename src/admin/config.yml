@@ -42,10 +42,10 @@ collections:
       - name: work_grid
         label: "Homepage video grid"
         file: "src/_data/homepage.json"
-        description: "The video tiles on the front page, in order. Pick a video for each tile and drag the ⠿ handle to reorder — the first tile is largest, and each tile's color/size is set automatically by its position. To swap a tile, just change its video. Title, label and subtitle are optional."
+        description: "The video tiles on the front page, in order. Pick a video for each tile and use the ↑ / ↓ arrows on each tile to reorder — the first tile is largest, and each tile's color/size is set automatically by its position. To swap a tile, just change its video. Title, label and subtitle are optional."
         fields:
           - name: tiles
-            label: "Tiles (top tile is largest; drag to reorder)"
+            label: "Tiles (top tile is largest; use the ↑ / ↓ arrows to reorder)"
             label_singular: "Tile"
             widget: list
             summary: "{{fields.title}}  —  {{fields.video}}"
