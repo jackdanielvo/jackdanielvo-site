@@ -110,6 +110,21 @@
   --ease-in-out-back:    cubic-bezier(.68,-.55,.265,1.55);
 }
 
+/* ── Horizontal stability ──────────────────────────────────────────────
+   Keep the page locked to the viewport width so a stray swipe, trackpad
+   nudge, or an element that's a hair too wide can never shift the layout
+   sideways or reveal blank space. `overflow-x: clip` (with a `hidden`
+   fallback) contains overflow WITHOUT creating a scroll container, so
+   position: sticky keeps working. `overscroll-behavior-x: none` stops the
+   horizontal rubber-band / swipe-to-go-back gesture, especially on mobile. */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+}
+body { position: relative; }
+
 /* Global element defaults (from observed computed styles) */
 .sg-root {
   font: var(--font-body);
