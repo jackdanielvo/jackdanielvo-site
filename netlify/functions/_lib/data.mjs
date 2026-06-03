@@ -75,7 +75,7 @@ export const Deliveries = {
     email = (email || "").toLowerCase();
     const all = await Deliveries.list();
     return all
-      .filter((d) => d && d.status === "sent" && (d.recipients || []).includes(email))
+      .filter((d) => d && d.status === "sent" && !d.deleted_at && (d.recipients || []).includes(email))
       .sort((a, b) => (b.delivered_at || "").localeCompare(a.delivered_at || ""));
   },
   accessibleBy(delivery, email) {

@@ -41,7 +41,7 @@ eleventyExcludeFromCollections: true
           <p class="jdvo-hint">Unzip your old <code>uploads.zip</code> and select the <code>jdvo-deliveries</code> folder here — the browser will pull in every audio file inside its subfolders automatically. (Your browser may ask you to confirm uploading multiple files; that's expected.)</p>
         </div>
 
-        <button class="jdvo-btn-primary" id="i-run" disabled>Run import →</button>
+        <button class="jdvo-btn-primary" id="i-run">Run import →</button>
       </div>
 
       <div id="i-log" class="jdvo-progress"></div>
@@ -71,7 +71,7 @@ eleventyExcludeFromCollections: true
 
   function log(msg, cls){ var d=document.createElement("div"); if(cls) d.className=cls; d.innerHTML=msg; $("i-log").appendChild(d); }
 
-  function maybeEnable(){ $("i-run").disabled = !(migration && Object.keys(audioByName).length); }
+  function maybeEnable(){ /* button is always clickable; run() validates inputs */ }
 
   $("i-json").addEventListener("change", function(e){
     var f=e.target.files[0]; if(!f) return;
@@ -95,6 +95,8 @@ eleventyExcludeFromCollections: true
   }
 
   async function run(){
+    if(!migration){ alert("Please choose the migration data file (field 1) first."); return; }
+    if(!Object.keys(audioByName).length && !confirm("No audio files are selected — records will be imported but files will be skipped. Continue anyway?")) return;
     $("i-run").disabled=true; $("i-run").textContent="Importing…";
     try {
       // Phase 1 — records

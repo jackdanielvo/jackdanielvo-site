@@ -144,6 +144,14 @@ eleventyExcludeFromCollections: true
         <div><h1>Recent deliveries</h1></div>
       </div>
       <div id="a-list"></div>
+
+      <div id="a-trash-wrap" hidden>
+        <div class="jdvo-section-rule"></div>
+        <div class="jdvo-page-header">
+          <div><h1>Trash</h1><p class="muted">Deleted deliveries are kept here so nothing is lost by accident. Restore them, or remove them for good.</p></div>
+        </div>
+        <div id="a-trash"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -303,7 +311,46 @@ eleventyExcludeFromCollections: true
     syncNewClient();
     setupDropzone();
     renderList(data.deliveries);
+    renderTrash(data.trashed);
     $("a-form").addEventListener("submit", onCreate);
+  }
+
+  async function refreshLists(){
+    var me=await fetch("/api/admin/me").then(function(x){return x.json();});
+    renderList(me.deliveries); renderTrash(me.trashed);
+  }
+
+  function renderTrash(list){
+    var wrap=$("a-trash-wrap"), el=$("a-trash");
+    list = list || [];
+    if(!list.length){ wrap.hidden=true; el.innerHTML=""; return; }
+    wrap.hidden=false;
+    var rows=list.map(function(d){
+      var when=d.deleted_at ? new Date(d.deleted_at).toLocaleString() : "";
+      return '<tr><td><strong>'+esc(d.title)+'</strong><div class="sub">'+esc((d.recipients||[]).join(", "))+'</div></td>'
+        +'<td>'+(d.file_count||0)+'</td>'
+        +'<td class="sub">deleted '+esc(when)+'</td>'
+        +'<td class="jdvo-rowactions">'
+          +'<button class="jdvo-btn-secondary jdvo-btn-sm" data-restore="'+esc(d.id)+'">Restore</button> '
+          +'<button class="jdvo-btn-danger jdvo-btn-sm" data-purge="'+esc(d.id)+'">Delete permanently</button>'
+        +'</td></tr>';
+    }).join("");
+    el.innerHTML='<table class="jdvo-table"><tbody>'+rows+'</tbody></table>';
+    el.querySelectorAll("[data-restore]").forEach(function(b){ b.addEventListener("click", function(){ doRestore(b.getAttribute("data-restore"), b); }); });
+    el.querySelectorAll("[data-purge]").forEach(function(b){ b.addEventListener("click", function(){ doPurge(b.getAttribute("data-purge"), b); }); });
+  }
+
+  async function doRestore(id, btn){
+    btn.disabled=true; btn.textContent="Restoring…";
+    try{ await api("/api/admin/restore-delivery",{ delivery_id:id }); await refreshLists(); }
+    catch(e){ btn.disabled=false; btn.textContent="Restore"; alert("Restore failed: "+e.message); }
+  }
+
+  async function doPurge(id, btn){
+    if(!confirm("Permanently delete this delivery and its files? This CANNOT be undone.")) return;
+    btn.disabled=true; btn.textContent="Deleting…";
+    try{ await api("/api/admin/purge-delivery",{ delivery_id:id }); await refreshLists(); }
+    catch(e){ btn.disabled=false; btn.textContent="Delete permanently"; alert("Delete failed: "+e.message); }
   }
 
   function setupDropzone(){
@@ -381,9 +428,9 @@ eleventyExcludeFromCollections: true
   }
 
   async function doDelete(id, btn){
-    if(!confirm("Permanently delete this delivery, its files, and its activity log? This cannot be undone.")) return;
-    btn.disabled=true; btn.textContent="Deleting…";
-    try{ await api("/api/admin/delete-delivery",{ delivery_id:id }); var me=await fetch("/api/admin/me").then(function(x){return x.json();}); renderList(me.deliveries); }
+    if(!confirm("Move this delivery to Trash? You can restore it from the Trash section below.")) return;
+    btn.disabled=true; btn.textContent="Removing…";
+    try{ await api("/api/admin/delete-delivery",{ delivery_id:id }); await refreshLists(); }
     catch(e){ btn.disabled=false; btn.textContent="Delete"; alert("Delete failed: "+e.message); }
   }
 
