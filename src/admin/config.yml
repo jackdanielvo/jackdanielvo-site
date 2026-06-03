@@ -34,3 +34,29 @@ collections:
       - { name: youtube, label: "YouTube video (optional)", widget: string, required: false, hint: "Paste a YouTube link or ID. Shows as a player below the text." }
       - { name: video, label: "Video file (optional)", widget: file, required: false, choose_url: true, hint: "Upload or link a video clip (e.g. .mp4/.mov)." }
       - { name: gallery, label: "Photo gallery (optional)", widget: image, required: false, multiple: true, choose_url: true, hint: "Drop or select multiple photos at once — they appear as a grid below the post." }
+
+  - name: videos
+    label: "Work — Videos"
+    label_singular: "Video"
+    description: "Your video credits. These build the All Videos page. Turn on 'Show on homepage' to put one in the front-page grid."
+    folder: "src/videos"
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: yaml-frontmatter
+    sortable_fields: [order, title]
+    fields:
+      - { name: title, label: "Title", widget: string }
+      - { name: youtube, label: "YouTube link or ID", widget: string, required: false, hint: "Paste the YouTube link or 11-character ID. Leave blank if this is a Vimeo video." }
+      - { name: vimeo, label: "Vimeo ID (optional)", widget: string, required: false, hint: "Just the number, e.g. 1128622171. Only needed for Vimeo videos." }
+      - { name: thumbnail, label: "Thumbnail (optional)", widget: image, required: false, choose_url: true, hint: "Optional. YouTube videos use their own thumbnail automatically; set this for Vimeo or to override." }
+      - { name: categories, label: "Categories", widget: select, multiple: true, min: 1, options: ["Commercial", "Narration", "Promo", "Samples", "Special", "Trailer"] }
+      - { name: order, label: "Sort order (lower shows first)", widget: number, default: 100, value_type: int, hint: "Controls position on the All Videos page. Newer work uses a lower number." }
+      - { name: featured, label: "Show on homepage grid", widget: boolean, default: false, hint: "Turn on to feature this video as a tile on the front page." }
+      - { name: hp_order, label: "Homepage position", widget: number, required: false, value_type: int, hint: "1 = first tile. Only used when featured." }
+      - { name: hp_title, label: "Homepage tile title", widget: text, required: false, hint: "Short title for the tile. Put the second line on its own line." }
+      - { name: hp_eyebrow, label: "Homepage tile eyebrow", widget: string, required: false, hint: "Small label, e.g. Promo · TNT" }
+      - { name: hp_meta, label: "Homepage tile subtitle", widget: string, required: false }
+      - { name: hp_color, label: "Homepage tile color", widget: select, required: false, options: ["ink", "cream", "blue", "green", "purple"] }
+      - { name: hp_span, label: "Homepage tile width (4–12)", widget: number, required: false, value_type: int, hint: "Grid columns the tile spans. 4 = small, 7 = large." }
+      - { name: hp_shape, label: "Homepage tile shape", widget: select, required: false, options: ["wide", "tall"] }

@@ -1,0 +1,126 @@
+---
+layout: base.njk
+title: "Work"
+permalink: /portfolio/
+eleventyExcludeFromCollections: true
+---
+<section class="vwork">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Work</span><span class="rule"></span></div>
+    <h1 class="vwork-h1">Selected work.</h1>
+    <p class="vwork-lede">A running reel of promos, trailers, commercials, and narration. Tap any one to play.</p>
+
+    <div class="vfilter" id="vfilter">
+      <button class="vf is-on" data-f="all" type="button">Show All</button>
+      <button class="vf" data-f="commercial" type="button">Commercial</button>
+      <button class="vf" data-f="narration" type="button">Narration</button>
+      <button class="vf" data-f="promo" type="button">Promo</button>
+      <button class="vf" data-f="samples" type="button">Samples</button>
+      <button class="vf" data-f="special" type="button">Special</button>
+      <button class="vf" data-f="trailer" type="button">Trailer</button>
+    </div>
+
+    <div class="vgrid" id="vgrid">
+      {% for v in collections.video %}
+        {%- if v.data.youtube -%}{% set yid = v.data.youtube | ytid %}{%- else -%}{% set yid = "" %}{%- endif -%}
+        {%- if v.data.thumbnail -%}{% set thumb = v.data.thumbnail %}{%- elif yid -%}{% set thumb = "https://img.youtube.com/vi/" + yid + "/hqdefault.jpg" %}{%- else -%}{% set thumb = "" %}{%- endif -%}
+        <button class="vcard" type="button"
+                data-cats="{{ v.data.categories | join(',') | lower }}"
+                {% if yid %}data-yt="{{ yid }}"{% elif v.data.vimeo %}data-vimeo="{{ v.data.vimeo }}"{% endif %}
+                data-title="{{ v.data.title }}">
+          <span class="vthumb"{% if thumb %} style="background-image:url('{{ thumb }}')"{% endif %}></span>
+          <span class="vplay" aria-hidden="true">&#9654;</span>
+          <span class="vcap">
+            <span class="vtitle">{{ v.data.title }}</span>
+            <span class="vcats">{{ v.data.categories | join(' · ') }}</span>
+          </span>
+        </button>
+      {% endfor %}
+    </div>
+    <p class="vempty" id="vempty" hidden>No videos in this category.</p>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div id="vlb" class="vlb" hidden>
+  <div class="vlb-bg" data-close></div>
+  <div class="vlb-win">
+    <button type="button" class="vlb-x" data-close aria-label="Close">&times;</button>
+    <div class="vlb-frame"><iframe id="vlb-iframe" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
+    <div class="vlb-title" id="vlb-title"></div>
+  </div>
+</div>
+
+<style>
+.vwork { padding: 48px 0 96px; }
+.vwork-h1 { font-family: var(--font-family-headline); font-size: clamp(44px,7vw,104px); line-height:0.86; letter-spacing:-0.03em; text-transform:uppercase; color:var(--color-ink); margin:6px 0 14px; }
+.vwork-lede { font: var(--font-body); font-size:17px; line-height:1.6; color:#555; max-width:560px; margin:0 0 28px; }
+
+.vfilter { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:30px; }
+.vf { font-family:var(--font-family-headline); font-size:12px; letter-spacing:0.1em; text-transform:uppercase; padding:9px 16px; border-radius:var(--radius-pill); border:0; background:var(--color-grey-ghost); color:var(--color-ink); cursor:pointer; transition:background 220ms var(--ease-out-quart), color 220ms var(--ease-out-quart); }
+.vf:hover { background:#c4c4c4; }
+.vf.is-on { background:var(--tile-purple); color:#fff; }
+
+.vgrid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:18px; }
+.vcard { position:relative; display:block; border:0; padding:0; margin:0; cursor:pointer; background:var(--color-ink); border-radius:var(--radius-card,14px); overflow:hidden; aspect-ratio:16/10; text-align:left; font-family:inherit; }
+.vthumb { position:absolute; inset:0; background-size:cover; background-position:center; opacity:0.78; transition:opacity 300ms var(--ease-out-quart), transform 600ms var(--ease-out-quart); }
+.vcard:hover .vthumb, .vcard:focus-visible .vthumb { opacity:0.95; transform:scale(1.04); }
+.vcard::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0) 38%, rgba(0,0,0,0.72) 100%); }
+.vplay { position:absolute; top:14px; right:14px; z-index:2; width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,0.92); color:var(--color-ink); display:flex; align-items:center; justify-content:center; font-size:12px; padding-left:2px; transition:transform 240ms var(--ease-out-back,cubic-bezier(.34,1.56,.64,1)); }
+.vcard:hover .vplay { transform:scale(1.12); }
+.vcap { position:absolute; left:0; right:0; bottom:0; z-index:2; padding:16px 18px; display:flex; flex-direction:column; gap:6px; }
+.vtitle { font-family:var(--font-family-headline); font-size:17px; line-height:1.08; letter-spacing:-0.01em; text-transform:uppercase; color:#fff; }
+.vcats { font-family:var(--font-family-headline); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.8); }
+.vcard[hidden] { display:none; }
+.vempty { font-family:var(--font-family-headline); font-size:13px; letter-spacing:0.1em; text-transform:uppercase; color:#999; padding:30px 0; }
+
+/* Lightbox */
+.vlb { position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center; }
+.vlb[hidden] { display:none; }
+.vlb-bg { position:absolute; inset:0; background:rgba(8,6,12,0.92); cursor:pointer; }
+.vlb-win { position:relative; width:92vw; max-width:1080px; }
+.vlb-frame { position:relative; aspect-ratio:16/9; background:#000; border-radius:10px; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,0.6); }
+.vlb-frame iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+.vlb-title { margin-top:14px; text-align:center; font-family:var(--font-family-headline); font-size:13px; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.85); }
+.vlb-x { position:absolute; top:-44px; right:0; background:transparent; border:0; color:rgba(255,255,255,0.85); font-size:34px; line-height:1; cursor:pointer; width:40px; height:40px; }
+.vlb-x:hover { color:#fff; }
+
+@media (max-width:560px){ .vgrid { grid-template-columns:1fr 1fr; gap:12px; } .vcard { aspect-ratio:16/11; } .vtitle { font-size:14px; } }
+</style>
+
+<script>
+(function () {
+  var grid = document.getElementById('vgrid');
+  var cards = [].slice.call(grid.querySelectorAll('.vcard'));
+  var empty = document.getElementById('vempty');
+
+  // Filtering
+  document.getElementById('vfilter').addEventListener('click', function (e) {
+    var btn = e.target.closest('.vf'); if (!btn) return;
+    document.querySelectorAll('.vf').forEach(function (b) { b.classList.toggle('is-on', b === btn); });
+    var f = btn.getAttribute('data-f');
+    var shown = 0;
+    cards.forEach(function (c) {
+      var on = f === 'all' || (',' + c.getAttribute('data-cats') + ',').indexOf(',' + f + ',') !== -1;
+      c.hidden = !on; if (on) shown++;
+    });
+    empty.hidden = shown !== 0;
+  });
+
+  // Lightbox
+  var lb = document.getElementById('vlb'), frame = document.getElementById('vlb-iframe'), lbTitle = document.getElementById('vlb-title');
+  function open(src, title) {
+    frame.src = src; lbTitle.textContent = title || ''; lb.hidden = false; document.body.style.overflow = 'hidden';
+  }
+  function close() { frame.src = ''; lb.hidden = true; document.body.style.overflow = ''; }
+  cards.forEach(function (c) {
+    c.addEventListener('click', function () {
+      var yt = c.getAttribute('data-yt'), vim = c.getAttribute('data-vimeo'), title = c.getAttribute('data-title');
+      if (yt) open('https://www.youtube-nocookie.com/embed/' + yt + '?autoplay=1&rel=0', title);
+      else if (vim) open('https://player.vimeo.com/video/' + vim + '?autoplay=1', title);
+    });
+  });
+  lb.addEventListener('click', function (e) { if (e.target.hasAttribute('data-close')) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !lb.hidden) close(); });
+})();
+</script>

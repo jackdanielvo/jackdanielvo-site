@@ -9,7 +9,6 @@ module.exports = function (eleventyConfig) {
   // Static passthrough — unchanged assets.
   eleventyConfig.addPassthroughCopy("src/tokens.css");
   eleventyConfig.addPassthroughCopy("src/blog.css");
-  eleventyConfig.addPassthroughCopy("src/portfolio.json");
   eleventyConfig.addPassthroughCopy("src/favicon.svg");
   eleventyConfig.addPassthroughCopy("src/*.png");
   eleventyConfig.addPassthroughCopy("src/assets");
@@ -38,6 +37,15 @@ module.exports = function (eleventyConfig) {
   // Posts collection, newest first.
   eleventyConfig.addCollection("posts", (api) =>
     api.getFilteredByTag("posts").sort((a, b) => b.date - a.date)
+  );
+
+  // Videos collection (powers the All Videos page + homepage featured tiles).
+  // Sorted by the editable `order` field (lower = first), then title.
+  eleventyConfig.addCollection("video", (api) =>
+    api.getFilteredByTag("video").sort((a, b) =>
+      (a.data.order || 999) - (b.data.order || 999) ||
+      String(a.data.title).localeCompare(String(b.data.title))
+    )
   );
 
   // Categories collection: [{title, slug, posts[]}], by post count then name.
