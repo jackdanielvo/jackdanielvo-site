@@ -2,8 +2,8 @@
 title: "Appearance on the Tri-VO podcast"
 date: 2025-09-22
 categories: ["Interview"]
-featured: "https://jackdanielvo.com/wp-content/uploads/2020/03/tri-vo-snapshot.png"
-cover: "https://jackdanielvo.com/wp-content/uploads/2020/03/tri-vo-snapshot.png"
+featured: "/assets/uploads/2020/03/tri-vo-snapshot.png"
+cover: "/assets/uploads/2020/03/tri-vo-snapshot.png"
 excerpt: "Great fun appearing on the jocular Tri-VO Pursuit podcast with Mark Rider, Matt Baker, and Mandy Fisher. Lovely folks…"
 youtube: "ZF3B1Oro4Ik"
 ---

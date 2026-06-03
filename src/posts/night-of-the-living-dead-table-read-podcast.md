@@ -2,14 +2,14 @@
 title: "Night of the Living Dead – Table read Podcast"
 date: 2025-10-15
 categories: ["Work Life"]
-featured: "https://jackdanielvo.com/wp-content/uploads/2025/10/notld-poster.jpeg"
-cover: "https://jackdanielvo.com/wp-content/uploads/2025/10/notld-poster.jpeg"
+featured: "/assets/uploads/2025/10/notld-poster.jpeg"
+cover: "/assets/uploads/2025/10/notld-poster.jpeg"
 excerpt: "The Table Read Podcast version of George Romero's classic–direct from the original script–is about to drop. We recorded this recently at Clear Lake Studios in Burbank…"
-video: "https://jackdanielvo.com/wp-content/uploads/2025/10/NOLD_T3.mov"
+video: "/assets/uploads/2025/10/NOLD_T3.mp4"
 gallery:
-  - "https://jackdanielvo.com/wp-content/uploads/2025/10/1756906021254.jpeg"
-  - "https://jackdanielvo.com/wp-content/uploads/2025/10/1756906021418-1024x768.jpeg"
-  - "https://jackdanielvo.com/wp-content/uploads/2025/10/1756906021284-768x1024.jpeg"
+  - "/assets/uploads/2025/10/1756906021254.jpeg"
+  - "/assets/uploads/2025/10/1756906021418-1024x768.jpeg"
+  - "/assets/uploads/2025/10/1756906021284-768x1024.jpeg"
 ---
 The Table Read Podcast version of George Romero's classic–direct from the original script–is about to drop. We recorded this recently at Clear Lake Studios in Burbank. A teaser above.
 

@@ -2,7 +2,7 @@
 title: "Live Announce: stuntman awards"
 date: 2026-02-25
 categories: ["Work Life"]
-featured: "https://jackdanielvo.com/wp-content/uploads/2026/02/2026-02-25_12-04-18.jpg"
+featured: "/assets/uploads/2026/02/2026-02-25_12-04-18.jpg"
 cover: "https://img.youtube.com/vi/zjLpHEI9xcg/maxresdefault.jpg"
 excerpt: "This past weekend I did the live announce for the Taurus World Stuntman Awards. It's a great show and this year the…"
 youtube: "zjLpHEI9xcg"

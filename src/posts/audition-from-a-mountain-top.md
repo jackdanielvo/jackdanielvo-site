@@ -2,7 +2,7 @@
 title: "Audition from a mountain top"
 date: 2026-02-02
 categories: ["Work Life"]
-featured: "https://jackdanielvo.com/wp-content/uploads/2026/02/Australian-Open-2026-1024x576.jpg"
+featured: "/assets/uploads/2026/02/Australian-Open-2026-1024x576.jpg"
 cover: "https://img.youtube.com/vi/0R5itL20wK4/maxresdefault.jpg"
 excerpt: "How's this for a voice over story? Yesterday I was out in the hills of Rocky Peak with my Search & Rescue team…"
 youtube: "0R5itL20wK4"

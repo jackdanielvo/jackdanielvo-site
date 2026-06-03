@@ -8,3 +8,49 @@
 
 [functions]
   node_bundler = "esbuild"
+
+# ——— Redirects from the old WordPress URLs to the new pages ———
+# These only fire for paths that don't exist on the new site (no `force`), so
+# real pages/files always win. They preserve inbound links and SEO after cutover.
+[[redirects]]
+  from = "/portfolio/gallery-list/"
+  to = "/portfolio/"
+  status = 301
+[[redirects]]
+  from = "/portfolio/standard-list/"
+  to = "/blog/"
+  status = 301
+[[redirects]]
+  from = "/portfolio/standard-list/page/*"
+  to = "/blog/"
+  status = 301
+[[redirects]]
+  from = "/portfolio-item/*"
+  to = "/portfolio/"
+  status = 301
+[[redirects]]
+  from = "/portfolio-category/*"
+  to = "/portfolio/"
+  status = 301
+[[redirects]]
+  from = "/category/*"
+  to = "/blog/"
+  status = 301
+[[redirects]]
+  from = "/contact-us/"
+  to = "/#contact"
+  status = 301
+[[redirects]]
+  from = "/main-home/"
+  to = "/"
+  status = 301
+[[redirects]]
+  from = "/feed/"
+  to = "/feed.xml"
+  status = 301
+# Old dated blog permalinks (/YYYY/MM/DD/slug/) → new /blog/slug/. The slugs were
+# carried over unchanged, so this lands on the right post.
+[[redirects]]
+  from = "/:yyyy/:mm/:dd/:slug"
+  to = "/blog/:slug/"
+  status = 301

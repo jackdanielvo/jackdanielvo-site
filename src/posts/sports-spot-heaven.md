@@ -2,7 +2,7 @@
 title: "sports spot heaven"
 date: 2026-04-21
 categories: ["Work Life"]
-featured: "https://jackdanielvo.com/wp-content/uploads/2026/04/nhl-on-tnt.jpg"
+featured: "/assets/uploads/2026/04/nhl-on-tnt.jpg"
 cover: "https://img.youtube.com/vi/MGMZHuDN-y4/maxresdefault.jpg"
 excerpt: "When it all comes together, it's a beautiful thing. I just cut a spot for the NHL Stanley Cup playoffs on TNT…"
 youtube: "MGMZHuDN-y4"
