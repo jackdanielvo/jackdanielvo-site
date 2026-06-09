@@ -24,6 +24,7 @@ eleventyExcludeFromCollections: true
         <button id="hg-save" class="hg-btn" type="button">Save changes</button>
       </div>
 
+      <div id="hg-place" class="hg-place" hidden></div>
       <div class="hg-mosaic" id="hg-mosaic"></div>
       <div class="hg-mosaic-cta"><button id="hg-add" class="hg-btn ghost" type="button">+ Add a tile</button></div>
 
@@ -39,7 +40,7 @@ eleventyExcludeFromCollections: true
         <button id="hg-f-remove" class="hg-btn ghost danger" type="button">Remove this tile</button>
       </div>
 
-      <div class="hg-divider"><span>Your video library — drag onto a tile</span><span class="line"></span></div>
+      <div class="hg-divider"><span>Your video library — tap a tile above, then tap a video here</span><span class="line"></span></div>
       <input id="hg-search" class="hg-search" type="search" placeholder="Search videos by title…">
       <div class="hg-palette" id="hg-palette"></div>
 
@@ -62,6 +63,19 @@ eleventyExcludeFromCollections: true
 .hg-btn:hover { background:#5b1a73; }
 .hg-btn.ghost { background:#fff; color:var(--ink); border:1px solid var(--line); }
 .hg-btn.ghost.danger { color:#b00; border-color:rgba(176,0,0,0.3); }
+
+/* Sticky placement bar — stays pinned at the top while you scroll down to
+   the library, so the selected tile's context never leaves the screen. */
+.hg-place { position:sticky; top:0; z-index:40; display:flex; align-items:center; gap:10px;
+  background:var(--violet); color:#fff; border-radius:0 0 12px 12px; padding:11px 16px;
+  margin:0 0 14px; box-shadow:0 8px 24px rgba(60,3,80,0.22); font-size:13px; }
+.hg-place .pl-msg { flex:1; font-weight:600; line-height:1.35; }
+.hg-place button, .hg-place a { background:rgba(255,255,255,0.18); color:#fff; border:0; border-radius:16px;
+  padding:7px 13px; font-size:12px; font-weight:600; letter-spacing:0.04em; cursor:pointer; white-space:nowrap; text-decoration:none; }
+.hg-place button:hover, .hg-place a:hover { background:rgba(255,255,255,0.32); }
+/* While placing, the library reads as clickable targets. */
+#hg-app.placing .hg-pv { cursor:pointer; }
+#hg-app.placing .hg-pv:hover { border-color:var(--violet); box-shadow:0 0 0 2px var(--violet); }
 
 /* Mosaic mirrors the homepage: 12-col grid, span/shape per tile position. */
 .hg-mosaic { display:grid; grid-template-columns:repeat(12,1fr); gap:12px; }
@@ -156,16 +170,31 @@ eleventyExcludeFromCollections: true
     });
   }
 
-  function openEdit(i) {
+  function openEdit(i, noScroll) {
     sel = i; renderMosaic();
     var s = SLOTSV[i];
     $("hg-edit").hidden = false;
     $("hg-edit-title").textContent = "Edit tile " + (i + 1) + (s.video ? " — " + titleFor(s.video) : "");
     $("hg-f-title").value = s.title || ""; $("hg-f-title").placeholder = titleFor(s.video) || "Short & punchy";
     $("hg-f-eyebrow").value = s.eyebrow || ""; $("hg-f-meta").value = s.meta || "";
-    $("hg-edit").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    updatePlace();
+    if (!noScroll) $("hg-edit").scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
-  function closeEdit() { $("hg-edit").hidden = true; sel = -1; }
+  function closeEdit() { $("hg-edit").hidden = true; sel = -1; updatePlace(); }
+
+  // Sticky bar that keeps the selected-tile context on screen while the
+  // admin scrolls down to the video library to click a video.
+  function updatePlace(flash) {
+    var bar = $("hg-place");
+    if (sel < 0 && !flash) { bar.hidden = true; appEl.classList.remove("placing"); return; }
+    bar.hidden = false; appEl.classList.add("placing");
+    var msg = flash || ("Tile " + (sel + 1) + " selected — tap any video below to place it here.");
+    bar.innerHTML = '<span class="pl-msg">' + esc(msg) + '</span>'
+      + '<a id="pl-grid" role="button">↑ Grid</a>'
+      + '<button id="pl-done" type="button">Done</button>';
+    $("pl-grid").addEventListener("click", function () { $("hg-mosaic").scrollIntoView({ behavior: "smooth", block: "start" }); });
+    $("pl-done").addEventListener("click", function () { closeEdit(); });
+  }
 
   function renderPalette(filter) {
     var q = (filter || "").toLowerCase();
@@ -177,7 +206,14 @@ eleventyExcludeFromCollections: true
     }).join("");
     $("hg-palette").querySelectorAll('.hg-pv').forEach(function (el) {
       el.addEventListener('dragstart', function (e) { e.dataTransfer.setData('text/plain', JSON.stringify({ type: 'video', slug: el.getAttribute('data-slug') })); });
-      el.addEventListener('click', function () { if (sel >= 0) { SLOTSV[sel].video = el.getAttribute('data-slug'); SLOTSV[sel].title = ""; openEdit(sel); } });
+      el.addEventListener('click', function () {
+        var target = sel;
+        if (target < 0) target = SLOTSV.findIndex(function (s) { return !s.video; });
+        if (target < 0) { updatePlace("Every tile already has a video — tap a tile above to swap it."); return; }
+        SLOTSV[target].video = el.getAttribute('data-slug'); SLOTSV[target].title = "";
+        sel = target; openEdit(target, true);
+        updatePlace("Placed in tile " + (target + 1) + " ✓ — tap another video to swap it, or tap a different tile.");
+      });
     });
   }
 
