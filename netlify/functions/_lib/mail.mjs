@@ -101,6 +101,37 @@ export function deliveryEmail(delivery, recipientEmail, magicLink) {
   return { subject: `Your files are ready — ${headline}`, html: shell(inner) };
 }
 
+export function coachingNotifyEmail(b) {
+  const paid = b.paid;
+  const row = (label, value) => value ? `
+    <tr>
+      <td style="padding:6px 0;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:${BRAND.textMuted};white-space:nowrap;vertical-align:top;width:88px;">${label}</td>
+      <td style="padding:6px 0 6px 14px;font-size:14px;font-weight:600;line-height:1.4;">${value}</td>
+    </tr>` : "";
+  const details = `
+    <table role="presentation" width="100%" style="background:white;border:1px solid ${BRAND.line};border-radius:10px;margin:20px 0;"><tr><td style="padding:18px 22px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+        ${row("Session", b.title)}
+        ${row("When", b.when)}
+        ${row("Client", b.name)}
+        ${row("Email", b.email ? `<a href="mailto:${b.email}" style="color:${BRAND.violet};text-decoration:none;">${b.email}</a>` : "")}
+        ${row("Amount", b.amount)}
+      </table>
+    </td></tr></table>`;
+  const note = b.notes ? `
+    <table role="presentation" width="100%" style="background:${BRAND.creamPanel};border-radius:10px;margin:0 0 20px;"><tr><td style="padding:16px 20px;">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:${BRAND.gold};margin-bottom:6px;">Note from client</div>
+      <div style="font-size:14px;line-height:1.6;font-style:italic;color:#5a4a25;">${b.notes}</div>
+    </td></tr></table>` : "";
+  const inner = brandBar +
+    `<h1 style="font-size:20px;font-weight:600;margin:6px 0 4px;">${paid ? "New coaching booking — paid" : "New coaching booking"}</h1>
+     <p style="font-size:14px;line-height:1.6;color:${BRAND.textMuted};margin:0 0 6px;">${paid ? "Payment cleared through Stripe and the session is on your calendar." : "A session was booked."}</p>` +
+    details + note +
+    (b.bookingUrl ? ctaButton(b.bookingUrl, "View Booking") : "") +
+    `<p style="font-size:11px;color:${BRAND.textMuted};margin:16px 0 0;">Sent automatically when Cal.com reports a booking.</p>`;
+  return { subject: `${paid ? "💰 Paid coaching booking" : "New coaching booking"} — ${b.name || b.email || "client"}`, html: shell(inner) };
+}
+
 export function downloadNotifyEmail(delivery, email, what) {
   const project = (delivery.project_name || "").trim();
   const line = project ? `${project}: ${delivery.title}` : delivery.title;
