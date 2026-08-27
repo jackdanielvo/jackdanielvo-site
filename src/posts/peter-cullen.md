@@ -4,7 +4,7 @@ date: 2026-08-27
 categories:
   - Work Life
 featured: /assets/uploads/9F3CB3AC-A015-429B-869A-5754D7C8F476_1_105_c.jpeg
-cover: ''
+cover: /assets/uploads/9F3CB3AC-A015-429B-869A-5754D7C8F476_1_105_c.jpeg
 excerpt: Peter Cullen's loss is felt by every part of the voiceover world. Not just Optimus Prime, he was many characters, and one of the best narrators I ever heard. He is missed.
 youtube: ''
 video: ''
