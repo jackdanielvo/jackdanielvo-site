@@ -4,7 +4,7 @@ date: 2026-08-13
 categories:
   - Work Life
 featured: /assets/uploads/marie jack coaching.png
-cover: /assets/uploads/marie jack coaching.png
+cover: /assets/uploads/2026-08-27_10-55-23.jpg
 excerpt: Marie Westbrook and I are reprising our popular promo workshop at the SAG Foundation's Don LaFontaine Lab. We'll explore the current trends in promo and the influences of other genres on this form of voiceover.
 youtube: ''
 video: ''
